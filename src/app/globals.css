@@ -1,0 +1,57 @@
+:root {
+  /* Colors */
+  --bg-color: #050505;
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0a0;
+  --accent-color: #00f0ff;
+  --accent-hover: #00c3ff;
+  --surface-dark: rgba(20, 20, 20, 0.8);
+  --border-color: rgba(255, 255, 255, 0.1);
+  
+  /* Typography */
+  --font-kr: var(--font-noto-kr), sans-serif;
+  --font-en: var(--font-outfit), sans-serif;
+
+  /* Z-Index Hierarchy */
+  --z-canvas: -1;
+  --z-base: 1;
+  --z-content: 10;
+  --z-header: 100;
+  --z-overlay: 1000;
+}
+
+html, body {
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  font-family: var(--font-kr);
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Base Styles */
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+/* Custom Selection */
+::selection {
+  background: var(--accent-color);
+  color: #000;
+}
