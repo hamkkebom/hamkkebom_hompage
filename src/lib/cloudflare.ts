@@ -1,4 +1,4 @@
-import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
+import { S3Client, GetObjectCommand, HeadObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import jwt from "jsonwebtoken";
 
@@ -39,6 +39,26 @@ export async function getPresignedGetUrl(r2Key: string): Promise<string | null> 
     } catch (error) {
         console.error("R2 Presigned URL 발급 실패:", error);
         return null;
+    }
+}
+
+export async function checkR2KeyExists(r2Key: string): Promise<boolean> {
+    if (!r2Key) return false;
+    if (!process.env.CLOUDFLARE_R2_BUCKET_NAME) return false;
+
+    try {
+        const command = new HeadObjectCommand({
+            Bucket: process.env.CLOUDFLARE_R2_BUCKET_NAME,
+            Key: r2Key,
+        });
+        await r2Client.send(command);
+        return true;
+    } catch (error: any) {
+        // 404 is normal for missing files
+        if (error.$metadata?.httpStatusCode !== 404) {
+            console.error("R2 HeadObject 확인 실패:", error);
+        }
+        return false;
     }
 }
 

@@ -151,6 +151,10 @@ export default function WorksGalleryPage() {
                                             <img
                                                 src={work.thumbnail || "/placeholder-image.jpg"}
                                                 alt={work.meta?.name || "Video Thumbnail"}
+                                                onError={(e) => {
+                                                    const card = e.currentTarget.closest('.marquee-card') as HTMLElement;
+                                                    if (card) card.style.display = 'none';
+                                                }}
                                             />
                                         </div>
                                     </Link>
@@ -183,6 +187,10 @@ export default function WorksGalleryPage() {
                                                 <img
                                                     src={work.thumbnail || "/placeholder-image.jpg"}
                                                     alt={work.meta?.name || "Video"}
+                                                    onError={(e) => {
+                                                        const wrapper = e.currentTarget.closest('.work-card-wrapper') as HTMLElement;
+                                                        if (wrapper) wrapper.style.display = 'none';
+                                                    }}
                                                 />
                                                 <div className="work-overlay"></div>
 
