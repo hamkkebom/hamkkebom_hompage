@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
     const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
     const apiToken = process.env.CLOUDFLARE_API_TOKEN;
 
@@ -9,7 +10,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
     }
 
     try {
-        const response = await fetch(`https://api.cloudflare.com/client/v4/accounts/${accountId}/stream/${params.id}`, {
+        const response = await fetch(`https://api.cloudflare.com/client/v4/accounts/${accountId}/stream/${id}`, {
             headers: {
                 'Authorization': `Bearer ${apiToken}`,
                 'Content-Type': 'application/json'
