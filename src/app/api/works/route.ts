@@ -21,11 +21,11 @@ export async function GET(request: Request) {
         const startIndex = (page - 1) * limit;
         const endIndex = startIndex + limit - 1;
 
-        // 실제로는 createdAt 등 정렬 기준이 필요할 수 있습니다. 
-        // 우선 테이블 기본 정렬(id 등)을 사용합니다.
+        // 최신순 정렬
         const { data: videos, count, error } = await supabase
             .from('videos')
             .select('*', { count: 'exact' })
+            .order('created_at', { ascending: false })
             .range(startIndex, endIndex);
 
         if (error) {
