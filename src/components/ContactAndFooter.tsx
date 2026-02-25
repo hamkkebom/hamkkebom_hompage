@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
 
@@ -161,14 +162,19 @@ export default function ContactAndFooter() {
             <footer style={{ borderTop: "1px solid rgba(255,255,255,0.05)", padding: "4rem 2rem", marginTop: "4rem" }}>
                 <div style={{ maxWidth: "1400px", margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: "2rem" }}>
                     <div>
-                        <div style={{ fontSize: "2rem", fontWeight: 900, marginBottom: "1rem" }}>
-                            함께봄<span style={{ color: "var(--accent-color)" }}>.</span>
+                        <div style={{ marginBottom: "1.5rem" }}>
+                            <Image
+                                src="/logo-white.png"
+                                alt="함께봄 로고"
+                                width={150}
+                                height={65}
+                                style={{ objectFit: "contain" }}
+                            />
                         </div>
                         <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.8 }}>
-                            대표이사 : 누리봄<br />
-                            이메일 : hello@hamkkebom.com | 전화번호 : 02-1234-5678<br />
-                            주소 : 서울특별시 크리에이티브구 이노베이션대로 100, 15층<br />
-                            카카오톡 비즈니스 : @함께봄<br />
+                            대표이사 : 노수빈<br />
+                            이메일 : hamkkebom12@gmail.com<br />
+                            주소 : 서울 종로구 효자로7길 10 1층(서촌 한옥체)<br />
                         </p>
                     </div>
                     <div style={{ display: "flex", gap: "1.5rem", color: "var(--text-secondary)", fontSize: "0.9rem" }}>

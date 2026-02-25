@@ -70,8 +70,7 @@ export default function ContactPage() {
                                     다이렉트 컨택
                                 </h3>
                                 <p style={{ fontSize: "1.1rem", fontWeight: 500 }}>
-                                    hello@hamkkebom.com<br />
-                                    02-1234-5678
+                                    hamkkebom12@gmail.com
                                 </p>
                             </div>
                             <div>
@@ -79,7 +78,7 @@ export default function ContactPage() {
                                     오피스 위치
                                 </h3>
                                 <p style={{ fontSize: "1.1rem", fontWeight: 500 }}>
-                                    서울특별시 크리에이티브구<br />이노베이션대로 100, 15층
+                                    서울 종로구 효자로7길 10<br />1층(서촌 한옥체)
                                 </p>
                             </div>
                         </div>

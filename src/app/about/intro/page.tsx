@@ -20,7 +20,6 @@ export default function AboutIntroPage() {
     const missionRef = useRef<HTMLDivElement>(null);
     const orgRef = useRef<HTMLDivElement>(null);
     const eduRef = useRef<HTMLDivElement>(null);
-    const roadmapRef = useRef<HTMLDivElement>(null);
     const goalsRef = useRef<HTMLDivElement>(null);
     const newsRef = useRef<HTMLDivElement>(null);
     const ctaRef = useRef<HTMLDivElement>(null);
@@ -74,22 +73,7 @@ export default function AboutIntroPage() {
                 y: 50, opacity: 0, duration: 0.8, stagger: 0.15, ease: "power2.out"
             });
 
-            // Section 6: Roadmap Animation
-            const roadmapTl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: roadmapRef.current,
-                    start: "top 60%",
-                }
-            });
-
-            roadmapTl.to(".roadProgress", { width: "100%", duration: 2, ease: "power2.inOut" }, 0);
-
-            const steps = gsap.utils.toArray('.roadStep');
-            steps.forEach((step: any, i) => {
-                roadmapTl.to(step, {
-                    onStart: () => { step.classList.add(styles.active); }
-                }, i * (2 / steps.length));
-            });
+            // Section 6: Roadmap Animation (Removed)
 
             // Section 7: Core Goals Counters (Animations removed for visibility)
             gsap.utils.toArray('.gCount').forEach((el: any) => {
@@ -306,46 +290,7 @@ export default function AboutIntroPage() {
                 </div>
             </section>
 
-            {/* SECTION 6: ROADMAP */}
-            <section className={styles.roadmapSection} ref={roadmapRef}>
-                <div className={styles.sectionHeader}>
-                    <h2 className={styles.sectionTitle}>
-                        <span>성장</span> 가능
-                    </h2>
-                    <p style={{ letterSpacing: "0.2em", color: "rgba(255,255,255,0.5)" }}>3가지 제작 + 5가지별 평가 기준</p>
-                </div>
-
-                <div className={styles.roadmapContainer}>
-                    <div className={styles.roadmapLine}></div>
-                    <div className={`${styles.roadmapProgress} roadProgress`}></div>
-
-                    <div className={`${styles.stepNode} roadStep`}>
-                        <span className={styles.stepLevel}>기본</span>
-                        <span className={styles.stepValue}>6만원</span>
-                        <div className={styles.stepDot}></div>
-                    </div>
-                    <div className={`${styles.stepNode} roadStep`}>
-                        <span className={styles.stepLevel}>1단계 UP</span>
-                        <span className={styles.stepValue}>7만원</span>
-                        <div className={styles.stepDot}></div>
-                    </div>
-                    <div className={`${styles.stepNode} roadStep`}>
-                        <span className={styles.stepLevel}>2단계 UP</span>
-                        <span className={styles.stepValue}>8만원</span>
-                        <div className={styles.stepDot}></div>
-                    </div>
-                    <div className={`${styles.stepNode} roadStep`}>
-                        <span className={styles.stepLevel}>3단계 UP</span>
-                        <span className={styles.stepValue}>9만원</span>
-                        <div className={styles.stepDot}></div>
-                    </div>
-                    <div className={`${styles.stepNode} roadStep`}>
-                        <span className={styles.stepLevel}>최종 <span style={{ color: "#ef4444", fontSize: "0.6rem", verticalAlign: "top", fontWeight: "bold" }}>GOAL</span></span>
-                        <span className={styles.stepValue}>10만원</span>
-                        <div className={styles.stepDot}></div>
-                    </div>
-                </div>
-            </section>
+            {/* SECTION 6: ROADMAP (Removed) */}
 
             {/* SECTION 7: CORE GOALS & VISION */}
             <section className={styles.goalsSection} ref={goalsRef}>

@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
+import { Youtube } from "lucide-react";
 import gsap from "gsap";
 
 export default function GNB() {
@@ -23,6 +25,7 @@ export default function GNB() {
         label: string;
         href: string;
         subItems?: Array<{ name: string; label: string; href?: string; }>;
+        isExternal?: boolean;
     }> = [
             {
                 name: "ABOUT",
@@ -36,6 +39,7 @@ export default function GNB() {
             { name: "SERVICES", label: "서비스 설명", href: "/#서비스설명" },
             { name: "WORKS", label: "WORKS", href: "/works" },
             { name: "CONTACT", label: "문의하기", href: "/contact" },
+            { name: "YOUTUBE", label: "공식 채널", href: "https://www.youtube.com/@hamkkesong", isExternal: true },
         ];
 
     return (
@@ -58,24 +62,26 @@ export default function GNB() {
             }}
         >
             {/* Logo Section */}
-            <Link href="/" style={{ textDecoration: "none", zIndex: 2 }}>
+            <Link href="/" style={{ textDecoration: "none", zIndex: 2, display: "flex", alignItems: "center" }}>
                 <div
                     style={{
-                        fontSize: "1.3rem",
-                        fontWeight: 900,
-                        letterSpacing: "0.25em",
-                        fontFamily: "'Space Grotesk', sans-serif",
-                        color: "#fff",
-                        textTransform: "uppercase",
                         cursor: "pointer",
                         opacity: 0.9,
-                        textShadow: scrolled ? "none" : "0 4px 24px rgba(0,0,0,0.8)",
-                        transition: "opacity 0.4s ease"
+                        transition: "opacity 0.4s ease",
+                        display: "flex",
+                        alignItems: "center"
                     }}
                     onMouseEnter={(e) => (e.currentTarget.style.opacity = "1")}
                     onMouseLeave={(e) => (e.currentTarget.style.opacity = "0.9")}
                 >
-                    HAMKKEBOM<span style={{ color: "var(--accent-color, #d4af37)", marginLeft: "4px" }}>.</span>
+                    <Image
+                        src="/logo-white.png"
+                        alt="함께봄 로고"
+                        width={140}
+                        height={60}
+                        style={{ objectFit: "contain", filter: scrolled ? "none" : "drop-shadow(0 4px 12px rgba(0,0,0,0.5))" }}
+                        priority
+                    />
                 </div>
             </Link>
 
@@ -135,6 +141,8 @@ export default function GNB() {
                         >
                             <Link
                                 href={hasSubItems ? "#" : item.href}
+                                target={item.isExternal ? "_blank" : undefined}
+                                rel={item.isExternal ? "noopener noreferrer" : undefined}
                                 style={{ textDecoration: "none" }}
                                 onClick={(e) => {
                                     if (hasSubItems) {
@@ -167,8 +175,14 @@ export default function GNB() {
                                             textTransform: "uppercase",
                                             fontFamily: "'Space Grotesk', sans-serif",
                                             textShadow: scrolled ? "none" : "0 2px 10px rgba(0,0,0,0.5)",
+                                            display: "flex",
+                                            alignItems: "center",
+                                            gap: "6px"
                                         }}
                                     >
+                                        {item.name === "YOUTUBE" && (
+                                            <Youtube size={18} color="#ff0000" style={{ filter: "drop-shadow(0 0 8px rgba(255,0,0,0.6))" }} />
+                                        )}
                                         {item.name}
                                     </span>
 
