@@ -1,0 +1,452 @@
+/* ─── 베이스 & 배경 (영화관 감성) ─── */
+.container {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    background-color: #030303;
+    background-image: linear-gradient(to right, rgba(3, 3, 3, 0.9) 0%, rgba(3, 3, 3, 0.4) 50%, rgba(3, 3, 3, 0.7) 100%), url('/images/contact_bg.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: #ffffff;
+    overflow-x: hidden;
+    padding-top: 120px;
+    padding-bottom: 100px;
+}
+
+/* 필름 노이즈 오버레이 */
+.noiseOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opactiy='0.1'/%3E%3C/svg%3E");
+    opacity: 0.04;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* 빛 번짐 효과 (스포트라이트) */
+.spotlight {
+    position: absolute;
+    top: -20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle at center top, rgba(0, 240, 255, 0.08) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.contentWrapper {
+    position: relative;
+    z-index: 10;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 8rem;
+}
+
+/* ─── 왼쪽: 타이포그래피 (시네마틱 텍스트) ─── */
+.leftSection {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 3rem;
+}
+
+.directorTag {
+    font-size: 1rem;
+    letter-spacing: 0.4em;
+    color: var(--accent-color, #00f0ff);
+    text-transform: uppercase;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.directorTag::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 2px;
+    background-color: var(--accent-color, #00f0ff);
+}
+
+.mainTitle {
+    font-size: clamp(3rem, 5.5vw, 5rem);
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    text-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+    word-break: keep-all;
+}
+
+.mainTitle span {
+    display: block;
+    background: linear-gradient(180deg, #ffffff 0%, #777777 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.mainTitle .highlight {
+    color: var(--accent-color, #00f0ff);
+    background: none;
+    -webkit-background-clip: unset;
+    -webkit-text-fill-color: unset;
+    text-shadow: 0 0 40px rgba(0, 240, 255, 0.4);
+}
+
+.description {
+    font-size: 1.15rem;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.7;
+    max-width: 480px;
+    font-weight: 300;
+}
+
+/* ─── 오른쪽: 글래스모피즘 폼 컨테이너 ─── */
+.formContainer {
+    background: rgba(15, 15, 18, 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    padding: 4rem;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.formContainer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.5), transparent);
+}
+
+.formTitle {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 3rem;
+    letter-spacing: 0.05em;
+    color: #fff;
+}
+
+.formGrid {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+
+.formRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+/* ─── 플로팅 라벨 입력 필드 ─── */
+.inputGroup {
+    position: relative;
+    width: 100%;
+}
+
+.inputField {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 0.8rem 0;
+    color: #fff;
+    font-size: 1.1rem;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 0;
+}
+
+.textareaField {
+    resize: vertical;
+    min-height: 100px;
+    line-height: 1.5;
+}
+
+.inputField:focus {
+    border-bottom-color: var(--accent-color, #00f0ff);
+    box-shadow: 0 10px 10px -10px rgba(0, 240, 255, 0.3);
+}
+
+.inputLabel {
+    position: absolute;
+    left: 0;
+    top: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1.1rem;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transform-origin: left top;
+}
+
+/* 입력 필드에 포커스 되거나 값이 있을 때 라벨 위로 이동 */
+.inputField:focus~.inputLabel,
+.inputField:not(:placeholder-shown)~.inputLabel,
+.hasValue~.inputLabel {
+    transform: translateY(-1.5rem) scale(0.8);
+    color: var(--accent-color, #00f0ff);
+}
+
+/* Select 화살표 커스텀 */
+.selectField {
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='rgba(255,255,255,0.5)' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 0px center;
+    cursor: pointer;
+}
+
+.selectField option {
+    background: #111;
+    color: #fff;
+}
+
+/* ─── 체크박스 커스텀 ─── */
+.checkboxGroup {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+
+.checkboxInput {
+    display: none;
+}
+
+.checkboxCustom {
+    width: 20px;
+    height: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.checkboxInput:checked+.checkboxCustom {
+    background: var(--accent-color, #00f0ff);
+    border-color: var(--accent-color, #00f0ff);
+}
+
+.checkboxCustom svg {
+    width: 12px;
+    height: 12px;
+    fill: #000;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.checkboxInput:checked+.checkboxCustom svg {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.checkboxText {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.5;
+}
+
+/* ─── 제출 버튼 (시네마틱) ─── */
+.submitBtn {
+    position: relative;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    padding: 1.5rem 2rem;
+    font-size: 1.2rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    margin-top: 2rem;
+    border-radius: 4px;
+}
+
+.submitBtn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--accent-color, #00f0ff);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: -1;
+}
+
+.submitBtn:hover {
+    color: #000;
+    border-color: var(--accent-color, #00f0ff);
+    box-shadow: 0 0 30px rgba(0, 240, 255, 0.4);
+}
+
+.submitBtn:hover::before {
+    transform: scaleX(1);
+}
+
+.submitBtn:disabled {
+    cursor: wait;
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+/* ─── 로딩 스피너 ─── */
+.spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ─── 에러 메시지 ─── */
+.errorMsg {
+    background: rgba(255, 60, 60, 0.1);
+    border-left: 4px solid #ff3c3c;
+    color: #ff3c3c;
+    padding: 1rem 1.5rem;
+    font-size: 0.95rem;
+    margin-bottom: 2rem;
+    animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes shake {
+
+    10%,
+    90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+
+    20%,
+    80% {
+        transform: translate3d(2px, 0, 0);
+    }
+
+    30%,
+    50%,
+    70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+
+    40%,
+    60% {
+        transform: translate3d(4px, 0, 0);
+    }
+}
+
+/* ─── 성공 화면 (엔드크레딧 느낌) ─── */
+.successContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    text-align: center;
+}
+
+.successIcon {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: rgba(0, 240, 255, 0.1);
+    border: 2px solid var(--accent-color, #00f0ff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+    box-shadow: 0 0 50px rgba(0, 240, 255, 0.3);
+}
+
+.successIcon svg {
+    width: 50px;
+    height: 50px;
+    stroke: var(--accent-color, #00f0ff);
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    animation: drawCheck 0.8s ease forwards 0.3s;
+}
+
+@keyframes drawCheck {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+.successTitle {
+    font-size: 3rem;
+    font-weight: 900;
+    margin-bottom: 1rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.successDesc {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.6;
+    margin-bottom: 3rem;
+}
+
+/* ─── 반응형 ─── */
+@media (max-width: 1024px) {
+    .contentWrapper {
+        grid-template-columns: 1fr;
+        gap: 4rem;
+        padding: 1.5rem;
+    }
+
+    .formContainer {
+        padding: 3rem 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .mainTitle {
+        font-size: 3rem;
+    }
+
+    .formRow {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+    }
+}

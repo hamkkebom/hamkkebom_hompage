@@ -54,7 +54,7 @@ export default function AboutPage() {
     }, []);
 
     return (
-        <main style={{ background: "#000", minHeight: "100vh", position: "relative", overflowX: "hidden" }}>
+        <main style={{ background: "transparent", minHeight: "100vh", position: "relative", overflowX: "hidden" }}>
             {/* Navigation Header */}
             <GNB />
 
@@ -66,7 +66,7 @@ export default function AboutPage() {
                     height: "100vh",
                     overflow: "hidden",
                     position: "relative",
-                    backgroundColor: "#050505"
+                    backgroundColor: "transparent"
                 }}
             >
                 {/* Close/Back Button Overlay */}

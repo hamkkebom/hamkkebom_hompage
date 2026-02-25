@@ -402,7 +402,7 @@ export default function AboutIntroPage() {
             </section>
 
             {/* FOOTER PADDING */}
-            <div style={{ height: "10vh", background: "#000" }}></div>
+            <div style={{ height: "10vh", background: "transparent" }}></div>
         </div>
     );
 }

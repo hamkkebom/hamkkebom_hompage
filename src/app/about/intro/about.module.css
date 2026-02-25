@@ -1,7 +1,7 @@
 .introContainer {
     width: 100%;
     min-height: 100vh;
-    background-color: #050505;
+    background-color: transparent;
     color: #ffffff;
     font-family: 'Space Grotesk', sans-serif;
     overflow-x: hidden;
@@ -250,7 +250,7 @@
 .philosophySection {
     padding: 10vw 5vw;
     position: relative;
-    background: #020202;
+    background: transparent;
     overflow: hidden;
 }
 
@@ -420,7 +420,7 @@
    ========================================= */
 .orgSection {
     padding: 10vw 5vw;
-    background: #050505;
+    background: transparent;
 }
 
 .orgGrid {
@@ -603,7 +603,7 @@
    ========================================= */
 .goalsSection {
     padding: 10vw 5vw;
-    background: #020202;
+    background: transparent;
     position: relative;
 }
 
@@ -769,7 +769,7 @@
    ========================================= */
 .scheduleSection {
     padding: 8vw 5vw 0;
-    background: #050505;
+    background: transparent;
 }
 
 .scheduleGrid {

@@ -84,7 +84,7 @@ export default function AiSloganSection() {
             style={{
                 width: "100%",
                 minHeight: "80vh",
-                backgroundColor: "var(--bg-color, #050505)",
+                backgroundColor: "transparent",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
