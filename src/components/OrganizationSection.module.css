@@ -1,0 +1,454 @@
+.orgSection {
+    padding: 4vw 5vw;
+    background-color: transparent;
+    font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: #ffffff;
+}
+
+.container {
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+/* --- Header Styles --- */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4rem;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+.titleWrapper {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.accentBar {
+    width: 6px;
+    height: 48px;
+    background-color: var(--accent-color, #d4af37);
+    border-radius: 4px;
+}
+
+.title {
+    font-size: 3rem;
+    font-weight: 800;
+    margin: 0;
+    color: #ffffff;
+    letter-spacing: -0.02em;
+}
+
+.highlight {
+    color: var(--accent-color, #d4af37);
+}
+
+.tagLabel {
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0.6rem 1.2rem;
+    border-radius: 20px;
+    text-transform: uppercase;
+}
+
+/* --- Tree & Node Styles --- */
+.treeWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2rem;
+    width: 100%;
+}
+
+.topLevel {
+    display: flex;
+    justify-content: center;
+    z-index: 2;
+}
+
+.ceoNode {
+    background: rgba(20, 20, 20, 0.8);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--accent-color, #d4af37);
+    padding: 1.5rem 4rem;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.15);
+}
+
+.ceoTitle {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 0.25em;
+}
+
+.ceoSubtitle {
+    font-size: 1rem;
+    color: var(--accent-color, #d4af37);
+    letter-spacing: 0.1em;
+    font-weight: 600;
+}
+
+.trunkLine {
+    width: 2px;
+    height: 60px;
+    background: linear-gradient(to bottom, var(--accent-color, #d4af37), rgba(255, 255, 255, 0.2));
+    transform-origin: top;
+}
+
+.branchesContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 1300px;
+    position: relative;
+}
+
+.horizontalLine {
+    /* Distance between the center of 1st column (12.5%) and 4th column (87.5%) is 75% */
+    width: 75%;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.2);
+    transform-origin: center;
+}
+
+.teamsRow {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.teamCol {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 1rem;
+}
+
+.verticalLine {
+    width: 2px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.2);
+    transform-origin: top;
+}
+
+/* --- Card Styles --- */
+.card {
+    background: rgba(20, 20, 20, 0.6);
+    backdrop-filter: blur(16px);
+    border-radius: 20px;
+    padding: 2.8rem 1.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    width: 100%;
+}
+
+/* Colored Borders on the top side */
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20%;
+    right: 20%;
+    height: 4px;
+    border-radius: 0 0 6px 6px;
+    transition: all 0.4s ease;
+    opacity: 0.7;
+}
+
+.borderPurple::before {
+    background-color: #8b5cf6;
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
+}
+
+.borderBlue::before {
+    background-color: #3b82f6;
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+}
+
+.borderGreen::before {
+    background-color: #10b981;
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
+}
+
+.borderOrange::before {
+    background-color: #f59e0b;
+    box-shadow: 0 0 15px rgba(245, 158, 11, 0.5);
+}
+
+.card:hover::before {
+    left: 0;
+    right: 0;
+    border-radius: 0;
+    opacity: 1;
+}
+
+/* --- Inner Content --- */
+.cardContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.5rem;
+    z-index: 1;
+    width: 100%;
+}
+
+.iconCircle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.textContent {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.itemTitle {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin: 0;
+    letter-spacing: -0.01em;
+}
+
+.itemDesc {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+    white-space: pre-line;
+    font-weight: 400;
+}
+
+/* --- Modal Styles --- */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.modalBg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(12px);
+}
+
+.modalContainer {
+    position: relative;
+    width: 100%;
+    max-width: 650px;
+    z-index: 10000;
+}
+
+.modalCard {
+    background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 40px rgba(255, 255, 255, 0.05);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.modalCard::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+}
+
+.closeBtn {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.2s;
+}
+
+.closeBtn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: rotate(90deg);
+}
+
+.modalHeader {
+    padding: 3.5rem 3.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+}
+
+.modalIcon {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.modalTitleGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.modalTag {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    color: var(--accent-color, #d4af37);
+}
+
+.modalTitle {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin: 0;
+}
+
+.modalBody {
+    padding: 2.5rem 3.5rem 3.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.modalSubtitle {
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+    line-height: 1.6;
+}
+
+.modalDivider {
+    height: 1px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.02) 100%);
+    width: 100%;
+}
+
+.modalContentText {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* --- Mobile Adjustments --- */
+@media (max-width: 900px) {
+    .horizontalLine {
+        display: none;
+    }
+
+    .teamsRow {
+        flex-direction: column;
+        gap: 0;
+        align-items: center;
+    }
+
+    .teamCol {
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .verticalLine {
+        height: 30px;
+    }
+
+    .card {
+        padding: 2.5rem 2rem;
+    }
+
+    .ceoNode {
+        padding: 1.5rem 3rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .title {
+        font-size: 2.2rem;
+    }
+
+    .accentBar {
+        height: 36px;
+        width: 4px;
+    }
+
+    .cardContent {
+        gap: 1.2rem;
+    }
+
+    .modalOverlay {
+        padding: 1rem;
+    }
+
+    .modalHeader {
+        padding: 2.5rem 2rem 0;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+    }
+
+    .modalBody {
+        padding: 2rem 2rem 2.5rem;
+        gap: 1.5rem;
+    }
+
+    .modalTitle {
+        font-size: 2rem;
+    }
+
+    .modalSubtitle {
+        font-size: 1.1rem;
+    }
+}

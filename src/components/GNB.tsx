@@ -30,7 +30,7 @@ export default function GNB() {
                 href: "/about",
                 subItems: [
                     { name: "INTRO", label: "소개글", href: "/about/intro" },
-                    { name: "ORGANIZATION", label: "조직도" },
+                    { name: "ORGANIZATION", label: "조직도", href: "/about/org" },
                 ]
             },
             { name: "SERVICES", label: "서비스 설명", href: "/#서비스설명" },
@@ -240,7 +240,7 @@ export default function GNB() {
                                         {item.subItems?.map((sub) => (
                                             <Link href={sub.href || "#"} key={sub.name} style={{ textDecoration: "none" }} onClick={(e) => {
                                                 // href가 '#'이면 아직 없는 페이지로 간주하여 방지
-                                                if (!sub.href || sub.href === "#" || sub.href.includes("organization")) {
+                                                if (!sub.href || sub.href === "#") {
                                                     e.preventDefault();
                                                 }
                                             }}>

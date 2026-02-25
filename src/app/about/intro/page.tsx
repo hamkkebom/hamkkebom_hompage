@@ -57,11 +57,8 @@ export default function AboutIntroPage() {
                 x: 50, opacity: 0, duration: 1, ease: "power3.out", delay: 0.2
             });
 
-            // Section 2: Philosophy
-            gsap.from(".philCard", {
-                scrollTrigger: { trigger: philosophyRef.current, start: "top 75%" },
-                y: 80, opacity: 0, duration: 1, stagger: 0.2, ease: "back.out(1.2)"
-            });
+            // Section 2: Philosophy (Animation removed for better visibility on low-end devices)
+            // GSAP ScrollTrigger removed for .philCard to ensure text is always visible.
 
             // Section 3: Mission
             gsap.from(".missCard", {
@@ -69,11 +66,7 @@ export default function AboutIntroPage() {
                 scale: 0.95, opacity: 0, duration: 1.2, stagger: 0.3, ease: "power3.out"
             });
 
-            // Section 4: Organization
-            gsap.from(".oCard", {
-                scrollTrigger: { trigger: orgRef.current, start: "top 75%" },
-                y: 50, opacity: 0, duration: 0.8, stagger: 0.15, ease: "power2.out"
-            });
+            // Section 4: Organization (Removed)
 
             // Section 5: Education & Benefits
             gsap.from(".bCard", {
@@ -98,12 +91,7 @@ export default function AboutIntroPage() {
                 }, i * (2 / steps.length));
             });
 
-            // Section 7: Core Goals Counters
-            gsap.from(".goalCardItem", {
-                scrollTrigger: { trigger: goalsRef.current, start: "top 75%" },
-                y: 50, opacity: 0, duration: 0.8, stagger: 0.15, ease: "power2.out"
-            });
-
+            // Section 7: Core Goals Counters (Animations removed for visibility)
             gsap.utils.toArray('.gCount').forEach((el: any) => {
                 const targetVal = parseFloat(el.getAttribute('data-target') || '0');
                 gsap.to(el, {
@@ -129,11 +117,7 @@ export default function AboutIntroPage() {
                 y: 30, opacity: 0, duration: 0.8, stagger: 0.2, ease: "power2.out"
             });
 
-            // Section 9: Schedule & CTA
-            gsap.from(".schCard", {
-                scrollTrigger: { trigger: ctaRef.current, start: "top 80%" },
-                y: 40, opacity: 0, duration: 0.8, stagger: 0.15, ease: "back.out(1.2)"
-            });
+            // Section 9: Schedule & CTA (Animations removed for visibility)
 
         }, containerRef);
 
@@ -208,36 +192,43 @@ export default function AboutIntroPage() {
 
             {/* SECTION 2: PHILOSOPHY */}
             <section className={styles.philosophySection} ref={philosophyRef}>
-                <div className={styles.sectionHeader}>
-                    <h2 className={styles.sectionTitle}>
-                        (주)함께봄의 <span>탄생과 철학</span>
+                <div className={styles.philosophyHeader}>
+                    <h2 className={styles.philosophyTitle}>
+                        <span className={styles.titleBar}></span>
+                        (주)함께봄의 <span className={styles.highlight}>탄생과 철학</span>
                     </h2>
-                    <p style={{ letterSpacing: "0.2em", color: "rgba(255,255,255,0.5)" }}>OUR PHILOSOPHY</p>
+                    <p className={styles.philosophyEng}>Our Philosophy</p>
                 </div>
 
                 <div className={styles.philosophyGrid}>
                     <div className={`${styles.philosophyCard} philCard`}>
-                        <div className={styles.philIcon}>🤝</div>
+                        <div className={styles.philIconCircle} style={{ background: "#fffbeb" }}>
+                            <span style={{ fontSize: "2.5rem" }}>🧑‍🤝‍🧑</span>
+                        </div>
                         <h3 className={styles.philTitle}>함께 바라봄</h3>
-                        <p className={styles.philSubtitle}>자유와 나눔의 가치</p>
+                        <p className={styles.philSubtitle} style={{ color: "#d97706" }}>자유와 나눔의 가치</p>
                         <p className={styles.philDesc}>
-                            같은 꿈을 향해 서로를 응원하며<br />함께 나아갑니다.
+                            같은 꿈을 향해<br />서로를 응원하며<br />함께 나아갑니다.
                         </p>
                     </div>
                     <div className={`${styles.philosophyCard} philCard`}>
-                        <div className={styles.philIcon}>🔨</div>
+                        <div className={styles.philIconCircle} style={{ background: "#fef2f2" }}>
+                            <span style={{ fontSize: "2.5rem" }}>🔨</span>
+                        </div>
                         <h3 className={styles.philTitle}>함 깨부수어 봄!</h3>
-                        <p className={styles.philSubtitle}>혁신과 도전</p>
+                        <p className={styles.philSubtitle} style={{ color: "#e11d48" }}>혁신과 도전</p>
                         <p className={styles.philDesc}>
-                            수동적인 마인드와 5일근무제,<br />경쟁의식을 깨고 새롭게 혁신합니다.
+                            수동적인 마인드와<br />5일근무제, 경쟁의식을 깨고<br />새롭게 혁신합니다.
                         </p>
                     </div>
                     <div className={`${styles.philosophyCard} philCard`}>
-                        <div className={styles.philIcon}>🌱</div>
+                        <div className={styles.philIconCircle} style={{ background: "#f0fdf4" }}>
+                            <span style={{ fontSize: "2.5rem" }}>🌱</span>
+                        </div>
                         <h3 className={styles.philTitle}>함께 맞이하는 봄!</h3>
-                        <p className={styles.philSubtitle}>희망과 결실</p>
+                        <p className={styles.philSubtitle} style={{ color: "#16a34a" }}>희망과 결실</p>
                         <p className={styles.philDesc}>
-                            혼자가 아닌 우리로서<br />따뜻하고 희망찬 결실을 맞이합니다.
+                            혼자가 아닌 우리로서<br />따뜻하고 희망찬<br />결실을 맞이합니다.
                         </p>
                     </div>
                 </div>
@@ -261,46 +252,7 @@ export default function AboutIntroPage() {
                 </div>
             </section>
 
-            {/* SECTION 4: ORGANIZATION */}
-            <section className={styles.orgSection} ref={orgRef}>
-                <div className={styles.sectionHeader}>
-                    <h2 className={styles.sectionTitle}>
-                        함께봄의 <span>조직 구성</span>
-                    </h2>
-                    <p style={{ letterSpacing: "0.2em", color: "rgba(255,255,255,0.5)" }}>ORGANIZATION</p>
-                </div>
-
-                <div className={styles.orgGrid}>
-                    <div className={`${styles.orgCard} oCard`}>
-                        <div className={styles.orgIconBox} style={{ color: "#a855f7", background: "rgba(168, 85, 247, 0.1)" }}>🎥</div>
-                        <div className={styles.orgInfo}>
-                            <h3 className={styles.orgName}>영상제작팀</h3>
-                            <p className={styles.orgDesc}>고품질 콘텐츠 기획{'\n'}트렌디한 영상 제작</p>
-                        </div>
-                    </div>
-                    <div className={`${styles.orgCard} oCard`}>
-                        <div className={styles.orgIconBox} style={{ color: "#3b82f6", background: "rgba(59, 130, 246, 0.1)" }}>📣</div>
-                        <div className={styles.orgInfo}>
-                            <h3 className={styles.orgName}>마케팅팀</h3>
-                            <p className={styles.orgDesc}>브랜드 성장 전략{'\n'}실전 광고 성과 분석</p>
-                        </div>
-                    </div>
-                    <div className={`${styles.orgCard} oCard`}>
-                        <div className={styles.orgIconBox} style={{ color: "#10b981", background: "rgba(16, 185, 129, 0.1)" }}>🧑‍🏫</div>
-                        <div className={styles.orgInfo}>
-                            <h3 className={styles.orgName}>교육팀</h3>
-                            <p className={styles.orgDesc}>전문 크리에이터 양성{'\n'}실무 중심 커리큘럼</p>
-                        </div>
-                    </div>
-                    <div className={`${styles.orgCard} oCard`}>
-                        <div className={styles.orgIconBox} style={{ color: "#fbbf24", background: "rgba(251, 191, 36, 0.1)" }}>💡</div>
-                        <div className={styles.orgInfo}>
-                            <h3 className={styles.orgName}>기획개발팀</h3>
-                            <p className={styles.orgDesc}>AI활용 개발기획{'\n'}매주마다 하나씩 개발</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            {/* SECTION 4: ORGANIZATION (Removed and moved to /about/org) */}
 
             {/* SECTION 5: BENEFITS & EDUCATION */}
             <section className={styles.benefitsSection} ref={eduRef}>
