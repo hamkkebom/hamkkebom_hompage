@@ -47,9 +47,9 @@ export default function BrandStory() {
         <section
             id="서비스설명"
             ref={containerRef}
+            className="brand-story-section"
             style={{
                 backgroundColor: "var(--bg-color)", // Using the global dark background
-                padding: "10rem 2rem", // Generous whitespace for premium feel
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
@@ -59,7 +59,7 @@ export default function BrandStory() {
                 zIndex: 10,
             }}
         >
-            <div style={{ maxWidth: "900px", width: "100%", display: "flex", flexDirection: "column", gap: "8rem" }}>
+            <div className="brand-story-container" style={{ maxWidth: "900px", width: "100%", display: "flex", flexDirection: "column" }}>
 
                 {/* Block 1 */}
                 <div className="story-text-block">
@@ -93,8 +93,7 @@ export default function BrandStory() {
                 </div>
 
                 {/* Block 3 */}
-                <div className="story-text-block" style={{
-                    padding: "4rem",
+                <div className="story-text-block story-box-padding" style={{
                     border: "1px solid rgba(255,255,255,0.1)",
                     borderRadius: "2rem",
                     background: "rgba(255,255,255,0.02)",
@@ -149,6 +148,28 @@ export default function BrandStory() {
                 </div>
 
             </div>
+            <style>{`
+                .brand-story-section {
+                    padding: 10rem 2rem;
+                }
+                .brand-story-container {
+                    gap: 8rem;
+                }
+                .story-box-padding {
+                    padding: 4rem;
+                }
+                @media (max-width: 768px) {
+                    .brand-story-section {
+                        padding: 5rem 1.5rem;
+                    }
+                    .brand-story-container {
+                        gap: 4rem;
+                    }
+                    .story-box-padding {
+                        padding: 2rem 1.5rem;
+                    }
+                }
+            `}</style>
         </section>
     );
 }

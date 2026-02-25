@@ -148,19 +148,21 @@ export default function RoasShowcase() {
                 flexDirection: "column",
                 alignItems: "center"
             }}>
-                <div style={{
+                <div className="roas-subtitle-responsive" style={{
                     fontSize: "1.2rem",
                     fontWeight: 700,
                     letterSpacing: "0.5em",
                     color: "rgba(255,255,255,0.4)",
-                    marginBottom: "-2rem"
+                    marginBottom: "-2rem",
+                    whiteSpace: "nowrap"
                 }}>
                     PROVEN PERFORMANCE
                 </div>
                 <h2
                     ref={roasNumberRef}
+                    className="roas-number-responsive"
                     style={{
-                        fontSize: "clamp(12rem, 30vw, 35rem)",
+                        fontSize: "clamp(6rem, 25vw, 35rem)",
                         fontWeight: 900,
                         margin: 0,
                         lineHeight: 1,
@@ -329,6 +331,15 @@ export default function RoasShowcase() {
             <style>{`
                 @keyframes spin {
                     100% { transform: rotate(360deg); }
+                }
+                @media (max-width: 768px) {
+                    .roas-subtitle-responsive {
+                        font-size: 0.85rem !important;
+                        letter-spacing: 0.3em !important;
+                    }
+                    .roas-number-responsive {
+                        font-size: clamp(5rem, 30vw, 12rem) !important;
+                    }
                 }
             `}</style>
         </section>

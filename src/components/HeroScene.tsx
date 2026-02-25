@@ -427,28 +427,29 @@ export default function HeroScene() {
                 zIndex: 8,
                 textAlign: "center",
                 pointerEvents: "none",
-                width: "100%",
+                width: "90%",
+                maxWidth: "1200px",
             }}>
                 <h1
-                    className="slogan-text"
+                    className="slogan-text hero-title-responsive"
                     style={{
-                        fontSize: "clamp(2.5rem, 6vw, 6rem)",
+                        fontSize: "clamp(2.2rem, 5vw, 6rem)",
                         fontWeight: 900,
                         letterSpacing: "-0.04em",
-                        lineHeight: 1.2,
+                        lineHeight: 1.3,
                         color: "#fff",
                         willChange: "transform, opacity, filter",
                         display: "none",
                         opacity: 0,
                     }}
                 >
-                    <span style={{
+                    <span className="hero-alert-span" style={{
                         display: "block",
                         fontSize: "0.25em",
                         fontWeight: 600,
                         color: "#ff2a2a",
                         marginBottom: "1.2rem",
-                        letterSpacing: "0.5em",
+                        letterSpacing: "0.4em",
                         textShadow: "0 0 20px rgba(255,42,42,0.8)",
                         animation: "heroAlertBlink 2s infinite",
                     }}>
@@ -500,6 +501,20 @@ export default function HeroScene() {
                 }
                 .hero-glitch-intense {
                     animation: heroGlitch 0.6s infinite linear alternate-reverse !important;
+                }
+
+                /* Mobile Optimizations for Hero Slogan */
+                @media (max-width: 768px) {
+                    .hero-title-responsive {
+                        font-size: clamp(1.8rem, 8vw, 3rem) !important;
+                        line-height: 1.4 !important;
+                    }
+                    .hero-alert-span {
+                        letter-spacing: 0.15em !important;
+                        font-size: 0.4em !important;
+                        margin-bottom: 0.8rem !important;
+                        word-break: break-word; /* Allow wrapping if needed */
+                    }
                 }
             `}</style>
         </div>

@@ -21,7 +21,7 @@ export default function ContactAndFooter() {
     return (
         <section id="문의하기" style={{ background: "var(--bg-color)", position: "relative", zIndex: 10 }}>
             {/* Contact Section */}
-            <div style={{ maxWidth: "1400px", margin: "0 auto", padding: "10rem 2rem", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6rem" }}>
+            <div className="contact-footer-grid" style={{ maxWidth: "1400px", margin: "0 auto", display: "grid", boxSizing: "border-box" }}>
 
                 {/* Left Side: FAQ */}
                 <div>
@@ -91,7 +91,7 @@ export default function ContactAndFooter() {
                 </div>
 
                 {/* Right Side: Contact CTA (Replaced Form) */}
-                <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "flex-start", padding: "2rem", background: "url('/images/noise.png')", position: "relative" }}>
+                <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "flex-start", padding: "2rem", background: "url('/images/noise.png')", position: "relative", width: "100%", boxSizing: "border-box" }}>
                     <div style={{
                         position: "absolute",
                         top: "50%",
@@ -159,7 +159,7 @@ export default function ContactAndFooter() {
             </div>
 
             {/* Footer */}
-            <footer style={{ borderTop: "1px solid rgba(255,255,255,0.05)", padding: "4rem 2rem", marginTop: "4rem" }}>
+            <footer className="footer-container" style={{ borderTop: "1px solid rgba(255,255,255,0.05)", marginTop: "4rem" }}>
                 <div style={{ maxWidth: "1400px", margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: "2rem" }}>
                     <div>
                         <div style={{ marginBottom: "1.5rem" }}>
@@ -187,6 +187,26 @@ export default function ContactAndFooter() {
                     © {new Date().getFullYear()} HAMKKEBOM. All Rights Reserved.
                 </div>
             </footer>
+            <style>{`
+                .contact-footer-grid {
+                    grid-template-columns: 1fr 1fr;
+                    padding: 10rem 2rem;
+                    gap: 6rem;
+                }
+                .footer-container {
+                    padding: 4rem 2rem;
+                }
+                @media (max-width: 900px) {
+                    .contact-footer-grid {
+                        grid-template-columns: 1fr;
+                        padding: 5rem 1.5rem !important;
+                        gap: 3rem !important;
+                    }
+                    .footer-container {
+                        padding: 2rem 1.5rem !important;
+                    }
+                }
+            `}</style>
         </section >
     );
 }

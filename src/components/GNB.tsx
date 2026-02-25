@@ -9,15 +9,30 @@ import gsap from "gsap";
 
 export default function GNB() {
     const [scrolled, setScrolled] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
+    const [menuOpen, setMenuOpen] = useState(false);
     const pathname = usePathname();
+
+    // 페이지 변경 시 모바일 메뉴 닫기
+    useEffect(() => {
+        setMenuOpen(false);
+    }, [pathname]);
 
     useEffect(() => {
         const handleScroll = () => {
             setScrolled(window.scrollY > 50);
         };
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 768);
+        };
 
+        handleResize();
         window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
+        window.addEventListener("resize", handleResize);
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+            window.removeEventListener("resize", handleResize);
+        }
     }, []);
 
     const navItems: Array<{
@@ -49,7 +64,7 @@ export default function GNB() {
                 top: 0,
                 left: 0,
                 width: "100%",
-                padding: scrolled ? "1.2rem 4rem" : "2.5rem 5rem",
+                padding: isMobile ? (scrolled ? "1rem 1.5rem" : "1.5rem 1.5rem") : (scrolled ? "1.2rem 4rem" : "2.5rem 5rem"),
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
@@ -62,7 +77,7 @@ export default function GNB() {
             }}
         >
             {/* Logo Section */}
-            <Link href="/" style={{ textDecoration: "none", zIndex: 2, display: "flex", alignItems: "center" }}>
+            <Link href="/" style={{ textDecoration: "none", zIndex: 100, display: "flex", alignItems: "center" }} onClick={() => setMenuOpen(false)}>
                 <div
                     style={{
                         cursor: "pointer",
@@ -77,8 +92,8 @@ export default function GNB() {
                     <Image
                         src="/logo-white.png"
                         alt="함께봄 로고"
-                        width={140}
-                        height={60}
+                        width={isMobile ? 100 : 140}
+                        height={isMobile ? 40 : 60}
                         style={{ objectFit: "contain", filter: scrolled ? "none" : "drop-shadow(0 4px 12px rgba(0,0,0,0.5))" }}
                         priority
                     />
@@ -90,7 +105,7 @@ export default function GNB() {
                 position: "absolute",
                 left: "50%",
                 transform: "translateX(-50%)",
-                display: "flex",
+                display: isMobile ? "none" : "flex",
                 gap: "5vw", // 화면 크기에 비례하는 극적인 간격
                 alignItems: "center",
                 zIndex: 1
@@ -305,17 +320,67 @@ export default function GNB() {
                 })}
             </nav>
 
-            {/* Right Side Decoration (Minimalist lines representing a menu or just balance) */}
-            <div style={{ zIndex: 2, display: "flex", gap: "10px", alignItems: "center", opacity: 0.6, cursor: "pointer" }}
-                onMouseEnter={(e) => gsap.to(e.currentTarget, { opacity: 1, duration: 0.3 })}
-                onMouseLeave={(e) => gsap.to(e.currentTarget, { opacity: 0.6, duration: 0.3 })}
+            {/* Right Side Decoration / Hamburger Menu */}
+            <div style={{ zIndex: 100, display: "flex", gap: "10px", alignItems: "center", opacity: 1, cursor: "pointer", padding: "10px" }}
+                onClick={() => setMenuOpen(!menuOpen)}
+                onMouseEnter={(e) => !isMobile && gsap.to(e.currentTarget, { opacity: 1, duration: 0.3 })}
+                onMouseLeave={(e) => !isMobile && gsap.to(e.currentTarget, { opacity: 0.6, duration: 0.3 })}
             >
-                {/* 3줄의 비대칭 라인으로 포인트 */}
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "5px" }}>
-                    <div style={{ width: "32px", height: "1px", backgroundColor: "#fff" }} />
-                    <div style={{ width: "20px", height: "1px", backgroundColor: "#fff" }} />
-                    <div style={{ width: "26px", height: "1px", backgroundColor: "#fff" }} />
+                {/* 햄버거 아이콘 (모바일 및 데스크탑 공통, 클릭시 X 모양으로 애니메이션 추가) */}
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "6px", position: "relative", width: "32px", height: "20px" }}>
+                    <div style={{ width: menuOpen ? "32px" : "32px", height: "1px", backgroundColor: "#fff", transition: "all 0.3s ease", position: "absolute", top: menuOpen ? "10px" : "0", transform: menuOpen ? "rotate(45deg)" : "rotate(0)" }} />
+                    <div style={{ width: menuOpen ? "0" : "20px", height: "1px", backgroundColor: "#fff", transition: "all 0.3s ease", position: "absolute", top: "8px", opacity: menuOpen ? 0 : 1 }} />
+                    <div style={{ width: menuOpen ? "32px" : "26px", height: "1px", backgroundColor: "#fff", transition: "all 0.3s ease", position: "absolute", top: menuOpen ? "10px" : "16px", transform: menuOpen ? "rotate(-45deg)" : "rotate(0)" }} />
                 </div>
+            </div>
+
+            {/* Mobile Menu Overlay */}
+            <div style={{
+                position: "fixed",
+                top: 0, left: 0, width: "100%", height: "100vh",
+                backgroundColor: "rgba(5, 8, 15, 0.98)",
+                zIndex: 99,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: "2rem",
+                opacity: menuOpen ? 1 : 0,
+                visibility: menuOpen ? "visible" : "hidden",
+                transform: menuOpen ? "translateY(0)" : "translateY(-20px)",
+                transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+                backdropFilter: "blur(20px)"
+            }}>
+                {navItems.map((item) => (
+                    <div key={item.name} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1rem" }}>
+                        <Link href={item.href} target={item.isExternal ? "_blank" : undefined} rel={item.isExternal ? "noopener noreferrer" : undefined} style={{ textDecoration: "none" }} onClick={(e) => {
+                            if (item.subItems && item.subItems.length > 0) {
+                                // 모바일에서는 서브메뉴 대신 부모 항목 링크로 이동 (또는 e.preventDefault()로 토글)
+                                // 여기서는 부모 href가 유효하면 이동 허용 ("회사소개"는 /about)
+                            }
+                            setMenuOpen(false);
+                        }}>
+                            <span style={{
+                                fontSize: "1.5rem",
+                                fontWeight: 600,
+                                letterSpacing: "0.2em",
+                                color: "#fff",
+                                fontFamily: "'Space Grotesk', sans-serif"
+                            }}>
+                                {item.name === "YOUTUBE" ? <span style={{ display: "flex", alignItems: "center", gap: "8px" }}><Youtube size={24} color="#ff0000" /> {item.name}</span> : item.name}
+                            </span>
+                        </Link>
+                        {item.subItems && (
+                            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.8rem", marginTop: "-0.5rem", marginBottom: "1rem" }}>
+                                {item.subItems.map(sub => (
+                                    <Link key={sub.name} href={sub.href || "#"} style={{ textDecoration: "none", color: "rgba(255,255,255,0.6)", fontSize: "0.9rem", letterSpacing: "0.1em" }} onClick={() => setMenuOpen(false)}>
+                                        {sub.label}
+                                    </Link>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                ))}
             </div>
         </header>
     );

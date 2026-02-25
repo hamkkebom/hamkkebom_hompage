@@ -40,8 +40,7 @@ export default function PortfolioAndPartners() {
     }, []);
 
     const LogoItem = ({ text }: { text: string }) => (
-        <div style={{
-            fontSize: "2rem",
+        <div className="partner-logo-item" style={{
             fontWeight: 800,
             color: "rgba(255,255,255,0.8)",
             letterSpacing: "0.05em",
@@ -110,6 +109,16 @@ export default function PortfolioAndPartners() {
                 </div>
 
             </div>
+            <style>{`
+                .partner-logo-item {
+                    font-size: 2rem;
+                }
+                @media (max-width: 768px) {
+                    .partner-logo-item {
+                        font-size: 1.2rem;
+                    }
+                }
+            `}</style>
         </section>
     );
 }
