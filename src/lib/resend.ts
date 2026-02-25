@@ -1,5 +1,15 @@
-import { Resend } from 'resend';
+let resendInstance: any = null;
 
-export const resend = process.env.RESEND_API_KEY
-  ? new Resend(process.env.RESEND_API_KEY)
-  : null;
+export async function getResend() {
+  if (!process.env.RESEND_API_KEY) return null;
+  if (resendInstance) return resendInstance;
+
+  try {
+    const { Resend } = await import('resend');
+    resendInstance = new Resend(process.env.RESEND_API_KEY);
+    return resendInstance;
+  } catch {
+    console.warn('Resend module not available');
+    return null;
+  }
+}

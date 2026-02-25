@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { headers } from 'next/headers';
-import { resend } from '@/lib/resend';
+import { getResend } from '@/lib/resend';
 import InquiryNotification from '@/components/emails/InquiryNotification';
 
 // In-memory rate limit store (module-level, persists across requests in same process)
@@ -79,6 +79,7 @@ export async function POST(request: Request) {
   }
 
   // 10. Resend availability check
+  const resend = await getResend();
   if (!resend) {
     return NextResponse.json({ error: '이메일 서비스를 사용할 수 없습니다.' }, { status: 503 });
   }
