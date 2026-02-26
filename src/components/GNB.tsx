@@ -4,8 +4,39 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import { Youtube, Instagram, BookOpen } from "lucide-react";
 import gsap from "gsap";
+
+const SocialYoutube = ({ size }: { color?: string, size: number }) => (
+    <svg width={size} height={size} viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <path d="M117.88,33.19A14.28,14.28,0,0,0,107.82,23C98.92,20.64,60,20.64,60,20.64s-38.92,0-47.82,2.36A14.28,14.28,0,0,0,2.12,33.19C-.24,42.27,0,59.94,0,59.94S-.24,77.6,2.12,86.69A14.28,14.28,0,0,0,12.18,96.87C21.08,99.24,60,99.24,60,99.24s38.92,0,47.82-2.37A14.28,14.28,0,0,0,117.88,86.69c2.36-9.09,2.12-26.75,2.12-26.75S120.24,42.27,117.88,33.19Z" fill="#ff0000" />
+        <polygon points="48 77.06 79.41 59.94 48 42.82 48 77.06" fill="#fff" />
+    </svg>
+);
+
+const SocialInstagram = ({ size }: { color?: string, size: number }) => (
+    <svg width={size} height={size} viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <radialGradient id="ig-grad1" cx="30%" cy="100%" r="100%" fx="30%" fy="100%" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stopColor="#fdf497" />
+                <stop offset="5%" stopColor="#fdf497" />
+                <stop offset="45%" stopColor="#fd5949" />
+                <stop offset="60%" stopColor="#d6249f" />
+                <stop offset="90%" stopColor="#285AEB" />
+            </radialGradient>
+        </defs>
+        <path d="M84.7,11.3H35.3A24.07,24.07,0,0,0,11.3,35.3V84.7A24.07,24.07,0,0,0,35.3,108.7H84.7A24.07,24.07,0,0,0,108.7,84.7V35.3A24.07,24.07,0,0,0,84.7,11.3Z" fill="url(#ig-grad1)" />
+        <path d="M60,35.3A24.7,24.7,0,1,0,84.7,60,24.73,24.73,0,0,0,60,35.3Zm0,41.4A16.7,16.7,0,1,1,76.7,60,16.72,16.72,0,0,1,60,76.7Z" fill="#fff" />
+        <circle cx="91.5" cy="28.5" r="5.6" fill="#fff" />
+        <path d="M84.7,19.3H35.3A16,16,0,0,0,19.3,35.3V84.7A16,16,0,0,0,35.3,100.7H84.7A16,16,0,0,0,100.7,84.7V35.3A16,16,0,0,0,84.7,19.3ZM92.7,84.7A8,8,0,0,1,84.7,92.7H35.3A8,8,0,0,1,27.3,84.7V35.3a8,8,0,0,1,8-8H84.7a8,8,0,0,1,8,8Z" fill="#fff" />
+    </svg>
+);
+
+const SocialNaverBlog = ({ size }: { color?: string, size: number }) => (
+    <svg width={size} height={size} viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <rect width="120" height="120" rx="24" fill="#03C75A" />
+        <path d="M78.6,83.4V50.5l-24.1,32.9H37.8V36.6h16.7v32.9l24.1-32.9h16.7v46.8H78.6z" fill="#fff" />
+    </svg>
+);
 
 export default function GNB() {
     const [scrolled, setScrolled] = useState(false);
@@ -62,9 +93,9 @@ export default function GNB() {
                 href: "#",
                 isIconGroup: true,
                 icons: [
-                    { name: "YOUTUBE", href: "https://www.youtube.com/@hamkkesong", Icon: Youtube, color: "#ff0000" },
-                    { name: "INSTAGRAM", href: "https://www.instagram.com", Icon: Instagram, color: "#E1306C" },
-                    { name: "BLOG", href: "https://blog.naver.com", Icon: BookOpen, color: "#03C75A" }
+                    { name: "YOUTUBE", href: "https://www.youtube.com/@hamkkesong", Icon: SocialYoutube, color: "#ff0000" },
+                    { name: "INSTAGRAM", href: "https://www.instagram.com", Icon: SocialInstagram, color: "#E1306C" },
+                    { name: "BLOG", href: "https://blog.naver.com", Icon: SocialNaverBlog, color: "#03C75A" }
                 ]
             },
         ];
