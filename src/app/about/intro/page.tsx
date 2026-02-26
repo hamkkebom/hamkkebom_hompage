@@ -75,15 +75,7 @@ export default function AboutIntroPage() {
                 });
             });
 
-            // Section 8: National Startup Era (News)
-            gsap.from(".newsFrame", {
-                scrollTrigger: { trigger: newsRef.current, start: "top 70%" },
-                scale: 0.9, opacity: 0, duration: 1.2, ease: "power3.out"
-            });
-            gsap.from(".newsTts", {
-                scrollTrigger: { trigger: newsRef.current, start: "top 60%" },
-                y: 30, opacity: 0, duration: 0.8, stagger: 0.2, ease: "power2.out"
-            });
+            // Section 8: National Startup Era (News) (Removed)
 
             // Section 9: Schedule & CTA (Animations removed for visibility)
 
@@ -232,55 +224,10 @@ export default function AboutIntroPage() {
                 </div>
             </section>
 
-            {/* SECTION 8: NATIONAL STARTUP ERA (NEWS) */}
-            <section className={styles.newsSection} ref={newsRef}>
-                <div className={styles.sectionHeader}>
-                    <h2 className={styles.sectionTitle} style={{ color: "#ef4444" }}>
-                        지금은 <span>국가 창업 시대</span>
-                    </h2>
-                </div>
+            {/* SECTION 8: NATIONAL STARTUP ERA (Removed) */}
 
-                <div className={`${styles.newsContainer} newsFrame`}>
-                    <div className={styles.newsBg}>
-                        <div className={styles.newsImagePlaceholder}></div>
-                        <div className={styles.newsChannelTag}>MBC NEWS</div>
-
-                        <div className={styles.newsLowerThirds}>
-                            <h3 className={`${styles.newsHeadline} newsTts`}>"월급쟁이 시대는 끝났습니다"</h3>
-                            <p className={`${styles.newsSubhead} newsTts`}>이재명 대통령이 던진 해법</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* SECTION 9: SCHEDULE & CTA */}
+            {/* CTA BANNER */}
             <section className={styles.scheduleSection} ref={ctaRef}>
-                <div className={styles.sectionHeader}>
-                    <h2 className={styles.sectionTitle}>
-                        향후 <span>일정 안내</span>
-                    </h2>
-                    <p style={{ letterSpacing: "0.2em", color: "rgba(255,255,255,0.5)", marginBottom: "3rem" }}>SCHEDULE & CTA</p>
-                    <h3 style={{ fontSize: "2.5rem", fontWeight: 800 }}>"함께라면 <span style={{ color: "var(--accent-color)" }}>현실</span>이 됩니다"</h3>
-                </div>
-
-                <div className={styles.scheduleGrid}>
-                    <div className={`${styles.scheduleCard} schCard`}>
-                        <div className={styles.schIcon}>🤝</div>
-                        <div className={styles.schTitle} style={{ color: "#3b82f6" }}>개별/그룹 미팅</div>
-                        <div className={styles.schDesc}>영상 제작과 교육에 대한<br />구체적 논의</div>
-                    </div>
-                    <div className={`${styles.scheduleCard} schCard`}>
-                        <div className={styles.schIcon}>📢</div>
-                        <div className={styles.schTitle} style={{ color: "#a855f7" }}>공식 공지</div>
-                        <div className={styles.schDesc}>상세 일정 및 프로그램<br />곧 안내 예정</div>
-                    </div>
-                    <div className={`${styles.scheduleCard} schCard`}>
-                        <div className={styles.schIcon}>📩</div>
-                        <div className={styles.schTitle} style={{ color: "#ef4444" }}>사전 문의</div>
-                        <div className={styles.schDesc}>저녁시간 언제든지<br />개별 문의 환영</div>
-                    </div>
-                </div>
-
                 <div className={styles.ctaBanner} onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
                     <div className={styles.ctaText}>
                         ARE YOU READY FOR SPRING?<br />
