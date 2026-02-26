@@ -82,10 +82,10 @@ export default function GNB() {
                 alignItems: "center",
                 zIndex: "var(--z-header)",
                 transition: "all 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
-                background: scrolled ? "rgba(2, 2, 2, 0.75)" : "rgba(0,0,0,0)",
-                backdropFilter: scrolled ? "blur(24px) saturate(1.2)" : "none",
-                WebkitBackdropFilter: scrolled ? "blur(24px) saturate(1.2)" : "none",
-                borderBottom: scrolled ? "1px solid rgba(255, 255, 255, 0.04)" : "1px solid rgba(255, 255, 255, 0)",
+                background: "rgba(2, 2, 2, 0.85)",
+                backdropFilter: "blur(24px) saturate(1.2)",
+                WebkitBackdropFilter: "blur(24px) saturate(1.2)",
+                borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
             }}
         >
             {/* Logo Section */}

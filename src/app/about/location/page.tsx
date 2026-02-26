@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
-import LocationMap from '@/components/map/LocationMap';
+import GNB from '@/components/GNB';
+import LocationMapWrapper from '@/components/map/LocationMapWrapper';
 
 export const metadata: Metadata = {
     title: '오시는 길 | 함께봄',
@@ -8,8 +9,11 @@ export const metadata: Metadata = {
 
 export default function LocationPage() {
     return (
-        <main style={{ backgroundColor: "#05080f", minHeight: "100vh" }}>
-            <LocationMap />
-        </main>
+        <>
+            <GNB />
+            <main style={{ backgroundColor: "var(--bg-color)", minHeight: "100vh" }}>
+                <LocationMapWrapper />
+            </main>
+        </>
     );
 }

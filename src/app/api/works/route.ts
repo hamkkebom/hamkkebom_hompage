@@ -6,6 +6,7 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get('page') || '1', 10);
     const limit = parseInt(searchParams.get('limit') || '20', 10);
+    const category = searchParams.get('category');
 
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
@@ -21,12 +22,18 @@ export async function GET(request: Request) {
         const startIndex = (page - 1) * limit;
         const endIndex = startIndex + limit - 1;
 
-        // 최신순 정렬
-        const { data: videos, count, error } = await supabase
+        // 최신순 정렬 및 카테고리 필터링
+        let query = supabase
             .from('videos')
             .select('*', { count: 'exact' })
             .order('createdAt', { ascending: false })
             .range(startIndex, endIndex);
+
+        if (category && category !== "전체") {
+            query = query.eq('category', category);
+        }
+
+        const { data: videos, count, error } = await query;
 
         if (error) {
             throw error;
@@ -82,7 +89,7 @@ export async function GET(request: Request) {
                 meta: {
                     name: v.videoSubject || v.externalId || "Untitled Project",
                     client: "",
-                    category: "PORTFOLIO"
+                    category: v.category || "PORTFOLIO"
                 },
                 created: new Date().toISOString() // 백업용
             };

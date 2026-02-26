@@ -21,42 +21,160 @@ interface StreamItem {
         category?: string;
     };
     created: string;
+    isYoutube?: boolean;
+    youtubeUrl?: string;
 }
+
+const PR_YOUTUBE_VIDEOS: StreamItem[] = [
+    {
+        uid: "yt-1",
+        thumbnail: "https://img.youtube.com/vi/P1kKoW6Afp0/maxresdefault.jpg",
+        preview: "",
+        meta: { name: "주안이네 김치 홍보송", category: "기업홍보", client: "주안이네 김치" },
+        created: new Date().toISOString(),
+        isYoutube: true,
+        youtubeUrl: "https://www.youtube.com/watch?v=P1kKoW6Afp0&list=PLuG5PIXGPOHqtAZFcrktSBdp2Kt5C7Kdz&index=1"
+    },
+    {
+        uid: "yt-2",
+        thumbnail: "https://img.youtube.com/vi/tHzauNGtsqw/maxresdefault.jpg",
+        preview: "",
+        meta: { name: "다온 국제변리사 홍보송", category: "기업홍보", client: "다온 국제변리사" },
+        created: new Date().toISOString(),
+        isYoutube: true,
+        youtubeUrl: "https://www.youtube.com/watch?v=tHzauNGtsqw&list=PLuG5PIXGPOHqtAZFcrktSBdp2Kt5C7Kdz&index=2"
+    },
+    {
+        uid: "yt-3",
+        thumbnail: "https://img.youtube.com/vi/vfrMwQR4ym0/maxresdefault.jpg",
+        preview: "",
+        meta: { name: "아셀케어 홍보송", category: "기업홍보", client: "아셀케어" },
+        created: new Date().toISOString(),
+        isYoutube: true,
+        youtubeUrl: "https://www.youtube.com/watch?v=vfrMwQR4ym0&list=PLuG5PIXGPOHqtAZFcrktSBdp2Kt5C7Kdz&index=3"
+    },
+    {
+        uid: "yt-4",
+        thumbnail: "https://img.youtube.com/vi/0HzCpVP8vvw/maxresdefault.jpg",
+        preview: "",
+        meta: { name: "에이스인력 홍보송", category: "기업홍보", client: "에이스인력" },
+        created: new Date().toISOString(),
+        isYoutube: true,
+        youtubeUrl: "https://www.youtube.com/watch?v=0HzCpVP8vvw&list=PLuG5PIXGPOHqtAZFcrktSBdp2Kt5C7Kdz&index=4"
+    }
+];
+
+const JOB_YOUTUBE_VIDEOS: StreamItem[] = [
+    {
+        uid: "yt-job-1",
+        thumbnail: "https://img.youtube.com/vi/h_XBaIOGqN0/maxresdefault.jpg",
+        preview: "",
+        meta: { name: "AI 영상 프리랜서 모집송", category: "구인공고" },
+        created: new Date().toISOString(),
+        isYoutube: true,
+        youtubeUrl: "https://www.youtube.com/watch?v=h_XBaIOGqN0&list=PLuG5PIXGPOHr_ifLtttnIvVRQEnSvCTeL&index=1"
+    },
+    {
+        uid: "yt-job-2",
+        thumbnail: "https://img.youtube.com/vi/4GCIC9-eLiQ/maxresdefault.jpg",
+        preview: "",
+        meta: { name: "AI 콘텐츠 우리같이 만들어요", category: "구인공고" },
+        created: new Date().toISOString(),
+        isYoutube: true,
+        youtubeUrl: "https://www.youtube.com/watch?v=4GCIC9-eLiQ&list=PLuG5PIXGPOHr_ifLtttnIvVRQEnSvCTeL&index=2"
+    }
+];
+
+const CONTEST_YOUTUBE_VIDEOS: StreamItem[] = [
+    {
+        uid: "yt-contest-1",
+        thumbnail: "https://img.youtube.com/vi/It4FXs2A6cc/maxresdefault.jpg",
+        preview: "",
+        meta: { name: "[꿈꾸는 아리랑] 졸업은 했는데, 뭐해먹고 살지..?", category: "공모전참가송" },
+        created: new Date().toISOString(),
+        isYoutube: true,
+        youtubeUrl: "https://www.youtube.com/watch?v=It4FXs2A6cc&list=PLuG5PIXGPOHqNU_AsRPS17tf9TOJ2Pn25&index=1"
+    },
+    {
+        uid: "yt-contest-2",
+        thumbnail: "https://img.youtube.com/vi/jme85Dz0zzg/maxresdefault.jpg",
+        preview: "",
+        meta: { name: "[꿈꾸는 아리랑] 나의 아리랑", category: "공모전참가송" },
+        created: new Date().toISOString(),
+        isYoutube: true,
+        youtubeUrl: "https://www.youtube.com/watch?v=jme85Dz0zzg&list=PLuG5PIXGPOHqNU_AsRPS17tf9TOJ2Pn25&index=2"
+    },
+    {
+        uid: "yt-contest-3",
+        thumbnail: "https://img.youtube.com/vi/rbYmaPUKw00/maxresdefault.jpg",
+        preview: "",
+        meta: { name: "[꿈꾸는 아리랑] 꿈은 너를 배신하지 않아", category: "공모전참가송" },
+        created: new Date().toISOString(),
+        isYoutube: true,
+        youtubeUrl: "https://www.youtube.com/watch?v=rbYmaPUKw00&list=PLuG5PIXGPOHqNU_AsRPS17tf9TOJ2Pn25&index=3"
+    }
+];
+
+const ALL_YOUTUBE_VIDEOS: StreamItem[] = [...PR_YOUTUBE_VIDEOS, ...JOB_YOUTUBE_VIDEOS, ...CONTEST_YOUTUBE_VIDEOS];
 
 export default function WorksGalleryPage() {
     const marqueeRef = useRef<HTMLDivElement>(null);
     const galleryRef = useRef<HTMLDivElement>(null);
     const [videos, setVideos] = useState<StreamItem[]>([]);
-    const [recentVideos, setRecentVideos] = useState<StreamItem[]>([]);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [loading, setLoading] = useState(true);
+    const [selectedCategory, setSelectedCategory] = useState<string>("전체");
+
+    const categories = [
+        "전체", "구인공고", "기업홍보", "공모전참가송", "꿈꿈송", "자기소개송", "추억송"
+    ];
 
     const limit = 20;
+
+    // 마키(자동 재생 띠) 데이터
+    const marqueeVideos = [...ALL_YOUTUBE_VIDEOS, ...ALL_YOUTUBE_VIDEOS, ...ALL_YOUTUBE_VIDEOS];
 
     useEffect(() => {
         const fetchVideos = async () => {
             setLoading(true);
             try {
-                const res = await fetch(`/api/works?page=${page}&limit=${limit}`);
-                const data = await res.json();
-
-                if (data.videos) setVideos(data.videos);
-                if (data.recentVideos) setRecentVideos(data.recentVideos);
-                if (data.pagination) setTotalPages(data.pagination.totalPages);
+                // DB 연동 제거 및 하드코딩된 유튜브 영상으로 대체
+                if (selectedCategory === "전체") {
+                    setVideos(ALL_YOUTUBE_VIDEOS);
+                } else if (selectedCategory === "기업홍보") {
+                    setVideos(PR_YOUTUBE_VIDEOS);
+                } else if (selectedCategory === "구인공고") {
+                    setVideos(JOB_YOUTUBE_VIDEOS);
+                } else if (selectedCategory === "공모전참가송") {
+                    setVideos(CONTEST_YOUTUBE_VIDEOS);
+                } else {
+                    // 다른 카테고리의 경우 현재는 비워둠. 필요시 데이터 추가.
+                    setVideos([]);
+                }
+                setTotalPages(1);
             } catch (error) {
-                console.error("Failed to load videos:", error);
+                console.error("Error setting videos:", error);
             } finally {
                 setLoading(false);
             }
         };
 
         fetchVideos();
-    }, [page]);
+    }, [page, selectedCategory]);
+
+    // 카테고리 변경 시 첫 페이지로 초기화
+    const handleCategoryClick = (cat: string) => {
+        if (selectedCategory !== cat) {
+            setSelectedCategory(cat);
+            setPage(1);
+            setVideos([]); // 로딩 중 이전 데이터 보이는 것 방지
+        }
+    };
 
     // 무한 마키 애니메이션
     useEffect(() => {
-        if (!marqueeRef.current || recentVideos.length === 0) return;
+        if (!marqueeRef.current || marqueeVideos.length === 0) return;
 
         let xPos = 0;
         const speed = 1.0;
@@ -76,7 +194,7 @@ export default function WorksGalleryPage() {
         return () => {
             gsap.ticker.remove(updateMarquee);
         };
-    }, [recentVideos]);
+    }, [marqueeVideos]);
 
     // 패럴랙스 (시차) 갤러리 애니메이션
     useEffect(() => {
@@ -114,9 +232,6 @@ export default function WorksGalleryPage() {
         }
     }, [loading, videos]);
 
-    // 마키 데이터를 두 배로 늘려 무한 롤링 효과
-    const marqueeData = [...recentVideos, ...recentVideos];
-
     return (
         <main className="cinematic-main" style={{ minHeight: "100vh", position: "relative" }}>
             {/* Cinematic Background Lights (Nanobanana Pro Vibe) */}
@@ -138,26 +253,41 @@ export default function WorksGalleryPage() {
                     <h1 className="main-heading">LATEST VISUALS</h1>
                 </div>
 
+                {/* Category Filters */}
+                <div className="category-filter-container">
+                    <div className="category-filter-scroll">
+                        {categories.map((cat) => (
+                            <button
+                                key={cat}
+                                className={`category-pill ${selectedCategory === cat ? 'active' : ''}`}
+                                onClick={() => handleCategoryClick(cat)}
+                            >
+                                {cat}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
                 {/* 상단 무한 스크롤 마키 (Film Strip Design) */}
-                {recentVideos.length > 0 && (
+                {marqueeVideos.length > 0 && (
                     <div className="film-strip-container">
                         <div className="film-perforation top"></div>
                         <div className="film-marquee-track">
                             <div ref={marqueeRef} style={{ display: "flex", width: "max-content", paddingLeft: "1rem" }}>
-                                {marqueeData.map((work, idx) => (
-                                    <Link href={`/works/${work.uid}`} key={`marquee-${work.uid}-${idx}`} style={{ textDecoration: "none" }}>
-                                        <div className="marquee-card">
+                                {marqueeVideos.map((work, idx) => (
+                                    <div key={`marquee-${work.uid}-${idx}`} className="film-frame">
+                                        <div className="film-frame-inner">
                                             {/* eslint-disable-next-line @next/next/no-img-element */}
                                             <img
                                                 src={work.thumbnail || "/placeholder-image.jpg"}
-                                                alt={work.meta?.name || "Video Thumbnail"}
+                                                alt={work.meta?.name || "Film"}
                                                 onError={(e) => {
-                                                    const card = e.currentTarget.closest('.marquee-card') as HTMLElement;
-                                                    if (card) card.style.display = 'none';
+                                                    const wrapper = e.currentTarget.closest('.film-frame') as HTMLElement;
+                                                    if (wrapper) wrapper.style.display = 'none';
                                                 }}
                                             />
                                         </div>
-                                    </Link>
+                                    </div>
                                 ))}
                             </div>
                         </div>
@@ -179,40 +309,52 @@ export default function WorksGalleryPage() {
                     ) : (
                         <>
                             <div className="scattered-container">
-                                {videos.map((work, idx) => (
-                                    <div key={work.uid} className={`work-card-wrapper layout-type-${idx % 3}`}>
-                                        <Link href={`/works/${work.uid}`} className="work-card">
-                                            <div className="work-img-container">
-                                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                                <img
-                                                    src={work.thumbnail || "/placeholder-image.jpg"}
-                                                    alt={work.meta?.name || "Video"}
-                                                    onError={(e) => {
-                                                        const wrapper = e.currentTarget.closest('.work-card-wrapper') as HTMLElement;
-                                                        if (wrapper) wrapper.style.display = 'none';
-                                                    }}
-                                                />
-                                                <div className="work-overlay"></div>
+                                {videos.map((work, idx) => {
+                                    const CardContent = (
+                                        <div className="work-img-container">
+                                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                                            <img
+                                                src={work.thumbnail || "/placeholder-image.jpg"}
+                                                alt={work.meta?.name || "Video"}
+                                                onError={(e) => {
+                                                    const wrapper = e.currentTarget.closest('.work-card-wrapper') as HTMLElement;
+                                                    if (wrapper) wrapper.style.display = 'none';
+                                                }}
+                                            />
+                                            <div className="work-overlay"></div>
 
-                                                <div className="work-info">
-                                                    {/* 나중에 필요할 경우 주석 해제하여 사용
-                                                    <div className="work-category">
-                                                        {work.meta?.category || "SCENE"} // 0{idx + 1 + (page - 1) * limit}
-                                                    </div>
-                                                    */}
-                                                    <h3 className="work-title">
-                                                        {work.meta?.name || "Untitled Film"}
-                                                    </h3>
-                                                    {work.meta?.client && (
-                                                        <p className="work-client">
-                                                            A FILM FOR {work.meta.client.toUpperCase()}
-                                                        </p>
-                                                    )}
+                                            <div className="work-info">
+                                                {/* 나중에 필요할 경우 주석 해제하여 사용 */}
+                                                <div className="work-category">
+                                                    {work.meta?.category || "FILM"}
+                                                    {work.isYoutube && " • YOUTUBE"}
                                                 </div>
+                                                <h3 className="work-title">
+                                                    {work.meta?.name || "Untitled Film"}
+                                                </h3>
+                                                {work.meta?.client && (
+                                                    <p className="work-client">
+                                                        A FILM FOR {work.meta.client.toUpperCase()}
+                                                    </p>
+                                                )}
                                             </div>
-                                        </Link>
-                                    </div>
-                                ))}
+                                        </div>
+                                    );
+
+                                    return (
+                                        <div key={work.uid} className={`work-card-wrapper layout-type-${idx % 3}`}>
+                                            {work.isYoutube ? (
+                                                <a href={work.youtubeUrl} target="_blank" rel="noopener noreferrer" className="work-card">
+                                                    {CardContent}
+                                                </a>
+                                            ) : (
+                                                <Link href={`/works/${work.uid}`} className="work-card">
+                                                    {CardContent}
+                                                </Link>
+                                            )}
+                                        </div>
+                                    );
+                                })}
                             </div>
 
                             {/* Pagination UI */}
@@ -342,6 +484,72 @@ export default function WorksGalleryPage() {
                     text-shadow: 0 10px 30px rgba(0,0,0,0.8);
                 }
 
+                /* Category Filters */
+                .category-filter-container {
+                    width: 100%;
+                    max-width: 1400px;
+                    margin: 0 auto 5rem;
+                    padding: 0 2rem;
+                    display: flex;
+                    justify-content: center;
+                }
+
+                .category-filter-scroll {
+                    display: flex;
+                    gap: 1rem;
+                    overflow-x: auto;
+                    padding-bottom: 1rem;
+                    /* 스크롤바 숨기기 (크롬, 사파리 등) */
+                    -ms-overflow-style: none;  /* IE, Edge */
+                    scrollbar-width: none;  /* Firefox */
+                }
+
+                .category-filter-scroll::-webkit-scrollbar {
+                    display: none;
+                }
+
+                .category-pill {
+                    background: transparent;
+                    border: 1px solid rgba(255, 255, 255, 0.15);
+                    color: rgba(255, 255, 255, 0.5);
+                    padding: 0.7rem 1.6rem;
+                    border-radius: 4px; /* 영화 필름 컷 느낌으로 살짝 각지게 */
+                    font-family: 'Noto Sans KR', sans-serif;
+                    font-size: 1rem;
+                    font-weight: 400;
+                    letter-spacing: 0.05em;
+                    white-space: nowrap;
+                    cursor: pointer;
+                    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+                    position: relative;
+                    overflow: hidden;
+                }
+
+                .category-pill::before {
+                    content: '';
+                    position: absolute;
+                    top: 0; left: 0; width: 100%; height: 100%;
+                    background: #e5a93d; /* 샴페인 골드 (개별 적용) */
+                    opacity: 0;
+                    z-index: -1;
+                    transition: opacity 0.4s ease;
+                }
+
+                .category-pill:hover {
+                    color: #fff;
+                    border-color: rgba(255, 255, 255, 0.4);
+                }
+
+                .category-pill.active {
+                    color: #000;
+                    border-color: #e5a93d; /* 샴페인 골드 (개별 적용) */
+                    font-weight: 700;
+                }
+
+                .category-pill.active::before {
+                    opacity: 1;
+                }
+
                 /* Film Strip Marquee */
                 .film-strip-container {
                     width: 100%;
@@ -372,31 +580,40 @@ export default function WorksGalleryPage() {
                 }
 
                 .film-marquee-track {
-                    padding: 5px 0;
                     overflow: hidden;
+                    white-space: nowrap;
+                    padding: 1rem 0;
                     display: flex;
                     align-items: center;
                 }
 
-                .marquee-card {
-                    width: 380px;
-                    height: 220px;
-                    margin: 0 5px;
-                    position: relative;
-                    background: #0a0a0a;
+                .film-frame {
+                    display: inline-block;
+                    width: 280px;
+                    height: 160px;
+                    margin-right: 1rem;
+                    border-radius: 4px; /* 살짝 둥글게 */
                     overflow: hidden;
-                    cursor: pointer;
+                    position: relative;
+                    flex-shrink: 0;
+                    box-shadow: 0 4px 15px rgba(0,0,0,0.5); /* 필름의 입체감 부여 */
                 }
 
-                .marquee-card img {
+                .film-frame-inner {
+                    width: 100%;
+                    height: 100%;
+                }
+
+                .film-frame img {
                     width: 100%;
                     height: 100%;
                     object-fit: cover;
+                    /* 기존 애니메이션/호버 트랜지션 등이 필요하다면 아래에 추가 */
                     filter: grayscale(100%) contrast(1.2) brightness(0.7);
                     transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
                 }
 
-                .marquee-card:hover img {
+                .film-frame:hover img {
                     filter: grayscale(0%) contrast(1) brightness(1);
                     transform: scale(1.03);
                 }
