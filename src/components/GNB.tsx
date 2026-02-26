@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import { Youtube } from "lucide-react";
+import { Youtube, Instagram, BookOpen } from "lucide-react";
 import gsap from "gsap";
 
 export default function GNB() {
@@ -37,10 +37,12 @@ export default function GNB() {
 
     const navItems: Array<{
         name: string;
-        label: string;
+        label?: string;
         href: string;
         subItems?: Array<{ name: string; label: string; href?: string; }>;
         isExternal?: boolean;
+        isIconGroup?: boolean;
+        icons?: Array<{ name: string; href: string; Icon: any; color: string; }>;
     }> = [
             {
                 name: "ABOUT",
@@ -49,12 +51,22 @@ export default function GNB() {
                 subItems: [
                     { name: "INTRO", label: "소개글", href: "/about/intro" },
                     { name: "ORGANIZATION", label: "조직도", href: "/about/org" },
+                    { name: "LOCATION", label: "오시는 길", href: "/about/location" },
                 ]
             },
             { name: "SERVICES", label: "서비스 설명", href: "/#서비스설명" },
             { name: "WORKS", label: "WORKS", href: "/works" },
             { name: "CONTACT", label: "문의하기", href: "/contact" },
-            { name: "YOUTUBE", label: "공식 채널", href: "https://www.youtube.com/@hamkkesong", isExternal: true },
+            {
+                name: "SOCIALS",
+                href: "#",
+                isIconGroup: true,
+                icons: [
+                    { name: "YOUTUBE", href: "https://www.youtube.com/@hamkkesong", Icon: Youtube, color: "#ff0000" },
+                    { name: "INSTAGRAM", href: "https://www.instagram.com", Icon: Instagram, color: "#E1306C" },
+                    { name: "BLOG", href: "https://blog.naver.com", Icon: BookOpen, color: "#03C75A" }
+                ]
+            },
         ];
 
     return (
@@ -111,6 +123,44 @@ export default function GNB() {
                 zIndex: 1
             }}>
                 {navItems.map((item) => {
+                    if (item.isIconGroup) {
+                        return (
+                            <div key={item.name} style={{ display: "flex", gap: "1.5rem", alignItems: "center" }}>
+                                {item.icons?.map((social) => {
+                                    const { Icon, color, name, href } = social;
+                                    return (
+                                        <Link
+                                            key={name}
+                                            href={href}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            style={{
+                                                display: "flex",
+                                                alignItems: "center",
+                                                justifyContent: "center",
+                                                transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+                                                opacity: 0.7,
+                                                padding: "4px"
+                                            }}
+                                            onMouseEnter={(e) => {
+                                                e.currentTarget.style.transform = "scale(1.15) translateY(-3px)";
+                                                e.currentTarget.style.opacity = "1";
+                                                e.currentTarget.style.filter = `drop-shadow(0 8px 16px ${color}80)`;
+                                            }}
+                                            onMouseLeave={(e) => {
+                                                e.currentTarget.style.transform = "scale(1) translateY(0)";
+                                                e.currentTarget.style.opacity = "0.7";
+                                                e.currentTarget.style.filter = "none";
+                                            }}
+                                        >
+                                            <Icon size={24} color={color} />
+                                        </Link>
+                                    );
+                                })}
+                            </div>
+                        );
+                    }
+
                     // 해시링크(#서비스설명) 처리와 일반 링크 처리
                     const isActive = pathname === item.href || (pathname.startsWith(`${item.href}/`) && item.href !== "/");
                     const hasSubItems = item.subItems && item.subItems.length > 0;
@@ -195,9 +245,6 @@ export default function GNB() {
                                             gap: "6px"
                                         }}
                                     >
-                                        {item.name === "YOUTUBE" && (
-                                            <Youtube size={18} color="#ff0000" style={{ filter: "drop-shadow(0 0 8px rgba(255,0,0,0.6))" }} />
-                                        )}
                                         {item.name}
                                     </span>
 
@@ -351,36 +398,87 @@ export default function GNB() {
                 transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
                 backdropFilter: "blur(20px)"
             }}>
-                {navItems.map((item) => (
-                    <div key={item.name} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1rem" }}>
-                        <Link href={item.href} target={item.isExternal ? "_blank" : undefined} rel={item.isExternal ? "noopener noreferrer" : undefined} style={{ textDecoration: "none" }} onClick={(e) => {
-                            if (item.subItems && item.subItems.length > 0) {
-                                // 모바일에서는 서브메뉴 대신 부모 항목 링크로 이동 (또는 e.preventDefault()로 토글)
-                                // 여기서는 부모 href가 유효하면 이동 허용 ("회사소개"는 /about)
-                            }
-                            setMenuOpen(false);
-                        }}>
-                            <span style={{
-                                fontSize: "1.5rem",
-                                fontWeight: 600,
-                                letterSpacing: "0.2em",
-                                color: "#fff",
-                                fontFamily: "'Space Grotesk', sans-serif"
-                            }}>
-                                {item.name === "YOUTUBE" ? <span style={{ display: "flex", alignItems: "center", gap: "8px" }}><Youtube size={24} color="#ff0000" /> {item.name}</span> : item.name}
-                            </span>
-                        </Link>
-                        {item.subItems && (
-                            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.8rem", marginTop: "-0.5rem", marginBottom: "1rem" }}>
-                                {item.subItems.map(sub => (
-                                    <Link key={sub.name} href={sub.href || "#"} style={{ textDecoration: "none", color: "rgba(255,255,255,0.6)", fontSize: "0.9rem", letterSpacing: "0.1em" }} onClick={() => setMenuOpen(false)}>
-                                        {sub.label}
-                                    </Link>
-                                ))}
+                {navItems.map((item) => {
+                    if (item.isIconGroup) {
+                        return (
+                            <div key={item.name} style={{ display: "flex", gap: "1.5rem", marginTop: "1rem", marginBottom: "1rem" }}>
+                                {item.icons?.map((social) => {
+                                    const { Icon, color, name, href } = social;
+                                    return (
+                                        <Link
+                                            key={name}
+                                            href={href}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            style={{
+                                                display: "flex",
+                                                alignItems: "center",
+                                                justifyContent: "center",
+                                                width: "56px",
+                                                height: "56px",
+                                                background: "rgba(255,255,255,0.04)",
+                                                borderRadius: "50%",
+                                                border: "1px solid rgba(255,255,255,0.08)",
+                                                transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)"
+                                            }}
+                                            onTouchStart={(e) => {
+                                                e.currentTarget.style.transform = "scale(0.9)";
+                                                e.currentTarget.style.background = "rgba(255,255,255,0.1)";
+                                            }}
+                                            onTouchEnd={(e) => {
+                                                e.currentTarget.style.transform = "scale(1)";
+                                                e.currentTarget.style.background = "rgba(255,255,255,0.04)";
+                                            }}
+                                            onMouseEnter={(e) => {
+                                                e.currentTarget.style.transform = "scale(1.1) translateY(-2px)";
+                                                e.currentTarget.style.background = "rgba(255,255,255,0.1)";
+                                                e.currentTarget.style.boxShadow = `0 8px 24px ${color}40`;
+                                            }}
+                                            onMouseLeave={(e) => {
+                                                e.currentTarget.style.transform = "scale(1) translateY(0)";
+                                                e.currentTarget.style.background = "rgba(255,255,255,0.04)";
+                                                e.currentTarget.style.boxShadow = "none";
+                                            }}
+                                        >
+                                            <Icon size={26} color={color} style={{ filter: `drop-shadow(0 2px 6px ${color}60)` }} />
+                                        </Link>
+                                    );
+                                })}
                             </div>
-                        )}
-                    </div>
-                ))}
+                        );
+                    }
+
+                    return (
+                        <div key={item.name} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1rem" }}>
+                            <Link href={item.href} target={item.isExternal ? "_blank" : undefined} rel={item.isExternal ? "noopener noreferrer" : undefined} style={{ textDecoration: "none" }} onClick={(e) => {
+                                if (item.subItems && item.subItems.length > 0) {
+                                    // 모바일에서는 서브메뉴 대신 부모 항목 링크로 이동 (또는 e.preventDefault()로 토글)
+                                    // 여기서는 부모 href가 유효하면 이동 허용 ("회사소개"는 /about)
+                                }
+                                setMenuOpen(false);
+                            }}>
+                                <span style={{
+                                    fontSize: "1.5rem",
+                                    fontWeight: 600,
+                                    letterSpacing: "0.2em",
+                                    color: "#fff",
+                                    fontFamily: "'Space Grotesk', sans-serif"
+                                }}>
+                                    {item.name}
+                                </span>
+                            </Link>
+                            {item.subItems && (
+                                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.8rem", marginTop: "-0.5rem", marginBottom: "1rem" }}>
+                                    {item.subItems.map(sub => (
+                                        <Link key={sub.name} href={sub.href || "#"} style={{ textDecoration: "none", color: "rgba(255,255,255,0.6)", fontSize: "0.9rem", letterSpacing: "0.1em" }} onClick={() => setMenuOpen(false)}>
+                                            {sub.label}
+                                        </Link>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    )
+                })}
             </div>
         </header>
     );
