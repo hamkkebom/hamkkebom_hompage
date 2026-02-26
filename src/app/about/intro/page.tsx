@@ -46,16 +46,6 @@ export default function AboutIntroPage() {
                 opacity: 0.2
             });
 
-            // Section 1: Yesterday & Today
-            gsap.from(".pastCol", {
-                scrollTrigger: { trigger: contrastRef.current, start: "top 70%" },
-                x: -50, opacity: 0, duration: 1, ease: "power3.out"
-            });
-            gsap.from(".nowCol", {
-                scrollTrigger: { trigger: contrastRef.current, start: "top 70%" },
-                x: 50, opacity: 0, duration: 1, ease: "power3.out", delay: 0.2
-            });
-
             // Section 2: Philosophy (Animation removed for better visibility on low-end devices)
             // GSAP ScrollTrigger removed for .philCard to ensure text is always visible.
 
@@ -66,12 +56,6 @@ export default function AboutIntroPage() {
             });
 
             // Section 4: Organization (Removed)
-
-            // Section 5: Education & Benefits
-            gsap.from(".bCard", {
-                scrollTrigger: { trigger: eduRef.current, start: "top 80%" },
-                y: 50, opacity: 0, duration: 0.8, stagger: 0.15, ease: "power2.out"
-            });
 
             // Section 6: Roadmap Animation (Removed)
 
@@ -118,7 +102,7 @@ export default function AboutIntroPage() {
                 <div className={styles.heroContent}>
                     <p className={styles.heroSubtitle}>변화의 시작</p>
                     <h1 className={styles.heroTitle} ref={heroTitleRef}>
-                        <span style={{ color: "var(--accent-color, #d4af37)" }}>우리의 어제</span>와 오늘
+                        <span style={{ color: "var(--accent-color, #d4af37)" }}>함께봄</span>의 시작
                     </h1>
                 </div>
                 <div className={styles.heroScrollHint}>
@@ -127,52 +111,7 @@ export default function AboutIntroPage() {
                 </div>
             </section>
 
-            {/* SECTION 1: YESTERDAY & TODAY */}
-            <section className={styles.contrastSection} ref={contrastRef}>
-                <div className={styles.contrastGrid}>
-                    {/* PAST */}
-                    <div className={`${styles.pastColumn} pastCol`}>
-                        <div className={styles.pastTag}>PAST</div>
-                        <h2 className={styles.columnTitle}>어제</h2>
-                        <p className={styles.columnSubtitle}>성장에 집중하느라 놓쳤던 아쉬움</p>
-                        <div className={styles.itemList}>
-                            <div className={styles.itemCard}>
-                                <div className={styles.iconWrap}>⚠️</div>
-                                <div className={styles.itemText}>비슷한 영상 주제 지겨우시죠?</div>
-                            </div>
-                            <div className={styles.itemCard}>
-                                <div className={styles.iconWrap}>❓</div>
-                                <div className={styles.itemText}>느리고 애매한 피드백 답답하시죠?</div>
-                            </div>
-                            <div className={styles.itemCard}>
-                                <div className={styles.iconWrap}>🚫</div>
-                                <div className={styles.itemText}>이러다 시간 낭비할까 걱정되시죠?</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* NOW */}
-                    <div className={`${styles.nowColumn} nowCol`}>
-                        <div className={styles.nowTag}>NOW</div>
-                        <h2 className={styles.columnTitle}>오늘</h2>
-                        <p className={styles.columnSubtitle}>시스템 혁신으로 맞이하는 도약</p>
-                        <div className={styles.itemList}>
-                            <div className={styles.itemCard}>
-                                <div className={styles.iconWrap}>📚</div>
-                                <div className={styles.itemText}>퍼스널브랜딩, 다양한 주제 영상 의뢰, 외부업체 의뢰</div>
-                            </div>
-                            <div className={styles.itemCard}>
-                                <div className={styles.iconWrap}>💬</div>
-                                <div className={styles.itemText}>현장 스터디 운영, 마케팅+영상팀 합동 피드백</div>
-                            </div>
-                            <div className={styles.itemCard}>
-                                <div className={styles.iconWrap}>🎓</div>
-                                <div className={styles.itemText}>제작비 인상과 영상, 마케팅 전문실력 향상 실무자격 교육</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            {/* SECTION 1: YESTERDAY & TODAY (Removed) */}
 
             {/* SECTION 2: PHILOSOPHY */}
             <section className={styles.philosophySection} ref={philosophyRef}>
@@ -238,57 +177,7 @@ export default function AboutIntroPage() {
 
             {/* SECTION 4: ORGANIZATION (Removed and moved to /about/org) */}
 
-            {/* SECTION 5: BENEFITS & EDUCATION */}
-            <section className={styles.benefitsSection} ref={eduRef}>
-                <div className={styles.sectionHeader}>
-                    <h2 className={styles.sectionTitle}>
-                        차별화된 <span>교육과 압도적 혜택</span>
-                    </h2>
-                    <p style={{ letterSpacing: "0.2em", color: "rgba(255,255,255,0.5)" }}>BENEFITS & EDUCATION</p>
-                </div>
-
-                <div className={styles.benefitsGrid}>
-                    <div className={`${styles.benefitCard} bCard`}>
-                        <div className={styles.benefitIcon}>💰</div>
-                        <h3 className={styles.benefitTitle}>즉각적 수익화</h3>
-                        <p className={styles.benefitDesc}>
-                            교육 수료 즉시 실전 투입<br />
-                            제작 단가 인상 (초보 가능)
-                        </p>
-                    </div>
-                    <div className={`${styles.benefitCard} bCard`}>
-                        <div className={styles.benefitIcon}>📈</div>
-                        <h3 className={styles.benefitTitle}>실전 마케팅 경험</h3>
-                        <p className={styles.benefitDesc}>
-                            내 영상의 광고비/효율 확인<br />
-                            광고 세팅 실무 역량 강화
-                        </p>
-                    </div>
-                    <div className={`${styles.benefitCard} bCard`}>
-                        <div className={styles.benefitIcon}>🤝</div>
-                        <h3 className={styles.benefitTitle}>협력 창업 "나투사"</h3>
-                        <p className={styles.benefitDesc}>
-                            1 + 1 + 1 = ∞ (무한대)<br />
-                            공동체 기반 협력 창업 모델
-                        </p>
-                    </div>
-                </div>
-
-                <div className={styles.eduPrograms}>
-                    <h3>실전 교육 프로그램</h3>
-                    <div className={styles.eduRow}>
-                        <span className={styles.eduName}>초급 과정</span>
-                        <span className={styles.eduPrice}>269,000원</span>
-                    </div>
-                    <div className={styles.eduRow}>
-                        <span className={styles.eduName}>중급 과정</span>
-                        <span className={styles.eduPrice}>369,000원</span>
-                    </div>
-                    <div className={styles.eduNotice}>
-                        기존 별님혜택 : 자격증 발급비 10만원 지원
-                    </div>
-                </div>
-            </section>
+            {/* SECTION 5: BENEFITS & EDUCATION (Removed) */}
 
             {/* SECTION 6: ROADMAP (Removed) */}
 
