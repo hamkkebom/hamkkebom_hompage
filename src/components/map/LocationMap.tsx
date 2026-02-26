@@ -1,17 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import Script from "next/script";
-import { Map, MapMarker } from "react-kakao-maps-sdk";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { MapPin, Navigation, Phone, Mail, Loader2 } from "lucide-react";
-
-declare global {
-    interface Window {
-        kakao: any;
-    }
-}
+import { MapPin, Navigation, Phone, Mail } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -30,15 +22,14 @@ export default function LocationMap() {
         email: "contact@hamkkebom.com",
     };
 
-    const [isLoaded, setIsLoaded] = useState(false);
-    const [isError, setIsError] = useState(false);
-
     useEffect(() => {
         const ctx = gsap.context(() => {
+            // 초기 설정
             gsap.set(".reveal-text", { y: 50, opacity: 0 });
             gsap.set(".map-box", { scale: 0.95, opacity: 0, y: 30 });
             gsap.set(".info-card", { y: 30, opacity: 0 });
 
+            // 타이틀 애니메이션
             gsap.to(".reveal-text", {
                 y: 0,
                 opacity: 1,
@@ -51,6 +42,7 @@ export default function LocationMap() {
                 }
             });
 
+            // 지도 등장 애니메이션
             gsap.to(".map-box", {
                 scale: 1,
                 opacity: 1,
@@ -63,6 +55,7 @@ export default function LocationMap() {
                 }
             });
 
+            // 정보 카드 등장 애니메이션
             gsap.to(".info-card", {
                 y: 0,
                 opacity: 1,
@@ -91,17 +84,6 @@ export default function LocationMap() {
             alignItems: "center",
             overflow: "hidden"
         }}>
-            <Script
-                src={`https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_API_KEY}&libraries=services,clusterer&autoload=false`}
-                strategy="lazyOnload"
-                onLoad={() => {
-                    window.kakao.maps.load(() => {
-                        setIsLoaded(true);
-                    });
-                }}
-                onError={() => setIsError(true)}
-            />
-
             {/* Background Effects */}
             <div style={{
                 position: "absolute",
@@ -137,7 +119,7 @@ export default function LocationMap() {
                     </p>
                 </div>
 
-                {/* Map Display Area */}
+                {/* Map Display Area - Kakao Map iframe (API 키 불필요) */}
                 <div ref={mapContainerRef} className="map-box" style={{
                     width: "100%",
                     height: "clamp(400px, 50vh, 600px)",
@@ -148,56 +130,18 @@ export default function LocationMap() {
                     position: "relative",
                     marginBottom: "4rem"
                 }}>
-                    {isError ? (
-                        <div style={{
+                    <iframe
+                        src={`https://map.kakao.com/link/map/${encodeURIComponent(location.title)},${location.lat},${location.lng}`}
+                        style={{
                             width: "100%",
                             height: "100%",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            background: "rgba(255,255,255,0.02)",
-                            color: "#ffaa00",
-                            fontSize: "1.2rem",
-                            flexDirection: "column",
-                            gap: "1rem"
-                        }}>
-                            <div>지도 스크립트 로드 중 오류가 발생했습니다.</div>
-                            <div style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.5)" }}>
-                                카카오 디벨로퍼스에서 허용 도메인(localhost:3000)이 등록되어 있는지 확인해주세요.
-                            </div>
-                        </div>
-                    ) : !isLoaded ? (
-                        <div style={{
-                            width: "100%",
-                            height: "100%",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            background: "rgba(255,255,255,0.02)",
-                            color: "var(--accent-color, #d4af37)",
-                        }}>
-                            <Loader2 className="animate-spin" size={48} />
-                        </div>
-                    ) : (
-                        <Map
-                            center={{ lat: location.lat, lng: location.lng }}
-                            style={{ width: "100%", height: "100%" }}
-                            level={3}
-                        >
-                            <MapMarker position={{ lat: location.lat, lng: location.lng }}>
-                                <div style={{
-                                    padding: "8px 12px",
-                                    color: "#000",
-                                    fontWeight: "bold",
-                                    fontSize: "14px",
-                                    borderRadius: "8px",
-                                    textAlign: "center"
-                                }}>
-                                    {location.title}
-                                </div>
-                            </MapMarker>
-                        </Map>
-                    )}
+                            border: "none",
+                        }}
+                        allowFullScreen
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                        title="Kakao Map"
+                    />
                 </div>
 
                 {/* Information Cards */}
@@ -268,7 +212,7 @@ export default function LocationMap() {
                     marginTop: "4rem",
                     flexWrap: "wrap"
                 }}>
-                    <a href={`https://map.kakao.com/link/map/${location.title},${location.lat},${location.lng}`} target="_blank" rel="noreferrer" style={{
+                    <a href={`https://map.kakao.com/link/map/${encodeURIComponent(location.title)},${location.lat},${location.lng}`} target="_blank" rel="noreferrer" style={{
                         display: "flex",
                         alignItems: "center",
                         gap: "0.8rem",
@@ -283,7 +227,7 @@ export default function LocationMap() {
                         onMouseEnter={e => e.currentTarget.style.transform = "scale(1.05)"}
                         onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
                     >
-                        <Navigation size={18} /> 카카오맵으로 열기
+                        <Navigation size={18} /> 카카오맵 열기
                     </a>
                 </div>
             </div>
