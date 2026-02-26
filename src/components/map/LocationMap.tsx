@@ -20,12 +20,12 @@ export default function LocationMap() {
 
     // 함께봄 주소 정보
     const location = {
-        lat: 37.5665,
-        lng: 126.9780,
+        lat: 37.5786908,
+        lng: 126.9731271,
         title: "함께봄 본사",
-        address: "서울특별시 중구 세종대로 110",
+        address: "서울 종로구 효자로7길 10 1층(서촌 한옥체)",
         phone: "02-1234-5678",
-        email: "contact@hamkkebom.com",
+        email: "hamkkebom12@gmail.com",
     };
 
     // MapLibre 초기화
