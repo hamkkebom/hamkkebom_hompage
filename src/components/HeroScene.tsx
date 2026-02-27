@@ -150,10 +150,15 @@ export default function HeroScene() {
                     video.style.opacity = '1';
                 }, { once: true });
 
-                const source = document.createElement("source");
-                source.src = "/videos/main-hero.mp4";
-                source.type = "video/mp4";
-                video.appendChild(source);
+                // WebM VP9 first (68% smaller), MP4 fallback
+                const sourceWebm = document.createElement("source");
+                sourceWebm.src = "/videos/main-hero.webm";
+                sourceWebm.type = "video/webm";
+                video.appendChild(sourceWebm);
+                const sourceMp4 = document.createElement("source");
+                sourceMp4.src = "/videos/main-hero-opt.mp4";
+                sourceMp4.type = "video/mp4";
+                video.appendChild(sourceMp4);
                 tile.appendChild(video);
             }, index * 150); // 150ms stagger = 1.5s total for 10 tiles
         });
@@ -329,7 +334,8 @@ export default function HeroScene() {
                     pointerEvents: "none",
                 }}
             >
-                <source src="/videos/main-hero.mp4" type="video/mp4" />
+                <source src="/videos/main-hero.webm" type="video/webm" />
+                <source src="/videos/main-hero-opt.mp4" type="video/mp4" />
             </video>
 
             {/* Layer 1: Cyber Background (hidden initially) */}
