@@ -214,8 +214,8 @@ export default function RoasShowcase() {
                             className="roas-card"
                             style={{
                                 flexShrink: 0,
-                                width: "90%",
-                                height: "clamp(250px, 40vh, 400px)", // Video card height
+                                width: "clamp(200px, 30vw, 320px)",
+                                height: "clamp(300px, 45vh, 450px)",
                                 backgroundColor: "#111",
                                 position: "relative",
                                 transformOrigin: "center center",
@@ -271,7 +271,9 @@ export default function RoasShowcase() {
                                             position: "absolute",
                                             top: "50%",
                                             left: "50%",
-                                            transform: "translate(-50%, -50%) scale(1.1)", // Slightly scaled up for edge bleed
+                                            width: "180%",
+                                            height: "180%",
+                                            transform: "translate(-50%, -50%)",
                                         }}
                                     />
                                 )}
