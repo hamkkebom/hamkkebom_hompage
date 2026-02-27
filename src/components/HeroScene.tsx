@@ -8,7 +8,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 // --- TILE GRID CONFIGURATION ---
 const COLS = 5;
-const ROWS = 4;
+const ROWS = 2;
 const TOTAL_TILES = COLS * ROWS;
 
 // --- CANVAS 2D SPARK PARTICLE ENGINE ---
@@ -113,47 +113,51 @@ export default function HeroScene() {
     const [tilesLoaded, setTilesLoaded] = useState(false);
     const shatterSetupDone = useRef(false);
 
-    // ★ Mark tiles as ready. They remain transparent so the base video shows through clip-path,
-    // looking exactly like 20 separate video blocks. The actual frame capture happens on first scroll.
-    const snapshotApplied = useRef(false);
-
+    // ★ Inject REAL <video> into each tile with random start times
+    // 10 tiles (5x2) = half the decoder load vs the original 20
     const injectTileVideos = useCallback(() => {
         if (tilesLoaded) return;
         setTilesLoaded(true);
-        // Tiles stay fully transparent — the base video shows through their clip-path naturally
+
         const tileDivs = document.querySelectorAll<HTMLElement>(".hero-tile");
-        tileDivs.forEach((tile) => {
-            tile.style.pointerEvents = "none";
+        const tilesArr = Array.from(tileDivs).map((tile, i) => {
+            const row = Math.floor(i / COLS);
+            const col = i % COLS;
+            const centerRow = (ROWS - 1) / 2;
+            const centerCol = (COLS - 1) / 2;
+            const dist = Math.sqrt(Math.pow(row - centerRow, 2) + Math.pow(col - centerCol, 2));
+            return { tile, dist };
+        });
+        tilesArr.sort((a, b) => b.dist - a.dist);
+
+        tilesArr.forEach(({ tile }, index) => {
+            setTimeout(() => {
+                if (tile.querySelector("video")) return;
+                const video = document.createElement("video");
+                video.autoplay = true;
+                video.loop = true;
+                video.muted = true;
+                video.playsInline = true;
+                // ★ Random start time so each tile plays at a different point
+                video.currentTime = Math.random() * 15;
+                video.style.cssText = `
+                    position:absolute;top:0;left:0;width:100%;height:100%;
+                    object-fit:cover;pointer-events:none;
+                    opacity:0;transition:opacity 0.5s ease;
+                    transform:translateZ(0);
+                `;
+                video.addEventListener('playing', () => {
+                    video.style.opacity = '1';
+                }, { once: true });
+
+                const source = document.createElement("source");
+                source.src = "/videos/main-hero.mp4";
+                source.type = "video/mp4";
+                video.appendChild(source);
+                tile.appendChild(video);
+            }, index * 150); // 150ms stagger = 1.5s total for 10 tiles
         });
     }, [tilesLoaded]);
-
-    // Capture a single video frame and bake it into tiles (called once on first scroll)
-    const applyVideoSnapshot = useCallback(() => {
-        if (snapshotApplied.current) return;
-        snapshotApplied.current = true;
-
-        const video = baseVideoRef.current;
-        if (!video) return;
-
-        const vw = video.videoWidth || video.clientWidth;
-        const vh = video.videoHeight || video.clientHeight;
-        if (!vw || !vh) return;
-
-        const offscreen = document.createElement("canvas");
-        offscreen.width = vw;
-        offscreen.height = vh;
-        const ctx = offscreen.getContext("2d");
-        if (!ctx) return;
-        ctx.drawImage(video, 0, 0, vw, vh);
-        const frameURL = offscreen.toDataURL("image/jpeg", 0.85);
-
-        const tileDivs = document.querySelectorAll<HTMLElement>(".hero-tile");
-        tileDivs.forEach((tile) => {
-            tile.style.backgroundImage = `url(${frameURL})`;
-            tile.style.backgroundSize = "100vw 100vh";
-            tile.style.backgroundPosition = "center center";
-        });
-    }, []);
 
     useEffect(() => {
         if (!containerRef.current || !canvasRef.current) return;
@@ -179,23 +183,25 @@ export default function HeroScene() {
                 pin: true,
                 onUpdate: (self) => {
                     sparkEngineRef.current?.setProgress(self.progress);
-                    // ★ Capture the video frame just as shatter begins (progress ~3%)
-                    if (self.progress > 0.03) {
-                        applyVideoSnapshot();
-                    }
                 },
                 onLeave: () => {
-                    // ★ Hero 섹션을 완전히 지나갔을 때: 베이스 비디오 정지
+                    // ★ Hero 섹션을 지나갔을 때: 모든 비디오 정지
                     const heroEl = document.getElementById("hero-section");
                     if (heroEl) heroEl.style.visibility = "hidden";
+                    document.querySelectorAll<HTMLVideoElement>(".hero-tile video").forEach(v => {
+                        try { v.pause(); } catch (_) { /* ignore */ }
+                    });
                     if (baseVideoRef.current) {
                         try { baseVideoRef.current.pause(); } catch (_) { /* ignore */ }
                     }
                 },
                 onEnterBack: () => {
-                    // ★ 위로 스크롤해서 Hero 섹션에 돌아왔을 때: 베이스 비디오 복원
+                    // ★ 위로 스크롤 복귀 시: 모든 비디오 재생
                     const heroEl = document.getElementById("hero-section");
                     if (heroEl) heroEl.style.visibility = "visible";
+                    document.querySelectorAll<HTMLVideoElement>(".hero-tile video").forEach(v => {
+                        try { v.play(); } catch (_) { /* ignore */ }
+                    });
                     if (baseVideoRef.current) {
                         try { baseVideoRef.current.play(); } catch (_) { /* ignore */ }
                     }
