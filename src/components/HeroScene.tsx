@@ -8,7 +8,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 // --- TILE GRID CONFIGURATION ---
 const COLS = 5;
-const ROWS = 2;
+const ROWS = 3;
 const TOTAL_TILES = COLS * ROWS;
 
 // --- CANVAS 2D SPARK PARTICLE ENGINE ---
@@ -139,7 +139,7 @@ export default function HeroScene() {
                 video.muted = true;
                 video.playsInline = true;
                 // ★ Random start time so each tile plays at a different point
-                video.currentTime = Math.random() * 15;
+                video.currentTime = Math.random() * 3; // Subtle offset — looks premium, not chaotic
                 video.style.cssText = `
                     position:absolute;top:0;left:0;width:100%;height:100%;
                     object-fit:cover;pointer-events:none;
