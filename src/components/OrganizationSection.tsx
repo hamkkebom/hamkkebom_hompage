@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { Video, Megaphone, Lightbulb, MonitorPlay, X } from "lucide-react";
 import styles from "./OrganizationSection.module.css";
@@ -113,7 +114,7 @@ export default function OrganizationSection() {
                             viewport={{ once: true }}
                             transition={{ duration: 0.6, ease: "easeOut" }}
                         >
-                            <span className={styles.ceoTitle}>HAMKKEBOM</span>
+                            <Image src="/logo-white.png" alt="함께봄 로고" width={180} height={50} style={{ objectFit: "contain", marginBottom: "0.5rem" }} priority />
                             <span className={styles.ceoSubtitle}>함께봄 대표</span>
                         </motion.div>
                     </div>

@@ -162,20 +162,22 @@ export default function RoasShowcase() {
                     ref={roasNumberRef}
                     className="roas-number-responsive"
                     style={{
-                        fontSize: "clamp(6rem, 25vw, 35rem)",
+                        fontSize: "clamp(8rem, 25vw, 22rem)",
                         fontWeight: 900,
                         margin: 0,
                         lineHeight: 1,
-                        color: "var(--accent-color)",
-                        opacity: 0.15,
+                        color: "var(--accent-color)", // Default, animated later
+                        fontFamily: "'Space Grotesk', sans-serif",
+                        letterSpacing: "-0.05em",
+                        textShadow: "0 0 30px rgba(0,240,255,0.4)",
                         fontVariantNumeric: "tabular-nums",
                         willChange: "transform, opacity, color"
                     }}
                 >
-                    0%
+                    {CAMPAIGNS[0].roas}%
                 </h2>
                 <div style={{
-                    fontSize: "2rem",
+                    fontSize: "clamp(1.5rem, 5vw, 3rem)",
                     fontWeight: 800,
                     letterSpacing: "0.1em",
                     color: "#fff",
@@ -194,12 +196,13 @@ export default function RoasShowcase() {
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
-                    gap: "50vh", // Spatial distance between cards
-                    paddingTop: "50vh", // Padding so first card starts roughly center
-                    paddingBottom: "100vh", // Heavy padding at end so last card lands center and doesn't run out of track
+                    gap: "clamp(2rem, 15vh, 4rem)", // Distance between cards
+                    padding: "50vh 0", // Start halfway down, end halfway past
+                    width: "100%",
+                    maxWidth: "1000px",
+                    margin: "0 auto",
                     zIndex: 2,
                     position: "relative",
-                    width: "100%"
                 }}
             >
                 {CAMPAIGNS.map((camp, idx) => {
@@ -211,8 +214,9 @@ export default function RoasShowcase() {
                             className="roas-card"
                             style={{
                                 flexShrink: 0,
-                                width: "clamp(320px, 30vw, 500px)",
-                                height: "clamp(480px, 70vh, 850px)",
+                                width: "90%",
+                                height: "clamp(250px, 40vh, 400px)", // Video card height
+                                backgroundColor: "#111",
                                 position: "relative",
                                 transformOrigin: "center center",
                             }}

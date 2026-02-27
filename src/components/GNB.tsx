@@ -31,10 +31,11 @@ const SocialInstagram = ({ size }: { color?: string, size: number }) => (
     </svg>
 );
 
-const SocialNaverBlog = ({ size }: { color?: string, size: number }) => (
+const SocialBlog = ({ size }: { color?: string, size: number }) => (
     <svg width={size} height={size} viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-        <rect width="120" height="120" rx="24" fill="#03C75A" />
-        <path d="M78.6,83.4V50.5l-24.1,32.9H37.8V36.6h16.7v32.9l24.1-32.9h16.7v46.8H78.6z" fill="#fff" />
+        <text x="50%" y="54%" dominantBaseline="middle" textAnchor="middle" fill="#ffffff" fontSize="36" fontWeight="900" fontFamily="system-ui, -apple-system, sans-serif" letterSpacing="1">
+            BLOG
+        </text>
     </svg>
 );
 
@@ -85,9 +86,17 @@ export default function GNB() {
                     { name: "LOCATION", label: "오시는 길", href: "/about/location" },
                 ]
             },
-            { name: "SERVICES", label: "서비스 설명", href: "/#서비스설명" },
+            { name: "SERVICES", label: "서비스 설명", href: "/services" },
             { name: "WORKS", label: "WORKS", href: "/works" },
-            { name: "CONTACT", label: "문의하기", href: "/contact" },
+            {
+                name: "CONTACT",
+                label: "문의하기",
+                href: "/contact",
+                subItems: [
+                    { name: "QUOTE", label: "견적요청", href: "/contact" },
+                    { name: "FAQ", label: "FAQ", href: "/faq" }
+                ]
+            },
             {
                 name: "SOCIALS",
                 href: "#",
@@ -95,7 +104,7 @@ export default function GNB() {
                 icons: [
                     { name: "YOUTUBE", href: "https://www.youtube.com/@hamkkesong", Icon: SocialYoutube, color: "#ff0000" },
                     { name: "INSTAGRAM", href: "https://www.instagram.com", Icon: SocialInstagram, color: "#E1306C" },
-                    { name: "BLOG", href: "https://blog.naver.com", Icon: SocialNaverBlog, color: "#03C75A" }
+                    { name: "BLOG", href: "https://blog.naver.com", Icon: SocialBlog, color: "#ffffff" }
                 ]
             },
         ];
@@ -184,7 +193,7 @@ export default function GNB() {
                                                 e.currentTarget.style.filter = "none";
                                             }}
                                         >
-                                            <Icon size={24} color={color} />
+                                            <Icon size={46} color={color} />
                                         </Link>
                                     );
                                 })}
@@ -415,14 +424,17 @@ export default function GNB() {
             {/* Mobile Menu Overlay */}
             <div style={{
                 position: "fixed",
-                top: 0, left: 0, width: "100%", height: "100vh",
+                top: 0, left: 0, width: "100%", height: "100dvh",
                 backgroundColor: "rgba(5, 8, 15, 0.98)",
                 zIndex: 99,
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "center",
+                justifyContent: "flex-start",
                 alignItems: "center",
-                gap: "2rem",
+                gap: "clamp(1rem, 3vh, 2rem)",
+                paddingTop: "min(6rem, 15vh)", // Allow space for the close button
+                paddingBottom: "2rem",
+                overflowY: "auto", // Allow scrolling for small screens
                 opacity: menuOpen ? 1 : 0,
                 visibility: menuOpen ? "visible" : "hidden",
                 transform: menuOpen ? "translateY(0)" : "translateY(-20px)",
@@ -511,7 +523,7 @@ export default function GNB() {
                     )
                 })}
             </div>
-        </header>
+        </header >
     );
 }
 

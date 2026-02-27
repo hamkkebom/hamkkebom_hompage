@@ -430,41 +430,45 @@ export default function HeroScene() {
                 width: "90%",
                 maxWidth: "1200px",
             }}>
-                <h1
+                <div
                     className="slogan-text hero-title-responsive"
                     style={{
-                        fontSize: "clamp(2.2rem, 5vw, 6rem)",
-                        fontWeight: 900,
-                        letterSpacing: "-0.04em",
-                        lineHeight: 1.3,
-                        color: "#fff",
-                        willChange: "transform, opacity, filter",
                         display: "none",
                         opacity: 0,
+                        willChange: "transform, opacity, filter",
+                        width: "100%",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        textAlign: "center"
                     }}
                 >
-                    <span className="hero-alert-span" style={{
-                        display: "block",
-                        fontSize: "0.25em",
-                        fontWeight: 600,
-                        color: "#ff2a2a",
-                        marginBottom: "1.2rem",
-                        letterSpacing: "0.4em",
-                        textShadow: "0 0 20px rgba(255,42,42,0.8)",
-                        animation: "heroAlertBlink 2s infinite",
-                    }}>
-                        [ SYSTEM ALERT: CONTENT ORIGIN UNKNOWN ]
-                    </span>
-                    방금 당신이 본 영상,<br />
-                    <span style={{ color: "var(--text-secondary)", fontSize: "0.8em" }}>단 한 명의 현실도 </span>
-                    <span className="hero-glitch-intense" style={{
-                        display: "inline-block",
-                        color: "var(--accent-color)",
-                        textShadow: "0 0 20px rgba(0,240,255,0.8)"
-                    }}>
-                        존재하지 않습니다.
-                    </span>
-                </h1>
+                    <div style={{ color: "#fff" }}>
+                        <span className="hero-alert-span" style={{
+                            display: "block",
+                            fontSize: "clamp(0.4rem, 1vw, 0.6rem)",
+                            fontWeight: 600,
+                            color: "#ff2a2a",
+                            marginBottom: "1.2rem",
+                            letterSpacing: "0.4em",
+                            textShadow: "0 0 20px rgba(255,42,42,0.8)",
+                            animation: "heroAlertBlink 2s infinite",
+                        }}>
+                            [ SYSTEM ALERT: CONTENT ORIGIN UNKNOWN ]
+                        </span>
+                        <div style={{ fontSize: "clamp(1.8rem, 5vw, 4rem)", fontWeight: 900, lineHeight: 1.3 }}>
+                            방금 당신이 본 영상,<br />
+                            <span style={{ color: "var(--text-secondary)", fontSize: "0.8em" }}>단 한 명의 현실도 </span>
+                            <span className="hero-glitch-intense" style={{
+                                display: "inline-block",
+                                color: "var(--accent-color)",
+                                textShadow: "0 0 20px rgba(0,240,255,0.8)"
+                            }}>
+                                존재하지 않습니다.
+                            </span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <style>{`

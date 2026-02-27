@@ -57,9 +57,10 @@ export default function BrandStory() {
                 color: "#fff",
                 position: "relative",
                 zIndex: 10,
+                padding: "clamp(4rem, 10vw, 8rem) clamp(1rem, 4vw, 2rem)",
             }}
         >
-            <div className="brand-story-container" style={{ maxWidth: "900px", width: "100%", display: "flex", flexDirection: "column" }}>
+            <div className="brand-story-container" style={{ maxWidth: "900px", width: "100%", display: "flex", flexDirection: "column", gap: "clamp(4rem, 10vw, 6rem)" }}>
 
                 {/* Block 1 */}
                 <div className="story-text-block">
@@ -98,9 +99,10 @@ export default function BrandStory() {
                     borderRadius: "2rem",
                     background: "rgba(255,255,255,0.02)",
                     backdropFilter: "blur(10px)",
+                    padding: "clamp(2rem, 5vw, 4rem) clamp(1rem, 3vw, 3rem)"
                 }}>
                     <h3 style={{
-                        fontSize: "clamp(2rem, 5vw, 3.5rem)",
+                        fontSize: "clamp(1.8rem, 6vw, 3.5rem)",
                         fontWeight: 800,
                         lineHeight: 1.2,
                         margin: 0,
@@ -113,7 +115,7 @@ export default function BrandStory() {
                         }}>400여 건.</span>
                     </h3>
                     <p style={{
-                        fontSize: "clamp(1.1rem, 2.5vw, 1.4rem)",
+                        fontSize: "clamp(1rem, 2.5vw, 1.4rem)",
                         fontWeight: 400,
                         lineHeight: 1.6,
                         color: "rgba(255,255,255,0.7)",
@@ -129,11 +131,12 @@ export default function BrandStory() {
                 {/* Block 4 */}
                 <div className="story-text-block">
                     <p style={{
-                        fontSize: "clamp(1.4rem, 3.5vw, 2.2rem)",
+                        fontSize: "clamp(1.2rem, 4vw, 2.2rem)",
                         fontWeight: 600,
                         lineHeight: 1.6,
                         margin: 0,
-                        wordBreak: "keep-all"
+                        wordBreak: "keep-all",
+                        padding: "0 1rem"
                     }}>
                         노래 작곡부터 영상 제작, 그리고 완성형 슬로건까지.<br />
                         <br />
