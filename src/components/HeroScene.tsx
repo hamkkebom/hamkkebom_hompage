@@ -142,7 +142,7 @@ export default function HeroScene() {
                 video.loop = true;
                 video.muted = true;
                 video.playsInline = true;
-                video.style.cssText = "position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;pointer-events:none;opacity:0;transition:opacity 0.6s ease;";
+                video.style.cssText = "position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;pointer-events:none;opacity:0;transition:opacity 0.6s ease; transform: translateZ(0);";
 
                 // Fade in video once it actually plays to avoid pop-in
                 video.addEventListener('playing', () => {
@@ -248,13 +248,14 @@ export default function HeroScene() {
             tl.to(tile, {
                 x: dx * (400 + Math.random() * 300),
                 y: dy * (350 + Math.random() * 250),
+                z: 100 + Math.random() * 500, // Move them towards camera or away
                 rotation: (Math.random() - 0.5) * 120,
-                scale: 0.2 + Math.random() * 0.4,
-                autoAlpha: 0, // Use autoAlpha instead of opacity to ensure visibility: hidden
+                scale: 0.1 + Math.random() * 0.2, // Shrink them smaller
+                opacity: 0,
                 filter: `brightness(${2 + Math.random() * 4}) hue-rotate(${Math.random() * 90}deg)`,
-                force3D: true, // Force GPU rendering to prevent ghosting artifacts
-                duration: 0.5,
-                ease: "power2.in",
+                force3D: true,
+                duration: 0.4, // Faster transition
+                ease: "power3.inOut",
             }, delay);
         });
 
