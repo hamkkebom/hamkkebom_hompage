@@ -86,7 +86,17 @@ export default function GNB() {
                     { name: "LOCATION", label: "오시는 길", href: "/about/location" },
                 ]
             },
-            { name: "SERVICES", label: "서비스 설명", href: "/services" },
+            {
+                name: "SERVICES",
+                label: "서비스 설명",
+                href: "/services",
+                subItems: [
+                    { name: "VIDEO", label: "영상제작팀", href: "/services/video" },
+                    { name: "MARKETING", label: "마케팅팀", href: "/services/marketing" },
+                    { name: "EDUCATION", label: "교육팀", href: "/services/education" },
+                    { name: "PLANNING", label: "기획개발팀", href: "/services/planning" }
+                ]
+            },
             { name: "WORKS", label: "WORKS", href: "/works" },
             {
                 name: "CONTACT",
@@ -97,16 +107,7 @@ export default function GNB() {
                     { name: "FAQ", label: "FAQ", href: "/faq" }
                 ]
             },
-            {
-                name: "SOCIALS",
-                href: "#",
-                isIconGroup: true,
-                icons: [
-                    { name: "YOUTUBE", href: "https://www.youtube.com/@hamkkesong", Icon: SocialYoutube, color: "#ff0000" },
-                    { name: "INSTAGRAM", href: "https://www.instagram.com", Icon: SocialInstagram, color: "#E1306C" },
-                    { name: "BLOG", href: "https://blog.naver.com", Icon: SocialBlog, color: "#ffffff" }
-                ]
-            },
+            // The SOCIALS object has been moved to the right utilities panel
         ];
 
     return (
@@ -408,13 +409,53 @@ export default function GNB() {
             </nav>
 
             {/* Right Side Decoration / Hamburger Menu */}
-            <div style={{ zIndex: 100, display: "flex", gap: "10px", alignItems: "center", opacity: 1, cursor: "pointer", padding: "10px" }}
-                onClick={() => setMenuOpen(!menuOpen)}
-                onMouseEnter={(e) => !isMobile && gsap.to(e.currentTarget, { opacity: 1, duration: 0.3 })}
-                onMouseLeave={(e) => !isMobile && gsap.to(e.currentTarget, { opacity: 0.6, duration: 0.3 })}
-            >
-                {/* 햄버거 아이콘 (모바일 및 데스크탑 공통, 클릭시 X 모양으로 애니메이션 추가) */}
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "6px", position: "relative", width: "32px", height: "20px" }}>
+            <div style={{ zIndex: 100, display: "flex", gap: "2rem", alignItems: "center", opacity: 1, padding: "10px" }}>
+                {!isMobile && (
+                    <div style={{ display: "flex", gap: "1.5rem", alignItems: "center", marginRight: "1rem" }}>
+                        {[
+                            { name: "YOUTUBE", href: "https://www.youtube.com/@hamkkesong", Icon: SocialYoutube, color: "#ff0000" },
+                            { name: "INSTAGRAM", href: "https://www.instagram.com", Icon: SocialInstagram, color: "#E1306C" },
+                            { name: "BLOG", href: "https://blog.naver.com", Icon: SocialBlog, color: "#ffffff" }
+                        ].map((social) => {
+                            const { Icon, color, name, href } = social;
+                            return (
+                                <Link
+                                    key={name}
+                                    href={href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+                                        opacity: 0.7,
+                                        padding: "4px"
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        e.currentTarget.style.transform = "scale(1.15) translateY(-3px)";
+                                        e.currentTarget.style.opacity = "1";
+                                        e.currentTarget.style.filter = `drop-shadow(0 8px 16px ${color}80)`;
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.style.transform = "scale(1) translateY(0)";
+                                        e.currentTarget.style.opacity = "0.7";
+                                        e.currentTarget.style.filter = "none";
+                                    }}
+                                >
+                                    <Icon size={46} color={color} />
+                                </Link>
+                            );
+                        })}
+                    </div>
+                )}
+
+                <div
+                    onClick={() => setMenuOpen(!menuOpen)}
+                    onMouseEnter={(e) => !isMobile && gsap.to(e.currentTarget, { opacity: 1, duration: 0.3 })}
+                    onMouseLeave={(e) => !isMobile && gsap.to(e.currentTarget, { opacity: 0.6, duration: 0.3 })}
+                    style={{ cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "6px", position: "relative", width: "32px", height: "20px" }}
+                >
                     <div style={{ width: menuOpen ? "32px" : "32px", height: "1px", backgroundColor: "#fff", transition: "all 0.3s ease", position: "absolute", top: menuOpen ? "10px" : "0", transform: menuOpen ? "rotate(45deg)" : "rotate(0)" }} />
                     <div style={{ width: menuOpen ? "0" : "20px", height: "1px", backgroundColor: "#fff", transition: "all 0.3s ease", position: "absolute", top: "8px", opacity: menuOpen ? 0 : 1 }} />
                     <div style={{ width: menuOpen ? "32px" : "26px", height: "1px", backgroundColor: "#fff", transition: "all 0.3s ease", position: "absolute", top: menuOpen ? "10px" : "16px", transform: menuOpen ? "rotate(-45deg)" : "rotate(0)" }} />

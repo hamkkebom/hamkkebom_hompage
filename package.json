@@ -25,6 +25,7 @@
     "next": "16.1.6",
     "opencode-ai": "^1.2.11",
     "react": "19.2.3",
+    "react-countup": "^6.5.3",
     "react-dom": "19.2.3",
     "react-kakao-maps-sdk": "^1.2.1",
     "react-map-gl": "^8.1.0",
