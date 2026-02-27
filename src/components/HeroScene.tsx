@@ -250,8 +250,9 @@ export default function HeroScene() {
                 y: dy * (350 + Math.random() * 250),
                 rotation: (Math.random() - 0.5) * 120,
                 scale: 0.2 + Math.random() * 0.4,
-                opacity: 0,
+                autoAlpha: 0, // Use autoAlpha instead of opacity to ensure visibility: hidden
                 filter: `brightness(${2 + Math.random() * 4}) hue-rotate(${Math.random() * 90}deg)`,
+                force3D: true, // Force GPU rendering to prevent ghosting artifacts
                 duration: 0.5,
                 ease: "power2.in",
             }, delay);
