@@ -8,7 +8,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 // --- TILE GRID CONFIGURATION ---
 const COLS = 5;
-const ROWS = 3;
+const ROWS = 4;
 const TOTAL_TILES = COLS * ROWS;
 
 // --- CANVAS 2D SPARK PARTICLE ENGINE ---
