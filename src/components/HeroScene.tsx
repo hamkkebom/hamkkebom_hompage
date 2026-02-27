@@ -113,8 +113,7 @@ export default function HeroScene() {
     const [tilesLoaded, setTilesLoaded] = useState(false);
     const shatterSetupDone = useRef(false);
 
-    // ★ Inject REAL <video> into each tile with random start times
-    // 10 tiles (5x2) = half the decoder load vs the original 20
+    // Inject <video> into each tile progressively to avoid 20-video decoder bottleneck
     const injectTileVideos = useCallback(() => {
         if (tilesLoaded) return;
         setTilesLoaded(true);
@@ -138,14 +137,7 @@ export default function HeroScene() {
                 video.loop = true;
                 video.muted = true;
                 video.playsInline = true;
-                // ★ Random start time so each tile plays at a different point
-                video.currentTime = Math.random() * 3; // Subtle offset — looks premium, not chaotic
-                video.style.cssText = `
-                    position:absolute;top:0;left:0;width:100%;height:100%;
-                    object-fit:cover;pointer-events:none;
-                    opacity:0;transition:opacity 0.5s ease;
-                    transform:translateZ(0);
-                `;
+                video.style.cssText = "position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;pointer-events:none;opacity:0;transition:opacity 0.6s ease;";
                 video.addEventListener('playing', () => {
                     video.style.opacity = '1';
                 }, { once: true });
@@ -160,7 +152,7 @@ export default function HeroScene() {
                 sourceMp4.type = "video/mp4";
                 video.appendChild(sourceMp4);
                 tile.appendChild(video);
-            }, index * 150); // 150ms stagger = 1.5s total for 10 tiles
+            }, index * 80); // 80ms delay between each tile = 1.6s total for 20 tiles
         });
     }, [tilesLoaded]);
 
@@ -255,10 +247,10 @@ export default function HeroScene() {
                 x: dx * (400 + Math.random() * 300),
                 y: dy * (350 + Math.random() * 250),
                 rotation: (Math.random() - 0.5) * 120,
-                scale: 0.15 + Math.random() * 0.25,
+                scale: 0.2 + Math.random() * 0.4,
                 opacity: 0,
-                force3D: true,
-                duration: 0.35,
+                filter: `brightness(${2 + Math.random() * 4}) hue-rotate(${Math.random() * 90}deg)`,
+                duration: 0.5,
                 ease: "power2.in",
             }, delay);
         });
