@@ -115,7 +115,103 @@ const CONTEST_YOUTUBE_VIDEOS: StreamItem[] = [
     }
 ];
 
-const ALL_YOUTUBE_VIDEOS: StreamItem[] = [...PR_YOUTUBE_VIDEOS, ...JOB_YOUTUBE_VIDEOS, ...CONTEST_YOUTUBE_VIDEOS];
+const MEMORY_YOUTUBE_VIDEOS: StreamItem[] = [
+    {
+        uid: "yt-memory-1",
+        thumbnail: "https://img.youtube.com/vi/mcKKPA3UlSY/maxresdefault.jpg",
+        preview: "",
+        meta: { name: "추억송", category: "추억송" },
+        created: new Date().toISOString(),
+        isYoutube: true,
+        youtubeUrl: "https://www.youtube.com/watch?v=mcKKPA3UlSY&list=PLuG5PIXGPOHr3-2lCcQUVMPIBvk3Ia_GT&index=1"
+    },
+    {
+        uid: "yt-memory-2",
+        thumbnail: "https://img.youtube.com/vi/MmrB8mOAoPE/maxresdefault.jpg",
+        preview: "",
+        meta: { name: "251113 추억영상 김예솔", category: "추억송" },
+        created: new Date().toISOString(),
+        isYoutube: true,
+        youtubeUrl: "https://www.youtube.com/watch?v=MmrB8mOAoPE&list=PLuG5PIXGPOHr3-2lCcQUVMPIBvk3Ia_GT&index=2"
+    },
+    {
+        uid: "yt-memory-3",
+        thumbnail: "https://img.youtube.com/vi/IqkkIJcCPoc/maxresdefault.jpg",
+        preview: "",
+        meta: { name: "추억송3", category: "추억송" },
+        created: new Date().toISOString(),
+        isYoutube: true,
+        youtubeUrl: "https://www.youtube.com/watch?v=IqkkIJcCPoc&list=PLuG5PIXGPOHr3-2lCcQUVMPIBvk3Ia_GT&index=3"
+    },
+    {
+        uid: "yt-memory-4",
+        thumbnail: "https://img.youtube.com/vi/pt0_br6tw4s/maxresdefault.jpg",
+        preview: "",
+        meta: { name: "추억송_나미상담사", category: "추억송" },
+        created: new Date().toISOString(),
+        isYoutube: true,
+        youtubeUrl: "https://www.youtube.com/watch?v=pt0_br6tw4s&list=PLuG5PIXGPOHr3-2lCcQUVMPIBvk3Ia_GT&index=4"
+    }
+];
+
+const DREAM_YOUTUBE_VIDEOS: StreamItem[] = [
+    {
+        uid: "yt-dream-1",
+        thumbnail: "https://img.youtube.com/vi/XpoVcZO3718/maxresdefault.jpg",
+        preview: "",
+        meta: { name: "꿈꿈송(임시)", category: "꿈꿈송" },
+        created: new Date().toISOString(),
+        isYoutube: true,
+        youtubeUrl: "https://www.youtube.com/watch?v=XpoVcZO3718&list=PLuG5PIXGPOHrllynOOc6ZoBfRh5V6jfam&index=1"
+    },
+    {
+        uid: "yt-dream-2",
+        thumbnail: "https://img.youtube.com/vi/aCY_t5HImIQ/maxresdefault.jpg",
+        preview: "",
+        meta: { name: "꿈꿈송 오늘의 걸음", category: "꿈꿈송" },
+        created: new Date().toISOString(),
+        isYoutube: true,
+        youtubeUrl: "https://www.youtube.com/watch?v=aCY_t5HImIQ&list=PLuG5PIXGPOHrllynOOc6ZoBfRh5V6jfam&index=2"
+    },
+    {
+        uid: "yt-dream-3",
+        thumbnail: "https://img.youtube.com/vi/48ant2WGhok/maxresdefault.jpg",
+        preview: "",
+        meta: { name: "꿈꿈송", category: "꿈꿈송" },
+        created: new Date().toISOString(),
+        isYoutube: true,
+        youtubeUrl: "https://www.youtube.com/watch?v=48ant2WGhok&list=PLuG5PIXGPOHrllynOOc6ZoBfRh5V6jfam&index=3"
+    },
+    {
+        uid: "yt-dream-4",
+        thumbnail: "https://img.youtube.com/vi/zgIKu3beAXc/maxresdefault.jpg",
+        preview: "",
+        meta: { name: "괜찮아, 오늘은 나답게", category: "꿈꿈송" },
+        created: new Date().toISOString(),
+        isYoutube: true,
+        youtubeUrl: "https://www.youtube.com/watch?v=zgIKu3beAXc&list=PLuG5PIXGPOHrllynOOc6ZoBfRh5V6jfam&index=4"
+    },
+    {
+        uid: "yt-dream-5",
+        thumbnail: "https://img.youtube.com/vi/-gKQiJo5MfA/maxresdefault.jpg",
+        preview: "",
+        meta: { name: "포기는 없어", category: "꿈꿈송" },
+        created: new Date().toISOString(),
+        isYoutube: true,
+        youtubeUrl: "https://www.youtube.com/watch?v=-gKQiJo5MfA&list=PLuG5PIXGPOHrllynOOc6ZoBfRh5V6jfam&index=5"
+    },
+    {
+        uid: "yt-dream-6",
+        thumbnail: "https://img.youtube.com/vi/TJKmrRj9cKg/maxresdefault.jpg",
+        preview: "",
+        meta: { name: "꿈꿈송_고3응원", category: "꿈꿈송" },
+        created: new Date().toISOString(),
+        isYoutube: true,
+        youtubeUrl: "https://www.youtube.com/watch?v=TJKmrRj9cKg&list=PLuG5PIXGPOHrllynOOc6ZoBfRh5V6jfam&index=6"
+    }
+];
+
+const ALL_YOUTUBE_VIDEOS: StreamItem[] = [...PR_YOUTUBE_VIDEOS, ...JOB_YOUTUBE_VIDEOS, ...CONTEST_YOUTUBE_VIDEOS, ...MEMORY_YOUTUBE_VIDEOS, ...DREAM_YOUTUBE_VIDEOS];
 
 export default function WorksGalleryPage() {
     const marqueeRef = useRef<HTMLDivElement>(null);
@@ -132,8 +228,8 @@ export default function WorksGalleryPage() {
 
     const limit = 20;
 
-    // 마키(자동 재생 띠) 데이터
-    const marqueeVideos = [...ALL_YOUTUBE_VIDEOS, ...ALL_YOUTUBE_VIDEOS, ...ALL_YOUTUBE_VIDEOS];
+    // 마키(자동 재생 띠) 데이터 (현재 선택된 카테고리의 영상들로 구성, 데이터가 적을 경우 반복해서 이어붙임)
+    const marqueeVideos = videos.length > 0 ? [...videos, ...videos, ...videos, ...videos] : [];
 
     useEffect(() => {
         const fetchVideos = async () => {
@@ -148,6 +244,10 @@ export default function WorksGalleryPage() {
                     setVideos(JOB_YOUTUBE_VIDEOS);
                 } else if (selectedCategory === "공모전참가송") {
                     setVideos(CONTEST_YOUTUBE_VIDEOS);
+                } else if (selectedCategory === "추억송") {
+                    setVideos(MEMORY_YOUTUBE_VIDEOS);
+                } else if (selectedCategory === "꿈꿈송") {
+                    setVideos(DREAM_YOUTUBE_VIDEOS);
                 } else {
                     // 다른 카테고리의 경우 현재는 비워둠. 필요시 데이터 추가.
                     setVideos([]);
@@ -275,7 +375,13 @@ export default function WorksGalleryPage() {
                         <div className="film-marquee-track">
                             <div ref={marqueeRef} style={{ display: "flex", width: "max-content", paddingLeft: "1rem" }}>
                                 {marqueeVideos.map((work, idx) => (
-                                    <div key={`marquee-${work.uid}-${idx}`} className="film-frame">
+                                    <a
+                                        key={`marquee-${work.uid}-${idx}`}
+                                        href={work.youtubeUrl || "#"}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="film-frame"
+                                    >
                                         <div className="film-frame-inner">
                                             {/* eslint-disable-next-line @next/next/no-img-element */}
                                             <img
@@ -287,7 +393,7 @@ export default function WorksGalleryPage() {
                                                 }}
                                             />
                                         </div>
-                                    </div>
+                                    </a>
                                 ))}
                             </div>
                         </div>
