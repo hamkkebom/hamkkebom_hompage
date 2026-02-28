@@ -24,7 +24,7 @@ export default function FAQPage() {
             <GNB />
 
             <section style={{ maxWidth: "800px", margin: "0 auto", padding: "12rem 2rem 4rem", minHeight: "60vh", position: "relative", zIndex: 10 }}>
-                <h1 style={{ fontSize: "3.5rem", fontWeight: 700, marginBottom: "4rem", textAlign: "center" }}>자주 묻는 질문</h1>
+                <h1 style={{ fontSize: "clamp(2rem, 8vw, 3.5rem)", fontWeight: 700, marginBottom: "4rem", textAlign: "center", wordBreak: "keep-all" }}>자주 묻는 질문</h1>
 
                 <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
                     {faqs.map((faq, index) => (

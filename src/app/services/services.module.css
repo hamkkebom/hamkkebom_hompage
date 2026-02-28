@@ -421,9 +421,27 @@
         grid-template-columns: 1fr;
     }
 
-    .statsRow {
+    .statsRow,
+    .performanceStatsGrid {
         grid-template-columns: 1fr;
         gap: 1rem;
+    }
+
+    .performanceCard {
+        padding: 2rem 1.5rem;
+    }
+
+    .performanceNumber {
+        font-size: 4rem;
+    }
+
+    .performanceSuffix {
+        font-size: 2.5rem;
+    }
+
+    .performanceLabel {
+        font-size: 0.95rem;
+        letter-spacing: 0.05em;
     }
 
     .processSteps {

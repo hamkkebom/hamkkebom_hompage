@@ -629,6 +629,7 @@ export default function WorksGalleryPage() {
                     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
                     position: relative;
                     overflow: hidden;
+                    flex-shrink: 0;
                 }
 
                 .category-pill::before {
