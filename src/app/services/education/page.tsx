@@ -112,14 +112,13 @@ const team = {
     services: {
         title: "핵심 서비스 영역",
         items: [
-            "온라인/오프라인 영상 제작 실무 교육",
-            "기초 ~ 심화 영상 편집 과정 (프리미어 · 에펙)",
-            "AI 활용 콘텐츠 제작 마스터 클래스",
-            "1:1 멘토링 및 포트폴리오 디벨롭",
-            "수강생 수익화 컨설팅 & 사업화 지원",
-            "기업 대상 사내 교육 / 워크숍 기획",
-            "크리에이터 양성 부트캠프",
-            "자격증 발급 및 실무 연계 프로그램",
+            "【 교육내용 】",
+            "AI 활용 영상 제작 교육 (온/오프라인)",
+            "광고 홍보영상 제작 실무 교육",
+            "실무 연계형 퍼스널 브랜딩 교육",
+            "【 교육부터 수익화까지! 】",
+            "AI 퍼스널브랜딩 실무자 자격증 취득 후, 전속 프리랜서 계약",
+            "취미 영상으로 수익화 컨설팅 및 사업화 지원",
         ],
     },
     workflow: {
@@ -306,12 +305,17 @@ export default function EducationPage() {
                         <span className={styles.cardLabel} style={{ color: team.color }}>SERVICES</span>
                         <h3 className={styles.cardTitle}>{team.services.title}</h3>
                         <ul className={styles.serviceList}>
-                            {team.services.items.map((item, i) => (
-                                <li key={i} className={styles.serviceItem}>
-                                    <span className={styles.serviceDot} style={{ backgroundColor: team.color }} />
-                                    <span>{item}</span>
-                                </li>
-                            ))}
+                            {team.services.items.map((item, i) => {
+                                const isHeader = item.startsWith("【");
+                                return isHeader ? (
+                                    <h4 key={i} style={{ fontSize: "1.1rem", fontWeight: "bold", marginTop: i > 0 ? "1.5rem" : "0", marginBottom: "0.5rem", color: team.color }}>{item.replace(/[【】]/g, "").trim()}</h4>
+                                ) : (
+                                    <li key={i} className={styles.serviceItem}>
+                                        <span className={styles.serviceDot} style={{ backgroundColor: team.color }} />
+                                        <span>{item}</span>
+                                    </li>
+                                );
+                            })}
                         </ul>
                     </motion.div>
                 </div>

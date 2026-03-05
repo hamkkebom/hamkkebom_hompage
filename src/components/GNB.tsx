@@ -343,16 +343,16 @@ export default function GNB() {
                                     }}
                                 >
                                     <div style={{
-                                        background: scrolled ? "rgba(5, 5, 5, 0.85)" : "rgba(0,0,0,0.6)",
-                                        backdropFilter: "blur(16px) saturate(1.2)",
+                                        background: scrolled ? "rgba(0, 0, 0, 0.98)" : "rgba(0, 0, 0, 0.95)",
+                                        backdropFilter: "blur(24px) saturate(1.5)",
                                         padding: "1.5rem 2.5rem",
                                         borderRadius: "2px", // Cinematic sharp edges
-                                        border: "1px solid rgba(255,255,255,0.08)",
+                                        border: "1px solid rgba(255,255,255,0.15)",
                                         borderTop: "2px solid var(--accent-color, #d4af37)",
                                         display: "flex",
                                         flexDirection: "column",
                                         gap: "1.5rem",
-                                        boxShadow: "0 20px 40px rgba(0,0,0,0.8)"
+                                        boxShadow: "0 20px 40px rgba(0,0,0,0.9)"
                                     }}>
                                         {item.subItems?.map((sub) => (
                                             <Link href={sub.href || "#"} key={sub.name} style={{ textDecoration: "none" }} onClick={(e) => {

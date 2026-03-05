@@ -136,9 +136,9 @@ const team = {
         body: "'주 1회 이상의 제품 출시'라는 파괴적인 개발 속도가 특징입니다. 이는 AI 코딩 도구와 자동화 파이프라인을 적극 활용한 결과입니다. 기획개발팀이 만든 도구들은 영상제작팀의 편집 시간을 50% 이상 단축시키고, 마케팅팀의 리포트 자동화를 실현시키며, 교육팀의 온라인 플랫폼을 고도화시킵니다. 기술이 비즈니스 전체에 녹아드는 유기적인 구조를 통해 함께봄은 콘텐츠 업계에서 독보적인 기술 경쟁력을 확보하고 있습니다.",
     },
     stats: [
-        { number: "52+", label: "연간 출시 프로덕트" },
-        { number: "50%↓", label: "업무 자동화 효율" },
-        { number: "∞", label: "확장 가능성" },
+        { number: "150+", label: "연간 목표 출시 프로덕트" },
+        { number: "One Flow", label: "기획·개발·운영" },
+        { number: "∞", label: "확장 설계" },
     ],
 };
 
@@ -254,21 +254,20 @@ export default function PlanningPage() {
                             <div className={styles.performanceCard}>
                                 <div className={styles.performanceNumberWrapper}>
                                     <span className={styles.performanceNumber} style={{ color: team.color }}>
-                                        <CountUp end={52} duration={2.5} enableScrollSpy scrollSpyOnce />
+                                        <CountUp end={150} duration={2.5} enableScrollSpy scrollSpyOnce />
                                     </span>
                                     <span className={styles.performanceSuffix} style={{ color: team.color }}>+</span>
                                 </div>
-                                <span className={styles.performanceLabel}>연간 출시 프로덕트</span>
+                                <span className={styles.performanceLabel}>연간 목표 출시 프로덕트</span>
                             </div>
 
                             <div className={styles.performanceCard}>
                                 <div className={styles.performanceNumberWrapper}>
-                                    <span className={styles.performanceNumber} style={{ color: team.color }}>
-                                        <CountUp end={50} duration={2.5} enableScrollSpy scrollSpyOnce />
+                                    <span className={styles.performanceNumber} style={{ color: team.color, fontSize: "clamp(1.5rem, 3vw, 2.5rem)", letterSpacing: "-0.02em" }}>
+                                        One Flow
                                     </span>
-                                    <span className={styles.performanceSuffix} style={{ color: team.color }}>%↓</span>
                                 </div>
-                                <span className={styles.performanceLabel}>업무 자동화 효율</span>
+                                <span className={styles.performanceLabel}>기획·개발·운영</span>
                             </div>
 
                             <div className={styles.performanceCard}>
@@ -278,7 +277,7 @@ export default function PlanningPage() {
                                     </span>
                                     <span className={styles.performanceSuffix} style={{ color: team.color }}></span>
                                 </div>
-                                <span className={styles.performanceLabel}>무한 확장성</span>
+                                <span className={styles.performanceLabel}>확장 설계</span>
                             </div>
                         </div>
                     </motion.div>
