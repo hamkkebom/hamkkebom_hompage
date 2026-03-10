@@ -41,7 +41,6 @@ const SocialBlog = ({ size }: { color?: string, size: number }) => (
 
 export default function GNB() {
     const [scrolled, setScrolled] = useState(false);
-    const [isMobile, setIsMobile] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const pathname = usePathname();
 
@@ -54,16 +53,10 @@ export default function GNB() {
         const handleScroll = () => {
             setScrolled(window.scrollY > 50);
         };
-        const handleResize = () => {
-            setIsMobile(window.innerWidth <= 768);
-        };
 
-        handleResize();
         window.addEventListener("scroll", handleScroll);
-        window.addEventListener("resize", handleResize);
         return () => {
             window.removeEventListener("scroll", handleScroll);
-            window.removeEventListener("resize", handleResize);
         }
     }, []);
 
@@ -112,12 +105,13 @@ export default function GNB() {
 
     return (
         <header
+            className="gnb-header"
+            suppressHydrationWarning
             style={{
                 position: "fixed",
                 top: 0,
                 left: 0,
                 width: "100%",
-                padding: isMobile ? (scrolled ? "1rem 1.5rem" : "1.5rem 1.5rem") : (scrolled ? "1.2rem 4rem" : "2.5rem 5rem"),
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
@@ -127,6 +121,7 @@ export default function GNB() {
                 backdropFilter: "blur(24px) saturate(1.2)",
                 WebkitBackdropFilter: "blur(24px) saturate(1.2)",
                 borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
+                padding: scrolled ? "1.2rem 4rem" : "2.5rem 5rem",
             }}
         >
             {/* Logo Section */}
@@ -145,8 +140,9 @@ export default function GNB() {
                     <Image
                         src="/logo-white.png"
                         alt="함께봄 로고"
-                        width={isMobile ? 100 : 140}
-                        height={isMobile ? 40 : 60}
+                        width={140}
+                        height={60}
+                        className="gnb-logo"
                         style={{ objectFit: "contain", filter: scrolled ? "none" : "drop-shadow(0 4px 12px rgba(0,0,0,0.5))" }}
                         priority
                     />
@@ -154,12 +150,12 @@ export default function GNB() {
             </Link>
 
             {/* Central Navigation - The "Exhibition" Layout */}
-            <nav style={{
+            <nav className="gnb-desktop-nav" style={{
                 position: "absolute",
                 left: "50%",
                 transform: "translateX(-50%)",
-                display: isMobile ? "none" : "flex",
-                gap: "5vw", // 화면 크기에 비례하는 극적인 간격
+                display: "flex",
+                gap: "5vw",
                 alignItems: "center",
                 zIndex: 1
             }}>
@@ -410,50 +406,46 @@ export default function GNB() {
 
             {/* Right Side Decoration / Hamburger Menu */}
             <div style={{ zIndex: 100, display: "flex", gap: "2rem", alignItems: "center", opacity: 1, padding: "10px" }}>
-                {!isMobile && (
-                    <div style={{ display: "flex", gap: "1.5rem", alignItems: "center", marginRight: "1rem" }}>
-                        {[
-                            { name: "YOUTUBE", href: "https://www.youtube.com/@hamkkesong", Icon: SocialYoutube, color: "#ff0000" },
-                            { name: "INSTAGRAM", href: "https://www.instagram.com", Icon: SocialInstagram, color: "#E1306C" },
-                            { name: "BLOG", href: "https://blog.naver.com", Icon: SocialBlog, color: "#ffffff" }
-                        ].map((social) => {
-                            const { Icon, color, name, href } = social;
-                            return (
-                                <Link
-                                    key={name}
-                                    href={href}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    style={{
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                        transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-                                        opacity: 0.7,
-                                        padding: "4px"
-                                    }}
-                                    onMouseEnter={(e) => {
-                                        e.currentTarget.style.transform = "scale(1.15) translateY(-3px)";
-                                        e.currentTarget.style.opacity = "1";
-                                        e.currentTarget.style.filter = `drop-shadow(0 8px 16px ${color}80)`;
-                                    }}
-                                    onMouseLeave={(e) => {
-                                        e.currentTarget.style.transform = "scale(1) translateY(0)";
-                                        e.currentTarget.style.opacity = "0.7";
-                                        e.currentTarget.style.filter = "none";
-                                    }}
-                                >
-                                    <Icon size={46} color={color} />
-                                </Link>
-                            );
-                        })}
-                    </div>
-                )}
+                <div className="gnb-desktop-utils" style={{ display: "flex", gap: "1.5rem", alignItems: "center", marginRight: "1rem" }}>
+                    {[
+                        { name: "YOUTUBE", href: "https://www.youtube.com/@hamkkesong", Icon: SocialYoutube, color: "#ff0000" },
+                        { name: "INSTAGRAM", href: "https://www.instagram.com", Icon: SocialInstagram, color: "#E1306C" },
+                        { name: "BLOG", href: "https://blog.naver.com", Icon: SocialBlog, color: "#ffffff" }
+                    ].map((social) => {
+                        const { Icon, color, name, href } = social;
+                        return (
+                            <Link
+                                key={name}
+                                href={href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+                                    opacity: 0.7,
+                                    padding: "4px"
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.transform = "scale(1.15) translateY(-3px)";
+                                    e.currentTarget.style.opacity = "1";
+                                    e.currentTarget.style.filter = `drop-shadow(0 8px 16px ${color}80)`;
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.transform = "scale(1) translateY(0)";
+                                    e.currentTarget.style.opacity = "0.7";
+                                    e.currentTarget.style.filter = "none";
+                                }}
+                            >
+                                <Icon size={46} color={color} />
+                            </Link>
+                        );
+                    })}
+                </div>
 
                 <div
                     onClick={() => setMenuOpen(!menuOpen)}
-                    onMouseEnter={(e) => !isMobile && gsap.to(e.currentTarget, { opacity: 1, duration: 0.3 })}
-                    onMouseLeave={(e) => !isMobile && gsap.to(e.currentTarget, { opacity: 0.6, duration: 0.3 })}
                     style={{ cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "6px", position: "relative", width: "32px", height: "20px" }}
                 >
                     <div style={{ width: menuOpen ? "32px" : "32px", height: "1px", backgroundColor: "#fff", transition: "all 0.3s ease", position: "absolute", top: menuOpen ? "10px" : "0", transform: menuOpen ? "rotate(45deg)" : "rotate(0)" }} />
@@ -568,3 +560,25 @@ export default function GNB() {
     );
 }
 
+// GNB 모바일 CSS — SSR/CSR 불일치 방지를 위해 CSS @media 사용
+const GnbStyles = () => (
+    <style>{`
+        @media (max-width: 768px) {
+            .gnb-header {
+                padding: 1rem 1.5rem !important;
+            }
+            .gnb-logo {
+                width: 100px !important;
+                height: 40px !important;
+            }
+            .gnb-desktop-nav {
+                display: none !important;
+            }
+            .gnb-desktop-utils {
+                display: none !important;
+            }
+        }
+    `}</style>
+);
+
+export { GnbStyles };
