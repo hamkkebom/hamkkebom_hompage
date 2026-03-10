@@ -7,11 +7,12 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 // --- TILE GRID CONFIGURATION ---
-// Desktop: 5x4=20 tiles | Mobile: 2x2=4 tiles (prevents video decoder crash)
+// Desktop: 5x4=20 tiles | Mobile: 3x3=9 tiles (within iOS Safari decoder limit)
+// Mobile safety: tile videos are destroyed on scroll-leave and re-injected on scroll-back
 const DESKTOP_COLS = 5;
 const DESKTOP_ROWS = 4;
-const MOBILE_COLS = 2;
-const MOBILE_ROWS = 2;
+const MOBILE_COLS = 3;
+const MOBILE_ROWS = 3;
 
 // --- CANVAS 2D SPARK PARTICLE ENGINE (Desktop only) ---
 interface Spark {
@@ -136,7 +137,11 @@ export default function HeroScene() {
     const injectTileVideos = useCallback(() => {
         if (tilesLoaded) return;
         setTilesLoaded(true);
+        doInjectTileVideos();
+    }, [tilesLoaded]);
 
+    // Separated so we can re-call on mobile scroll-back without resetting tilesLoaded
+    const doInjectTileVideos = useCallback(() => {
         const currentCols = isMobileRef.current ? MOBILE_COLS : DESKTOP_COLS;
         const currentRows = isMobileRef.current ? MOBILE_ROWS : DESKTOP_ROWS;
 
@@ -151,8 +156,8 @@ export default function HeroScene() {
         });
         tilesArr.sort((a, b) => b.dist - a.dist);
 
-        // Mobile: faster injection (4 tiles), Desktop: staggered (20 tiles)
-        const delayPerTile = isMobileRef.current ? 50 : 80;
+        // Mobile: faster injection (9 tiles), Desktop: staggered (20 tiles)
+        const delayPerTile = isMobileRef.current ? 40 : 80;
 
         tilesArr.forEach(({ tile }, index) => {
             setTimeout(() => {
@@ -162,10 +167,6 @@ export default function HeroScene() {
                 video.loop = true;
                 video.muted = true;
                 video.playsInline = true;
-                // Mobile: reduce video quality hints
-                if (isMobileRef.current) {
-                    video.preload = "none";
-                }
                 video.style.cssText = "position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;pointer-events:none;opacity:0;transition:opacity 0.6s ease;";
                 video.addEventListener('playing', () => {
                     video.style.opacity = '1';
@@ -183,7 +184,17 @@ export default function HeroScene() {
                 tile.appendChild(video);
             }, index * delayPerTile);
         });
-    }, [tilesLoaded]);
+    }, []);
+
+    // ★ Mobile: completely destroy tile <video> elements to free decoders
+    const destroyTileVideos = useCallback(() => {
+        document.querySelectorAll<HTMLVideoElement>(".hero-tile video").forEach(v => {
+            try { v.pause(); } catch (_) { /* ignore */ }
+            v.removeAttribute("src");
+            v.load(); // force release of decoder
+            v.remove();
+        });
+    }, []);
 
     useEffect(() => {
         if (!containerRef.current) return;
@@ -222,25 +233,37 @@ export default function HeroScene() {
                     }
                 },
                 onLeave: () => {
-                    // ★ Hero 섹션을 지나갔을 때: 모든 비디오 정지
+                    // ★ Hero 섹션을 지나갔을 때
                     const heroEl = document.getElementById("hero-section");
                     if (heroEl) heroEl.style.visibility = "hidden";
-                    document.querySelectorAll<HTMLVideoElement>(".hero-tile video").forEach(v => {
-                        try { v.pause(); } catch (_) { /* ignore */ }
-                    });
                     if (baseVideoRef.current) {
                         try { baseVideoRef.current.pause(); } catch (_) { /* ignore */ }
                     }
+                    if (mobile) {
+                        // ★ Mobile: DESTROY tile videos to free all decoders immediately
+                        destroyTileVideos();
+                    } else {
+                        // Desktop: just pause
+                        document.querySelectorAll<HTMLVideoElement>(".hero-tile video").forEach(v => {
+                            try { v.pause(); } catch (_) { /* ignore */ }
+                        });
+                    }
                 },
                 onEnterBack: () => {
-                    // ★ 위로 스크롤 복귀 시: 모든 비디오 재생
+                    // ★ 위로 스크롤 복귀 시
                     const heroEl = document.getElementById("hero-section");
                     if (heroEl) heroEl.style.visibility = "visible";
-                    document.querySelectorAll<HTMLVideoElement>(".hero-tile video").forEach(v => {
-                        try { v.play(); } catch (_) { /* ignore */ }
-                    });
                     if (baseVideoRef.current) {
                         try { baseVideoRef.current.play(); } catch (_) { /* ignore */ }
+                    }
+                    if (mobile) {
+                        // ★ Mobile: RE-INJECT tile videos (decoders freed, safe to re-create)
+                        doInjectTileVideos();
+                    } else {
+                        // Desktop: just resume
+                        document.querySelectorAll<HTMLVideoElement>(".hero-tile video").forEach(v => {
+                            try { v.play(); } catch (_) { /* ignore */ }
+                        });
                     }
                 },
             },
