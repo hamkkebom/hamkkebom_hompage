@@ -441,12 +441,52 @@
 }
 
 @media (max-width: 768px) {
+    .container {
+        padding-top: 90px;
+        padding-bottom: 60px;
+    }
+
     .mainTitle {
-        font-size: 3rem;
+        font-size: 2rem;
+    }
+
+    .description {
+        font-size: 1rem;
+    }
+
+    .formContainer {
+        padding: 2rem 1.2rem;
+    }
+
+    .formTitle {
+        font-size: 1.4rem;
+        margin-bottom: 2rem;
     }
 
     .formRow {
         grid-template-columns: 1fr;
-        gap: 2.5rem;
+        gap: 2rem;
+    }
+
+    .submitBtn {
+        width: 100%;
+        padding: 1.2rem 1.5rem;
+        font-size: 1rem;
+    }
+
+    .successTitle {
+        font-size: 2rem;
+    }
+
+    .successDesc {
+        font-size: 1rem;
+    }
+
+    .successContainer {
+        min-height: 40vh;
+    }
+
+    .directorTag {
+        font-size: 0.8rem;
     }
 }

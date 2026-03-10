@@ -5,6 +5,10 @@
     overflow-x: hidden;
 }
 
+.mobileBreak {
+    display: none;
+}
+
 /* Hero Header */
 .heroSection {
     padding: 10rem 2rem 6rem;
@@ -454,5 +458,22 @@
 
     .twoCol {
         grid-template-columns: 1fr;
+    }
+
+    .mobileBreak {
+        display: block;
+    }
+
+    .artisticImageWrapper {
+        margin-bottom: 2rem;
+        padding: 0.8rem 0.8rem 0 0.8rem;
+    }
+
+    .polaroidMargin {
+        padding: 1.5rem 0 1rem 0;
+    }
+
+    .polaroidText {
+        font-size: 0.8rem;
     }
 }

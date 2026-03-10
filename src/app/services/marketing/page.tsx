@@ -175,7 +175,7 @@ export default function MarketingPage() {
                     initial={{ opacity: 0 }}
                     animate={headerInView ? { opacity: 1 } : {}}
                     transition={{ delay: 0.5, duration: 0.6 }}
-                    style={{ position: "absolute", top: "120px", left: "2rem" }}
+                    style={{ position: "absolute", top: "clamp(70px, 15vw, 120px)", left: "1rem" }}
                 >
                     <Link href="/" style={{ textDecoration: "none" }}>
                         <button

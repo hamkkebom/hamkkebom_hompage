@@ -23,42 +23,44 @@ export default function FAQPage() {
         <main className="cinematic-main" style={{ background: "var(--bg-color)", minHeight: "100vh", color: "#fff" }}>
             <GNB />
 
-            <section style={{ maxWidth: "800px", margin: "0 auto", padding: "12rem 2rem 4rem", minHeight: "60vh", position: "relative", zIndex: 10 }}>
-                <h1 style={{ fontSize: "clamp(2rem, 8vw, 3.5rem)", fontWeight: 700, marginBottom: "4rem", textAlign: "center", wordBreak: "keep-all" }}>자주 묻는 질문</h1>
+            <section style={{ maxWidth: "800px", margin: "0 auto", padding: "10rem 1.5rem 4rem", minHeight: "60vh", position: "relative", zIndex: 10 }}>
+                <h1 style={{ fontSize: "clamp(1.8rem, 6vw, 3.5rem)", fontWeight: 700, marginBottom: "3rem", textAlign: "center", wordBreak: "keep-all" }}>자주 묻는 질문</h1>
 
-                <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: "1.2rem" }}>
                     {faqs.map((faq, index) => (
                         <div
                             key={index}
                             style={{
                                 borderBottom: "1px solid var(--border-color)",
-                                paddingBottom: "1.5rem",
+                                paddingBottom: "1.2rem",
                                 cursor: "pointer"
                             }}
                             onClick={() => toggleFaq(index)}
                         >
-                            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "1.3rem", fontWeight: 500 }}>
-                                <span style={{ color: openFaq === index ? "var(--accent-color)" : "inherit", transition: "color 0.3s" }}>
+                            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", fontSize: "clamp(1rem, 3vw, 1.3rem)", fontWeight: 500, gap: "1rem" }}>
+                                <span style={{ color: openFaq === index ? "var(--accent-color)" : "inherit", transition: "color 0.3s", flex: 1, wordBreak: "keep-all", lineHeight: 1.5 }}>
                                     Q. {faq.q}
                                 </span>
                                 <span style={{
                                     transform: openFaq === index ? "rotate(45deg)" : "rotate(0)",
                                     transition: "transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
-                                    fontSize: "1.5rem"
+                                    fontSize: "1.5rem",
+                                    flexShrink: 0,
+                                    lineHeight: 1
                                 }}>
                                     +
                                 </span>
                             </div>
                             <div
                                 style={{
-                                    maxHeight: openFaq === index ? "200px" : "0",
+                                    maxHeight: openFaq === index ? "500px" : "0",
                                     overflow: "hidden",
                                     transition: "max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
                                     opacity: openFaq === index ? 0.9 : 0,
                                     marginTop: openFaq === index ? "1rem" : "0",
                                 }}
                             >
-                                <p style={{ lineHeight: 1.6, color: "var(--text-secondary)", fontSize: "1.1rem" }}>A. {faq.a}</p>
+                                <p style={{ lineHeight: 1.6, color: "var(--text-secondary)", fontSize: "clamp(0.95rem, 2.5vw, 1.1rem)", wordBreak: "keep-all" }}>A. {faq.a}</p>
                             </div>
                         </div>
                     ))}

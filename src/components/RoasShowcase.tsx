@@ -340,11 +340,18 @@ export default function RoasShowcase() {
                 }
                 @media (max-width: 768px) {
                     .roas-subtitle-responsive {
-                        font-size: 0.85rem !important;
-                        letter-spacing: 0.3em !important;
+                        font-size: 0.75rem !important;
+                        letter-spacing: 0.2em !important;
                     }
                     .roas-number-responsive {
-                        font-size: clamp(5rem, 30vw, 12rem) !important;
+                        font-size: clamp(4rem, 25vw, 10rem) !important;
+                    }
+                    .roas-card {
+                        width: clamp(220px, 70vw, 320px) !important;
+                        height: clamp(280px, 55vh, 400px) !important;
+                    }
+                    .roas-card-inner .work-info {
+                        padding: 1rem !important;
                     }
                 }
             `}</style>

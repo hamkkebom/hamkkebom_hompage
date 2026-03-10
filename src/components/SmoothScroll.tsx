@@ -9,14 +9,16 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
     useEffect(() => {
+        const isMobile = window.innerWidth <= 768;
+
         const lenis = new Lenis({
-            duration: 1.5,
+            duration: isMobile ? 1.0 : 1.5,
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
             orientation: "vertical",
             gestureOrientation: "vertical",
             smoothWheel: true,
-            wheelMultiplier: 1,
-            touchMultiplier: 2,
+            wheelMultiplier: isMobile ? 1.5 : 1,
+            touchMultiplier: isMobile ? 5 : 2,
         });
 
         // ★ 핵심: Lenis 스크롤 이벤트를 GSAP ScrollTrigger에 전달 ★

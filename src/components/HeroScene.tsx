@@ -112,6 +112,7 @@ export default function HeroScene() {
     const sparkEngineRef = useRef<ReturnType<typeof initSparkCanvas> | null>(null);
     const [tilesLoaded, setTilesLoaded] = useState(false);
     const shatterSetupDone = useRef(false);
+    const isMobileRef = useRef(false);
 
     // Inject <video> into each tile progressively to avoid 20-video decoder bottleneck
     const injectTileVideos = useCallback(() => {
@@ -159,6 +160,8 @@ export default function HeroScene() {
     useEffect(() => {
         if (!containerRef.current || !canvasRef.current) return;
 
+        isMobileRef.current = window.innerWidth <= 768;
+
         sparkEngineRef.current = initSparkCanvas(canvasRef.current);
 
         const glitchOverlay = document.querySelector<HTMLElement>(".glitch-overlay");
@@ -171,12 +174,14 @@ export default function HeroScene() {
         const tiles = gsap.utils.toArray<HTMLElement>(".hero-tile");
         gsap.set(tiles, { transformOrigin: "center center" });
 
+        const isMobile = isMobileRef.current;
+
         const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: "#hero-section",
                 start: "top top",
-                end: "+=2500",
-                scrub: 0.3,
+                end: isMobile ? "+=800" : "+=2500",
+                scrub: isMobile ? 0.2 : 0.3,
                 pin: true,
                 onUpdate: (self) => {
                     sparkEngineRef.current?.setProgress(self.progress);
@@ -235,18 +240,20 @@ export default function HeroScene() {
             }, 0.09);
 
         // Phase 3: Tiles Shatter
+        const shatterMultiplier = isMobile ? 0.4 : 1;
+
         tiles.forEach((tile, i) => {
             const row = Math.floor(i / COLS);
             const col = i % COLS;
             const dx = (col - (COLS - 1) / 2) * 1;
             const dy = (row - (ROWS - 1) / 2) * 1;
             const dist = Math.sqrt(dx * dx + dy * dy) + 0.5;
-            const delay = 0.08 + dist * 0.04 + Math.random() * 0.03;
+            const delay = 0.08 + dist * (isMobile ? 0.02 : 0.04) + Math.random() * 0.03;
 
             tl.to(tile, {
-                x: dx * (400 + Math.random() * 300),
-                y: dy * (350 + Math.random() * 250),
-                rotation: (Math.random() - 0.5) * 120,
+                x: dx * (400 + Math.random() * 300) * shatterMultiplier,
+                y: dy * (350 + Math.random() * 250) * shatterMultiplier,
+                rotation: (Math.random() - 0.5) * (isMobile ? 60 : 120),
                 scale: 0.2 + Math.random() * 0.4,
                 opacity: 0,
                 filter: `brightness(${2 + Math.random() * 4}) hue-rotate(${Math.random() * 90}deg)`,

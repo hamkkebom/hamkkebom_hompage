@@ -594,10 +594,11 @@ export default function WorksGalleryPage() {
                 .category-filter-container {
                     width: 100%;
                     max-width: 1400px;
-                    margin: 0 auto 5rem;
-                    padding: 0 2rem;
+                    margin: 0 auto 3rem;
+                    padding: 0 1rem;
                     display: flex;
-                    justify-content: center;
+                    justify-content: flex-start;
+                    overflow-x: auto;
                 }
 
                 .category-filter-scroll {
@@ -772,7 +773,18 @@ export default function WorksGalleryPage() {
 
                 /* Mobile overrides for scatter layout */
                 @media (max-width: 768px) {
-                    .scattered-container { gap: 4rem; }
+                    .director-cut-header {
+                        margin-bottom: 2rem;
+                    }
+                    .category-filter-container {
+                        margin-bottom: 2rem;
+                        padding: 0 0.5rem;
+                    }
+                    .category-pill {
+                        padding: 0.5rem 1rem;
+                        font-size: 0.85rem;
+                    }
+                    .scattered-container { gap: 2rem; }
                     .work-card-wrapper.layout-type-0,
                     .work-card-wrapper.layout-type-1,
                     .work-card-wrapper.layout-type-2 {
@@ -783,11 +795,25 @@ export default function WorksGalleryPage() {
                     .work-card-wrapper .work-card {
                         width: 100% !important;
                     }
-                    .marquee-card {
-                        width: 280px;
-                        height: 160px;
+                    .film-frame {
+                        width: 200px !important;
+                        height: 115px !important;
+                        margin-right: 0.5rem !important;
                     }
-                    .main-heading { font-size: 3rem; }
+                    .film-strip-container {
+                        margin-bottom: 3rem;
+                    }
+                    .main-heading { font-size: 2.5rem; }
+                    .work-info {
+                        padding: 1.5rem 1rem !important;
+                    }
+                    .work-title {
+                        font-size: clamp(1.2rem, 4vw, 2rem) !important;
+                    }
+                    .work-category {
+                        font-size: 0.7rem !important;
+                        letter-spacing: 0.15em !important;
+                    }
                 }
 
                 .work-card {
@@ -835,7 +861,7 @@ export default function WorksGalleryPage() {
                     bottom: 0;
                     left: 0;
                     width: 100%;
-                    padding: 3rem 2.5rem;
+                    padding: 2rem 1.5rem;
                     z-index: 10;
                     transform: translateY(10px);
                     transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);

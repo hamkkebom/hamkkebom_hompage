@@ -141,10 +141,31 @@ export default function ContactAndFooter() {
                 }
                 @media (max-width: 900px) {
                     .contact-footer-grid {
-                        padding: 5rem 1.5rem !important;
+                        padding: 4rem 1rem !important;
                     }
                     .footer-container {
-                        padding: 2rem 1.5rem !important;
+                        padding: 2rem 1rem !important;
+                    }
+                }
+                @media (max-width: 768px) {
+                    .contact-footer-grid {
+                        padding: 3rem 1rem !important;
+                    }
+                    .contact-footer-grid > div {
+                        padding: 3rem 1.5rem !important;
+                        border-radius: 16px !important;
+                    }
+                    .contact-footer-grid button {
+                        width: 100% !important;
+                        justify-content: center !important;
+                    }
+                    .footer-container > div:first-child {
+                        flex-direction: column !important;
+                        align-items: center !important;
+                        text-align: center !important;
+                    }
+                    .footer-container > div:first-child > div:last-child {
+                        justify-content: center !important;
                     }
                 }
             `}</style>

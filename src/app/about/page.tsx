@@ -72,8 +72,8 @@ export default function AboutPage() {
                 {/* Close/Back Button Overlay */}
                 <div style={{
                     position: "absolute",
-                    top: "120px",
-                    left: "2rem",
+                    top: "clamp(70px, 15vw, 120px)",
+                    left: "1rem",
                     zIndex: 50
                 }}>
                     <Link href="/" style={{ textDecoration: "none" }}>
@@ -133,7 +133,7 @@ export default function AboutPage() {
                                 display: "flex",
                                 justifyContent: "center",
                                 alignItems: "center",
-                                padding: "2rem", // Safe area padding
+                                padding: "1rem", // 모바일 safe area padding
                             }}
                         >
                             {/* Inner Wrapper to contain the 4:5 image ratio optimally on screen */}
