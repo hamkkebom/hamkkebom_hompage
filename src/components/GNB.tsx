@@ -104,6 +104,24 @@ export default function GNB() {
         ];
 
     return (
+        <>
+        <style>{`
+            @media (max-width: 768px) {
+                .gnb-header {
+                    padding: 1rem 1.5rem !important;
+                }
+                .gnb-logo {
+                    width: 100px !important;
+                    height: 40px !important;
+                }
+                .gnb-desktop-nav {
+                    display: none !important;
+                }
+                .gnb-desktop-utils {
+                    display: none !important;
+                }
+            }
+        `}</style>
         <header
             className="gnb-header"
             suppressHydrationWarning
@@ -556,29 +574,7 @@ export default function GNB() {
                     )
                 })}
             </div>
-        </header >
+        </header>
+        </>
     );
 }
-
-// GNB 모바일 CSS — SSR/CSR 불일치 방지를 위해 CSS @media 사용
-const GnbStyles = () => (
-    <style>{`
-        @media (max-width: 768px) {
-            .gnb-header {
-                padding: 1rem 1.5rem !important;
-            }
-            .gnb-logo {
-                width: 100px !important;
-                height: 40px !important;
-            }
-            .gnb-desktop-nav {
-                display: none !important;
-            }
-            .gnb-desktop-utils {
-                display: none !important;
-            }
-        }
-    `}</style>
-);
-
-export { GnbStyles };
