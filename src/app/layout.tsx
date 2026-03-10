@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Noto_Sans_KR, Outfit } from "next/font/google";
 import "./globals.css";
 
@@ -13,6 +13,13 @@ const outfit = Outfit({
   weight: ["300", "400", "500", "700", "900"],
   variable: "--font-outfit",
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
 
 export const metadata: Metadata = {
   title: "함께봄 | 100년 가는 노래광고영상",
