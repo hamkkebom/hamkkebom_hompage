@@ -144,7 +144,7 @@ export default function HeroScene() {
                 video.playsInline = true;
                 video.style.cssText = "position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;pointer-events:none;opacity:0;transition:opacity 0.6s ease;";
                 // ★ Desync each tile's playback by random offset → mosaic "glitch" feel
-                const offset = Math.random() * 4;
+                const offset = Math.random() * 0.8;
                 video.addEventListener("loadedmetadata", () => { video.currentTime = offset; }, { once: true });
                 video.addEventListener("playing", () => { video.style.opacity = "1"; }, { once: true });
                 const sourceWebm = document.createElement("source");
