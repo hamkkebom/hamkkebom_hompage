@@ -7,11 +7,13 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 // --- TILE GRID CONFIGURATION ---
-const COLS = 5;
-const ROWS = 4;
-const TOTAL_TILES = COLS * ROWS;
+// Desktop: 5x4=20 tiles | Mobile: 2x2=4 tiles (prevents video decoder crash)
+const DESKTOP_COLS = 5;
+const DESKTOP_ROWS = 4;
+const MOBILE_COLS = 2;
+const MOBILE_ROWS = 2;
 
-// --- CANVAS 2D SPARK PARTICLE ENGINE ---
+// --- CANVAS 2D SPARK PARTICLE ENGINE (Desktop only) ---
 interface Spark {
     x: number;
     y: number;
@@ -90,19 +92,22 @@ function initSparkCanvas(canvas: HTMLCanvasElement) {
     };
 }
 
-// Build tile geometry once (static)
-const TILE_GEOMETRY: { row: number; col: number; clipPath: string }[] = [];
-for (let row = 0; row < ROWS; row++) {
-    for (let col = 0; col < COLS; col++) {
-        const l = (col / COLS) * 100;
-        const t = (row / ROWS) * 100;
-        const r = ((col + 1) / COLS) * 100;
-        const b = ((row + 1) / ROWS) * 100;
-        TILE_GEOMETRY.push({
-            row, col,
-            clipPath: `polygon(${l}% ${t}%, ${r}% ${t}%, ${r}% ${b}%, ${l}% ${b}%)`
-        });
+// Build tile geometry dynamically based on grid dimensions
+function buildTileGeometry(cols: number, rows: number) {
+    const tiles: { row: number; col: number; clipPath: string }[] = [];
+    for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < cols; col++) {
+            const l = (col / cols) * 100;
+            const t = (row / rows) * 100;
+            const r = ((col + 1) / cols) * 100;
+            const b = ((row + 1) / rows) * 100;
+            tiles.push({
+                row, col,
+                clipPath: `polygon(${l}% ${t}%, ${r}% ${t}%, ${r}% ${b}%, ${l}% ${b}%)`
+            });
+        }
     }
+    return tiles;
 }
 
 export default function HeroScene() {
@@ -111,24 +116,43 @@ export default function HeroScene() {
     const baseVideoRef = useRef<HTMLVideoElement>(null);
     const sparkEngineRef = useRef<ReturnType<typeof initSparkCanvas> | null>(null);
     const [tilesLoaded, setTilesLoaded] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
     const shatterSetupDone = useRef(false);
     const isMobileRef = useRef(false);
 
-    // Inject <video> into each tile progressively to avoid 20-video decoder bottleneck
+    // Determine grid dimensions based on device
+    const cols = isMobile ? MOBILE_COLS : DESKTOP_COLS;
+    const rows = isMobile ? MOBILE_ROWS : DESKTOP_ROWS;
+    const tileGeometry = buildTileGeometry(cols, rows);
+
+    // Detect mobile on mount (before first render with tiles)
+    useEffect(() => {
+        const mobile = window.innerWidth <= 768;
+        isMobileRef.current = mobile;
+        setIsMobile(mobile);
+    }, []);
+
+    // Inject <video> into each tile progressively to avoid video decoder bottleneck
     const injectTileVideos = useCallback(() => {
         if (tilesLoaded) return;
         setTilesLoaded(true);
 
+        const currentCols = isMobileRef.current ? MOBILE_COLS : DESKTOP_COLS;
+        const currentRows = isMobileRef.current ? MOBILE_ROWS : DESKTOP_ROWS;
+
         const tileDivs = document.querySelectorAll<HTMLElement>(".hero-tile");
         const tilesArr = Array.from(tileDivs).map((tile, i) => {
-            const row = Math.floor(i / COLS);
-            const col = i % COLS;
-            const centerRow = (ROWS - 1) / 2;
-            const centerCol = (COLS - 1) / 2;
+            const row = Math.floor(i / currentCols);
+            const col = i % currentCols;
+            const centerRow = (currentRows - 1) / 2;
+            const centerCol = (currentCols - 1) / 2;
             const dist = Math.sqrt(Math.pow(row - centerRow, 2) + Math.pow(col - centerCol, 2));
             return { tile, dist };
         });
         tilesArr.sort((a, b) => b.dist - a.dist);
+
+        // Mobile: faster injection (4 tiles), Desktop: staggered (20 tiles)
+        const delayPerTile = isMobileRef.current ? 50 : 80;
 
         tilesArr.forEach(({ tile }, index) => {
             setTimeout(() => {
@@ -138,6 +162,10 @@ export default function HeroScene() {
                 video.loop = true;
                 video.muted = true;
                 video.playsInline = true;
+                // Mobile: reduce video quality hints
+                if (isMobileRef.current) {
+                    video.preload = "none";
+                }
                 video.style.cssText = "position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;pointer-events:none;opacity:0;transition:opacity 0.6s ease;";
                 video.addEventListener('playing', () => {
                     video.style.opacity = '1';
@@ -153,16 +181,19 @@ export default function HeroScene() {
                 sourceMp4.type = "video/mp4";
                 video.appendChild(sourceMp4);
                 tile.appendChild(video);
-            }, index * 80); // 80ms delay between each tile = 1.6s total for 20 tiles
+            }, index * delayPerTile);
         });
     }, [tilesLoaded]);
 
     useEffect(() => {
-        if (!containerRef.current || !canvasRef.current) return;
+        if (!containerRef.current) return;
 
-        isMobileRef.current = window.innerWidth <= 768;
+        const mobile = isMobileRef.current;
 
-        sparkEngineRef.current = initSparkCanvas(canvasRef.current);
+        // ★ Mobile: Skip particle engine entirely (saves CPU + GPU)
+        if (!mobile && canvasRef.current) {
+            sparkEngineRef.current = initSparkCanvas(canvasRef.current);
+        }
 
         const glitchOverlay = document.querySelector<HTMLElement>(".glitch-overlay");
 
@@ -174,17 +205,21 @@ export default function HeroScene() {
         const tiles = gsap.utils.toArray<HTMLElement>(".hero-tile");
         gsap.set(tiles, { transformOrigin: "center center" });
 
-        const isMobile = isMobileRef.current;
+        const currentCols = mobile ? MOBILE_COLS : DESKTOP_COLS;
+        const currentRows = mobile ? MOBILE_ROWS : DESKTOP_ROWS;
 
         const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: "#hero-section",
                 start: "top top",
-                end: isMobile ? "+=800" : "+=2500",
-                scrub: isMobile ? 0.2 : 0.3,
+                end: mobile ? "+=800" : "+=2500",
+                scrub: mobile ? 0.2 : 0.3,
                 pin: true,
                 onUpdate: (self) => {
-                    sparkEngineRef.current?.setProgress(self.progress);
+                    // Only update particles on desktop
+                    if (!mobile) {
+                        sparkEngineRef.current?.setProgress(self.progress);
+                    }
                 },
                 onLeave: () => {
                     // ★ Hero 섹션을 지나갔을 때: 모든 비디오 정지
@@ -240,20 +275,20 @@ export default function HeroScene() {
             }, 0.09);
 
         // Phase 3: Tiles Shatter
-        const shatterMultiplier = isMobile ? 0.4 : 1;
+        const shatterMultiplier = mobile ? 0.4 : 1;
 
         tiles.forEach((tile, i) => {
-            const row = Math.floor(i / COLS);
-            const col = i % COLS;
-            const dx = (col - (COLS - 1) / 2) * 1;
-            const dy = (row - (ROWS - 1) / 2) * 1;
+            const row = Math.floor(i / currentCols);
+            const col = i % currentCols;
+            const dx = (col - (currentCols - 1) / 2) * 1;
+            const dy = (row - (currentRows - 1) / 2) * 1;
             const dist = Math.sqrt(dx * dx + dy * dy) + 0.5;
-            const delay = 0.08 + dist * (isMobile ? 0.02 : 0.04) + Math.random() * 0.03;
+            const delay = 0.08 + dist * (mobile ? 0.02 : 0.04) + Math.random() * 0.03;
 
             tl.to(tile, {
                 x: dx * (400 + Math.random() * 300) * shatterMultiplier,
                 y: dy * (350 + Math.random() * 250) * shatterMultiplier,
-                rotation: (Math.random() - 0.5) * (isMobile ? 60 : 120),
+                rotation: (Math.random() - 0.5) * (mobile ? 60 : 120),
                 scale: 0.2 + Math.random() * 0.4,
                 opacity: 0,
                 filter: `brightness(${2 + Math.random() * 4}) hue-rotate(${Math.random() * 90}deg)`,
@@ -315,13 +350,14 @@ export default function HeroScene() {
             }}
         >
             {/* ★ Layer 0: SINGLE Base Video — 즉시 로드, 타일 뒤에서 깔림 ★ */}
+            {/* Mobile: preload=metadata to reduce initial memory, Desktop: preload=auto */}
             <video
                 ref={baseVideoRef}
                 autoPlay
                 loop
                 muted
                 playsInline
-                preload="auto"
+                preload={isMobile ? "metadata" : "auto"}
                 style={{
                     position: "absolute",
                     top: 0,
@@ -370,7 +406,7 @@ export default function HeroScene() {
             {/* ★ Layer 2: Tile Grid — clip-path만 있는 빈 div, 
                  베이스 영상이 gaps 사이로 보이면서 타일 느낌 발생.
                  스크롤 시 JS로 <video>를 주입하여 Shatter 발동 ★ */}
-            {TILE_GEOMETRY.map((geo, idx) => (
+            {tileGeometry.map((geo, idx) => (
                 <div
                     key={`tile-${geo.row}-${geo.col}`}
                     className="hero-tile"
@@ -413,17 +449,19 @@ export default function HeroScene() {
                 animation: "heroScanline 0.1s steps(3) infinite",
             }} />
 
-            {/* Layer 5: Canvas 2D Spark Particles */}
-            <canvas
-                ref={canvasRef}
-                style={{
-                    position: "absolute",
-                    top: 0, left: 0,
-                    width: "100%", height: "100%",
-                    zIndex: 7,
-                    pointerEvents: "none",
-                }}
-            />
+            {/* Layer 5: Canvas 2D Spark Particles (Desktop only — disabled on mobile for CPU savings) */}
+            {!isMobile && (
+                <canvas
+                    ref={canvasRef}
+                    style={{
+                        position: "absolute",
+                        top: 0, left: 0,
+                        width: "100%", height: "100%",
+                        zIndex: 7,
+                        pointerEvents: "none",
+                    }}
+                />
+            )}
 
             {/* Layer 6: Slogan (HIDDEN inline to prevent FOUC) */}
             <div style={{

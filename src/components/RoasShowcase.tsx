@@ -19,6 +19,8 @@ export default function RoasShowcase() {
 
     // To trigger lazy loading strictly when a card is in the center
     const [activeIndex, setActiveIndex] = useState(0);
+    // Track which iframes have been loaded (once loaded, keep them alive)
+    const [loadedIframes, setLoadedIframes] = useState<Set<number>>(new Set());
 
     useEffect(() => {
         if (!sectionRef.current || !trackRef.current || !roasNumberRef.current) return;
@@ -95,7 +97,14 @@ export default function RoasShowcase() {
         };
     }, []); // Empty dependency array to run once on mount
 
-    // --- 3. Animate Background Number when Active Index Changes ---
+    // --- 3. Lazy-load iframe only when card becomes active ---
+    useEffect(() => {
+        if (!loadedIframes.has(activeIndex)) {
+            setLoadedIframes(prev => new Set(prev).add(activeIndex));
+        }
+    }, [activeIndex, loadedIframes]);
+
+    // --- 4. Animate Background Number when Active Index Changes ---
     useEffect(() => {
         if (!roasNumberRef.current) return;
 
@@ -257,8 +266,8 @@ export default function RoasShowcase() {
                                     {camp.platform}
                                 </div>
 
-                                {/* Video or Placeholder */}
-                                {camp.videoId !== "placeholder" && (
+                                {/* Video — lazy loaded only when card becomes active (saves 2-3 iframe processes on initial load) */}
+                                {camp.videoId !== "placeholder" && loadedIframes.has(idx) && (
                                     <iframe
                                         width="100%"
                                         height="100%"
@@ -266,6 +275,7 @@ export default function RoasShowcase() {
                                         title="YouTube video player"
                                         frameBorder="0"
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        loading="lazy"
                                         style={{
                                             pointerEvents: "none",
                                             position: "absolute",
