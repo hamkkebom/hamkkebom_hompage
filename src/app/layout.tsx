@@ -24,6 +24,11 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: "함께봄 | 100년 가는 노래광고영상",
   description: "AI송을 기반으로 한 압도적인 영상 브랜딩",
+  verification: {
+    other: {
+      "naver-site-verification": ["cc5029b2a4ab2c6cda70d3520165c6338db2c2d7"],
+    },
+  },
 };
 
 export default function RootLayout({
