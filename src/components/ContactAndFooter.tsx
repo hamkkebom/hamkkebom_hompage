@@ -123,9 +123,9 @@ export default function ContactAndFooter() {
                         </p>
                     </div>
                     <div style={{ display: "flex", gap: "1.5rem", color: "var(--text-secondary)", fontSize: "0.9rem" }}>
-                        <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" onMouseEnter={(e) => e.currentTarget.style.color = "#fff"} onMouseLeave={(e) => e.currentTarget.style.color = "var(--text-secondary)"} style={{ transition: "color 0.3s" }}>Instagram</a>
+                        <a href="https://www.instagram.com/hamkkebom_official" target="_blank" rel="noopener noreferrer" onMouseEnter={(e) => e.currentTarget.style.color = "#fff"} onMouseLeave={(e) => e.currentTarget.style.color = "var(--text-secondary)"} style={{ transition: "color 0.3s" }}>Instagram</a>
                         <a href="https://www.youtube.com/@hamkkesong" target="_blank" rel="noopener noreferrer" onMouseEnter={(e) => e.currentTarget.style.color = "#fff"} onMouseLeave={(e) => e.currentTarget.style.color = "var(--text-secondary)"} style={{ transition: "color 0.3s" }}>YouTube</a>
-                        <a href="https://blog.naver.com" target="_blank" rel="noopener noreferrer" onMouseEnter={(e) => e.currentTarget.style.color = "#fff"} onMouseLeave={(e) => e.currentTarget.style.color = "var(--text-secondary)"} style={{ transition: "color 0.3s" }}>Blog</a>
+                        <a href="https://hamkkebom.kr/" target="_blank" rel="noopener noreferrer" onMouseEnter={(e) => e.currentTarget.style.color = "#fff"} onMouseLeave={(e) => e.currentTarget.style.color = "var(--text-secondary)"} style={{ transition: "color 0.3s" }}>Blog</a>
                     </div>
                 </div>
                 <div style={{ maxWidth: "1400px", margin: "2rem auto 0", borderTop: "1px solid rgba(255,255,255,0.05)", paddingTop: "2rem", color: "rgba(255,255,255,0.2)", fontSize: "0.8rem", textAlign: "center" }}>
