@@ -22,6 +22,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://hamkkebom.com"),
   title: "함께봄 | 100년 가는 노래광고영상",
   description: "AI송을 기반으로 한 압도적인 영상 브랜딩",
   verification: {
