@@ -14,6 +14,35 @@ const outfit = Outfit({
   variable: "--font-outfit",
 });
 
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "함께봄",
+  url: "https://hamkkebom.com",
+  logo: "https://hamkkebom.com/logo.png",
+  description: "AI 음원 기반 브랜드 영상 제작 및 퍼포먼스 마케팅 전문 스튜디오",
+  email: "hamkkebom12@gmail.com",
+  sameAs: [
+    "https://www.instagram.com/hamkkebom_official",
+    "https://www.youtube.com/@hamkkesong",
+    "https://hamkkebom.kr",
+  ],
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "효자로7길 10 1층",
+    addressLocality: "종로구",
+    addressRegion: "서울특별시",
+    addressCountry: "KR",
+  },
+};
+
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "함께봄",
+  url: "https://hamkkebom.com",
+};
+
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
@@ -94,6 +123,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationJsonLd),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+        />
+      </head>
       <body className={`${notoSansKr.variable} ${outfit.variable} antialiased`}>
         {children}
       </body>

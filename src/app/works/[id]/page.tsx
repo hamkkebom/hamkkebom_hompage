@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { createClient } from '@supabase/supabase-js';
 import CinematicPlayer from "@/components/CinematicPlayer";
 
@@ -37,6 +38,59 @@ async function getStreamVideoDetails(uid: string) {
     } catch {
         return null;
     }
+}
+
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { id } = await params;
+
+  const fallbackMetadata: Metadata = {
+    title: "작품 상세",
+    description: "함께봄이 제작한 브랜드 영상 작품을 감상해 보세요.",
+    alternates: { canonical: `https://hamkkebom.com/works/${id}` },
+  };
+
+  try {
+    const videoData = await getStreamVideoDetails(id);
+
+    if (!videoData) return fallbackMetadata;
+
+    const title =
+      videoData.meta.name !== "Untitled Project"
+        ? videoData.meta.name
+        : "함께봄 포트폴리오 작품";
+
+    const thumbnailUrl = `https://videodelivery.net/${videoData.uid}/thumbnails/thumbnail.jpg`;
+
+    return {
+      title,
+      description: `함께봄이 제작한 "${title}" — AI 음원과 시네마틱 영상이 결합된 브랜드 콘텐츠`,
+      alternates: { canonical: `https://hamkkebom.com/works/${id}` },
+      openGraph: {
+        title: `${title} | 함께봄`,
+        description: `AI 음원 기반 브랜드 영상: "${title}" — 함께봄 포트폴리오`,
+        type: "video.other",
+        url: `https://hamkkebom.com/works/${id}`,
+        images: [
+          {
+            url: thumbnailUrl,
+            width: 1280,
+            height: 720,
+            alt: title,
+          },
+        ],
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: `${title} | 함께봄`,
+        description: `AI 음원 기반 브랜드 영상: "${title}"`,
+        images: [thumbnailUrl],
+      },
+    };
+  } catch {
+    return fallbackMetadata;
+  }
 }
 
 export default async function WorkDetailPage({ params }: PageProps) {
