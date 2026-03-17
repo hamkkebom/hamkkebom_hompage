@@ -57,7 +57,7 @@ const HorizontalMarqueeParallax = ({ highlightColor }: { highlightColor: string 
                         willChange: "transform"
                     }}
                 >
-                    단순한 툴 교육을 넘어선,
+                    AI 시대, 사람과 기업이
                 </motion.h2>
 
                 <motion.h2
@@ -73,7 +73,7 @@ const HorizontalMarqueeParallax = ({ highlightColor }: { highlightColor: string 
                         willChange: "transform"
                     }}
                 >
-                    AI 기술 기반의 콘텐츠 제작 파이프라인,
+                    함께 성장하는 교육과 전략
                 </motion.h2>
 
                 <motion.h2
@@ -91,55 +91,92 @@ const HorizontalMarqueeParallax = ({ highlightColor }: { highlightColor: string 
                         willChange: "transform"
                     }}
                 >
-                    함께봄만의 독보적인 <br className={styles.mobileBreak} />실무 커리큘럼.
+                    실무 중심 <br className={styles.mobileBreak} />맞춤형 AI 교육 & 컨설팅.
                 </motion.h2>
             </div>
         </motion.div>
     );
 };
 
-const team = {
-    id: "education",
-    title: "교육팀",
-    subtitle: "Creator Education Division",
-    tag: "EDUCATION TEAM",
-    color: "#10b981",
-    bgColor: "rgba(16, 185, 129, 0.12)",
-    vision: {
-        title: "이론이 아닌, 실무를 가르칩니다",
-        body: "함께봄 교육팀은 현업에서 바로 쓸 수 있는 실무 밀착형 교육을 지향합니다. 이론에 머물지 않고, 실제 수익을 창출할 수 있는 콘텐츠 기획력과 제작 기술, 마케팅 스킬을 전수합니다. 수강생이 교육 이수 후 독립적으로 프로젝트를 수행하고 수익화할 수 있는 수준까지 도달하는 것을 목표로 합니다.",
-    },
-    services: {
-        title: "핵심 서비스 영역",
+const COLOR = "#10b981";
+
+const serviceCategories = [
+    {
+        num: "01",
+        title: "기업 맞춤형 AI 교육",
+        slogan: "이제 AI는 선택이 아닌 필수, 실무에 바로 쓰는 AI 교육",
+        desc: "직무·직급·산업별로 설계된 맞춤형 AI 교육 프로그램으로 임직원의 AI 활용 역량을 체계적으로 향상시킵니다. 이론이 아닌 실무 중심 커리큘럼으로 교육 효과를 극대화합니다.",
         items: [
-            "【 교육내용 】",
-            "AI 활용 영상 제작 교육 (온/오프라인)",
-            "광고 홍보영상 제작 실무 교육",
-            "실무 연계형 퍼스널 브랜딩 교육",
-            "【 교육부터 수익화까지! 】",
-            "AI 퍼스널브랜딩 실무자 자격증 취득 후, 전속 프리랜서 계약",
-            "취미 영상으로 수익화 컨설팅 및 사업화 지원",
+            "생성형 AI(ChatGPT · Gemini · Claude 등) 실무 활용 교육",
+            "직무별 맞춤형 AI 활용 커리큘럼 설계 및 운영",
+            "AI 리터러시 기초 과정 (AI 입문·개념 이해)",
+            "온라인 · 오프라인 · 혼합형(블렌디드) 교육 운영",
+        ],
+        subItems: [
+            "마케팅팀: AI 콘텐츠 기획·카피라이팅·이미지 생성",
+            "기획팀: AI 리서치·보고서 작성·데이터 분석",
+            "영업팀: AI 제안서·고객 응대·CRM 활용",
+            "경영진: AI 트렌드·전략적 의사결정 활용",
         ],
     },
-    workflow: {
-        title: "교육 프로세스",
-        steps: [
-            { num: "01", text: "수준 진단 & 맞춤 커리큘럼" },
-            { num: "02", text: "실습 중심 집중 교육" },
-            { num: "03", text: "포트폴리오 제작 & 피드백" },
-            { num: "04", text: "수익화 / 취업 연계 컨설팅" },
+    {
+        num: "02",
+        title: "AI 툴 실습 교육",
+        slogan: "직접 써봐야 압니다, 손으로 익히는 AI 툴 실전 교육",
+        desc: "ChatGPT·이미지 생성 AI·영상 제작 AI·업무 자동화 툴까지 현장에서 바로 쓸 수 있는 AI 도구 활용법을 실습 중심으로 교육합니다.",
+        items: [
+            "ChatGPT · Claude · Gemini 프롬프트 엔지니어링 실습",
+            "AI 이미지 생성 도구 활용 (Midjourney · DALL-E · Stable Diffusion)",
+            "AI 영상 제작 툴 교육 (Sora · Runway · Kling 등)",
+            "AI 업무 자동화 툴 교육 (Zapier · Notion AI · Make 등)",
+            "AI 발표 자료 · 문서 작성 자동화 실습",
         ],
     },
-    strength: {
-        title: "왜 함께봄 교육팀인가?",
-        body: "현업에서 실제로 영상을 제작하고 마케팅을 집행하는 실무자들이 직접 교육을 진행합니다. 교과서적인 이론이 아니라, 클라이언트 요청에 대응하고 성과를 내는 실전 노하우를 전수합니다. 특히 AI 작곡, 딥페이크 활용, 자동화 편집 등 최신 AI 기술을 접목한 콘텐츠 제작 교육은 함께봄만의 독보적인 강점입니다. 교육 이수자의 대다수가 실제 프리랜서로 활동하거나 자체 브랜드를 런칭하고 있습니다.",
+    {
+        num: "03",
+        title: "창업 & 비즈니스 성장 컨설팅",
+        slogan: "사업의 처음부터 끝까지, 든든한 AI 성장 파트너",
+        desc: "예비 창업자·소상공인·스타트업을 위한 AI 기반 비즈니스 전략 컨설팅으로 사업 모델 수립부터 브랜딩, 마케팅 전략까지 종합적으로 지원합니다.",
+        items: [
+            "사업 아이디어 검증 및 비즈니스 모델 설계",
+            "AI 활용 브랜드 전략 수립 및 네이밍·슬로건 개발",
+            "창업 초기 단계별 성장 로드맵 수립",
+            "소상공인·스타트업 대상 온라인 진출 전략 컨설팅",
+            "사업계획서 작성 지원 (AI 활용 문서 고도화)",
+            "영상제작자 별님 교육, 지원, 관리",
+        ],
     },
-    stats: [
-        { number: "200+", label: "교육 수료생" },
-        { number: "92%", label: "수료 후 실무 진출률" },
-        { number: "4.9/5", label: "수강생 만족도" },
-    ],
-};
+    {
+        num: "04",
+        title: "정부지원사업 연계 · 자격 인증 컨설팅",
+        slogan: "받을 수 있는 지원금, 놓치지 않도록 함께 챙깁니다",
+        desc: "정부·지자체의 다양한 지원사업과 AI 관련 자격 과정을 연계하여 교육비 부담을 줄이고 사업 성장 기회를 극대화합니다.",
+        items: [
+            "정부·지자체 지원사업 탐색 및 신청 컨설팅",
+            "내일배움카드 · HRD 기업 훈련 연계 교육 운영",
+            "K-디지털 · AI 바우처 지원사업 연계 컨설팅",
+            "AI 관련 자격증 취득 과정 (AIP · AI+X 자격 등)",
+            "공모전 · 경진대회 참가 기획 및 출품 지원",
+        ],
+        subItems: [
+            "창업 지원금 · 소상공인 지원사업 · R&D 지원사업 등",
+        ],
+    },
+];
+
+const processSteps = [
+    { num: "01", label: "현황 진단", desc: "니즈 파악" },
+    { num: "02", label: "맞춤 설계", desc: "커리큘럼·전략" },
+    { num: "03", label: "교육·컨설팅", desc: "실습·실행" },
+    { num: "04", label: "사후 관리", desc: "성과 측정·개선" },
+];
+
+const summaryRows = [
+    { area: "기업 맞춤 AI 교육", badge: "#10b981", target: "기업 임직원", services: "직무별 AI 활용·생성형 AI·리터러시" },
+    { area: "AI 툴 실습 교육", badge: "#34d399", target: "개인·팀", services: "ChatGPT·이미지·영상·자동화 툴" },
+    { area: "창업 & 비즈니스 컨설팅", badge: "#f59e0b", target: "창업자·소상공인·영상제작자", services: "사업모델·브랜딩·온라인 진출 전략" },
+    { area: "정부지원사업 연계", badge: "#8b5cf6", target: "기업·개인", services: "지원금·바우처·자격증·공모전" },
+];
 
 const easeOut = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
@@ -164,9 +201,9 @@ export default function EducationPage() {
                     animate={headerInView ? { opacity: 1, y: 0 } : {}}
                     transition={{ duration: 0.8, ease: easeOut }}
                 >
-                    <p className={styles.heroTagline} style={{ color: team.color }}>{team.tag}</p>
+                    <p className={styles.heroTagline} style={{ color: COLOR }}>AI EDUCATION & CONSULTING TEAM</p>
                     <h1 className={styles.heroTitle}>
-                        <span style={{ color: team.color }}>{team.title}</span> 서비스 상세내용
+                        <span style={{ color: COLOR }}>AI 교육 & 컨설팅팀</span> 서비스 상세내용
                     </h1>
                 </motion.div>
 
@@ -179,30 +216,14 @@ export default function EducationPage() {
                     <Link href="/" style={{ textDecoration: "none" }}>
                         <button
                             style={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: "0.5rem",
-                                background: "rgba(0,0,0,0.5)",
-                                backdropFilter: "blur(10px)",
-                                border: "1px solid rgba(255,255,255,0.2)",
-                                color: "#fff",
-                                padding: "0.8rem 1.5rem",
-                                borderRadius: "30px",
-                                cursor: "pointer",
-                                fontSize: "1rem",
-                                fontWeight: 600,
-                                transition: "all 0.3s",
+                                display: "flex", alignItems: "center", gap: "0.5rem",
+                                background: "rgba(0,0,0,0.5)", backdropFilter: "blur(10px)",
+                                border: "1px solid rgba(255,255,255,0.2)", color: "#fff",
+                                padding: "0.8rem 1.5rem", borderRadius: "30px", cursor: "pointer",
+                                fontSize: "1rem", fontWeight: 600, transition: "all 0.3s",
                             }}
-                            onMouseEnter={(e) => {
-                                e.currentTarget.style.background = "rgba(255,255,255,0.1)";
-                                e.currentTarget.style.borderColor = team.color;
-                                e.currentTarget.style.color = team.color;
-                            }}
-                            onMouseLeave={(e) => {
-                                e.currentTarget.style.background = "rgba(0,0,0,0.5)";
-                                e.currentTarget.style.borderColor = "rgba(255,255,255,0.2)";
-                                e.currentTarget.style.color = "#fff";
-                            }}
+                            onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.1)"; e.currentTarget.style.borderColor = COLOR; e.currentTarget.style.color = COLOR; }}
+                            onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(0,0,0,0.5)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.2)"; e.currentTarget.style.color = "#fff"; }}
                         >
                             <ArrowLeft size={20} />
                             홈으로 돌아가기
@@ -228,13 +249,13 @@ export default function EducationPage() {
                         </div>
                     </div>
                     <div className={styles.teamTitleGroup}>
-                        <h2 className={styles.teamName} style={{ fontSize: "2rem" }}>{team.subtitle}</h2>
-                        <span className={styles.teamSubtitle} style={{ marginTop: "0.5rem" }}>크리에이터를 육성하는 교육 솔루션.</span>
+                        <h2 className={styles.teamName} style={{ fontSize: "2rem" }}>AI Education & Consulting Division</h2>
+                        <span className={styles.teamSubtitle} style={{ marginTop: "0.5rem" }}>AI 시대, 사람과 기업이 함께 성장하는 교육과 전략</span>
                     </div>
                 </motion.div>
 
                 <div className={styles.contentGrid}>
-                    {/* Performance Stats Section (WHY US) */}
+                    {/* WHY US + Stats */}
                     <motion.div
                         className={styles.contentCard}
                         style={{ gridColumn: "1 / -1", backgroundColor: "transparent", border: "none", padding: "1rem 0" }}
@@ -243,38 +264,36 @@ export default function EducationPage() {
                         variants={{ ...fadUp, visible: { ...fadUp.visible, transition: { ...fadUp.visible.transition, delay: 0.1 } } }}
                     >
                         <div style={{ textAlign: "center", marginBottom: "4rem" }}>
-                            <span className={styles.cardLabel} style={{ color: team.color }}>WHY US</span>
-                            <h3 className={styles.cardTitle} style={{ fontSize: "2.2rem", marginBottom: "2rem" }}>왜 함께봄 교육팀인가?</h3>
-                            <HorizontalMarqueeParallax highlightColor={team.color} />
+                            <span className={styles.cardLabel} style={{ color: COLOR }}>WHY US</span>
+                            <h3 className={styles.cardTitle} style={{ fontSize: "2.2rem", marginBottom: "2rem" }}>왜 함께봄 AI 교육 & 컨설팅팀인가?</h3>
+                            <HorizontalMarqueeParallax highlightColor={COLOR} />
                         </div>
 
                         <div className={styles.performanceStatsGrid}>
                             <div className={styles.performanceCard}>
                                 <div className={styles.performanceNumberWrapper}>
-                                    <span className={styles.performanceNumber} style={{ color: team.color }}>
+                                    <span className={styles.performanceNumber} style={{ color: COLOR }}>
                                         <CountUp end={200} duration={2.5} enableScrollSpy scrollSpyOnce />
                                     </span>
-                                    <span className={styles.performanceSuffix} style={{ color: team.color }}>+</span>
+                                    <span className={styles.performanceSuffix} style={{ color: COLOR }}>+</span>
                                 </div>
                                 <span className={styles.performanceLabel}>교육 수료생</span>
                             </div>
-
                             <div className={styles.performanceCard}>
                                 <div className={styles.performanceNumberWrapper}>
-                                    <span className={styles.performanceNumber} style={{ color: team.color }}>
+                                    <span className={styles.performanceNumber} style={{ color: COLOR }}>
                                         <CountUp end={92} duration={2.5} enableScrollSpy scrollSpyOnce />
                                     </span>
-                                    <span className={styles.performanceSuffix} style={{ color: team.color }}>%</span>
+                                    <span className={styles.performanceSuffix} style={{ color: COLOR }}>%</span>
                                 </div>
                                 <span className={styles.performanceLabel}>수료 후 실무 진출률</span>
                             </div>
-
                             <div className={styles.performanceCard}>
                                 <div className={styles.performanceNumberWrapper}>
-                                    <span className={styles.performanceNumber} style={{ color: team.color }}>
+                                    <span className={styles.performanceNumber} style={{ color: COLOR }}>
                                         <CountUp end={4.9} decimals={1} duration={2.5} enableScrollSpy scrollSpyOnce />
                                     </span>
-                                    <span className={styles.performanceSuffix} style={{ color: team.color }}>/5</span>
+                                    <span className={styles.performanceSuffix} style={{ color: COLOR }}>/5</span>
                                 </div>
                                 <span className={styles.performanceLabel}>수강생 만족도</span>
                             </div>
@@ -288,39 +307,137 @@ export default function EducationPage() {
                         animate={sectionInView ? "visible" : "hidden"}
                         variants={{ ...fadUp, visible: { ...fadUp.visible, transition: { ...fadUp.visible.transition, delay: 0.2 } } }}
                     >
-                        <span className={styles.cardLabel} style={{ color: team.color }}>OUR VISION</span>
-                        <h3 className={styles.cardTitle}>{team.vision.title}</h3>
+                        <span className={styles.cardLabel} style={{ color: COLOR }}>OUR VISION</span>
+                        <h3 className={styles.cardTitle}>AI 시대, 사람과 기업이 함께 성장하는 교육과 전략</h3>
                         <div className={styles.cardBody}>
-                            <p>{team.vision.body}</p>
+                            <p>함께봄 AI 교육&컨설팅팀은 기업 임직원 AI 교육부터 창업 컨설팅, 정부지원사업 연계까지 실무 중심의 맞춤형 프로그램을 제공합니다. AI를 두려워하지 않고 업무에 바로 활용할 수 있는 역량을 갖출 수 있도록, 개인·기업·기관 모두에게 최적화된 솔루션을 설계합니다.</p>
                         </div>
                     </motion.div>
 
-                    {/* SERVICES */}
+                    {/* OUR STRENGTH */}
                     <motion.div
                         className={styles.contentCard}
                         initial="hidden"
                         animate={sectionInView ? "visible" : "hidden"}
+                        variants={{ ...fadUp, visible: { ...fadUp.visible, transition: { ...fadUp.visible.transition, delay: 0.25 } } }}
+                    >
+                        <span className={styles.cardLabel} style={{ color: COLOR }}>OUR STRENGTH</span>
+                        <div className={styles.strengthQuote}>
+                            <p className={styles.strengthQuoteText}>
+                                직무·직급·산업별로 설계된 맞춤형 AI 교육 프로그램으로 임직원의 AI 활용 역량을 체계적으로 향상시킵니다. 이론이 아닌 실무 중심 커리큘럼으로 교육 효과를 극대화합니다. 예비 창업자·소상공인·스타트업을 위한 AI 기반 비즈니스 전략 컨설팅으로 사업 모델 수립부터 브랜딩, 마케팅 전략까지 종합적으로 지원하며, 정부·지자체의 다양한 지원사업과 AI 관련 자격 과정을 연계하여 교육비 부담을 줄이고 사업 성장 기회를 극대화합니다. 온라인 · 오프라인 · 방문 교육 모두 가능하며, 기업 맞춤 커리큘럼 100% 설계합니다.
+                            </p>
+                        </div>
+                    </motion.div>
+
+                    {/* SERVICES — Category Cards */}
+                    <motion.div
+                        className={styles.contentCard}
+                        style={{ gridColumn: "1 / -1" }}
+                        initial="hidden"
+                        animate={sectionInView ? "visible" : "hidden"}
                         variants={{ ...fadUp, visible: { ...fadUp.visible, transition: { ...fadUp.visible.transition, delay: 0.3 } } }}
                     >
-                        <span className={styles.cardLabel} style={{ color: team.color }}>SERVICES</span>
-                        <h3 className={styles.cardTitle}>{team.services.title}</h3>
-                        <ul className={styles.serviceList}>
-                            {team.services.items.map((item, i) => {
-                                const isHeader = item.startsWith("【");
-                                return isHeader ? (
-                                    <h4 key={i} style={{ fontSize: "1.1rem", fontWeight: "bold", marginTop: i > 0 ? "1.5rem" : "0", marginBottom: "0.5rem", color: team.color }}>{item.replace(/[【】]/g, "").trim()}</h4>
-                                ) : (
-                                    <li key={i} className={styles.serviceItem}>
-                                        <span className={styles.serviceDot} style={{ backgroundColor: team.color }} />
-                                        <span>{item}</span>
-                                    </li>
-                                );
-                            })}
-                        </ul>
+                        <span className={styles.cardLabel} style={{ color: COLOR }}>SERVICES</span>
+                        <h3 className={styles.cardTitle}>서비스 구성</h3>
+
+                        <div className={styles.serviceCategoriesGrid}>
+                            {serviceCategories.map((cat) => (
+                                <div key={cat.num} className={styles.serviceCategoryCard} style={{ "--card-accent": COLOR } as React.CSSProperties}>
+                                    <div className={styles.serviceCategoryNumBar}>
+                                        <span className={styles.serviceCategoryNumber} style={{ color: COLOR }}>{cat.num}</span>
+                                    </div>
+                                    <div className={styles.serviceCategoryContent}>
+                                        <h4 className={styles.serviceCategoryTitle}>{cat.title}</h4>
+                                        <p className={styles.serviceCategorySlogan}>&ldquo;{cat.slogan}&rdquo;</p>
+                                        <p className={styles.serviceCategoryDesc}>{cat.desc}</p>
+                                        <ul className={styles.serviceCategoryItems}>
+                                            {cat.items.map((item, i) => (
+                                                <li key={i} className={styles.serviceCategoryItem}>
+                                                    <span className={styles.serviceCategoryItemDot} style={{ backgroundColor: COLOR }} />
+                                                    <span>{item}</span>
+                                                </li>
+                                            ))}
+                                            {cat.subItems && (
+                                                <ul className={styles.serviceSubItems}>
+                                                    {cat.subItems.map((sub, j) => (
+                                                        <li key={j} className={styles.serviceSubItem}>
+                                                            <span className={styles.serviceSubItemDash}>—</span>
+                                                            <span>{sub}</span>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            )}
+                                        </ul>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </motion.div>
+
+                    {/* PROCESS */}
+                    <motion.div
+                        className={styles.contentCard}
+                        style={{ gridColumn: "1 / -1" }}
+                        initial="hidden"
+                        animate={sectionInView ? "visible" : "hidden"}
+                        variants={{ ...fadUp, visible: { ...fadUp.visible, transition: { ...fadUp.visible.transition, delay: 0.4 } } }}
+                    >
+                        <span className={styles.cardLabel} style={{ color: COLOR }}>PROCESS</span>
+                        <h3 className={styles.cardTitle}>교육 & 컨설팅 프로세스</h3>
+
+                        <div className={styles.processTimeline}>
+                            {processSteps.map((step) => (
+                                <div key={step.num} className={styles.processTimelineStep}>
+                                    <div className={styles.processTimelineNum} style={{ backgroundColor: COLOR, "--step-glow": `${COLOR}40` } as React.CSSProperties}>{step.num}</div>
+                                    <div>
+                                        <div className={styles.processTimelineLabel}>{step.label}</div>
+                                        <div className={styles.processTimelineDesc}>{step.desc}</div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className={styles.sectionNote}>
+                            온라인 · 오프라인 · 방문 교육 모두 가능 &nbsp;|&nbsp; 기업 맞춤 커리큘럼 100% 설계
+                        </div>
+                    </motion.div>
+
+                    {/* SUMMARY TABLE */}
+                    <motion.div
+                        className={styles.contentCard}
+                        style={{ gridColumn: "1 / -1" }}
+                        initial="hidden"
+                        animate={sectionInView ? "visible" : "hidden"}
+                        variants={{ ...fadUp, visible: { ...fadUp.visible, transition: { ...fadUp.visible.transition, delay: 0.5 } } }}
+                    >
+                        <span className={styles.cardLabel} style={{ color: COLOR }}>OVERVIEW</span>
+                        <h3 className={styles.cardTitle}>한눈에 보는 서비스 요약</h3>
+
+                        <table className={styles.summaryTable}>
+                            <thead>
+                                <tr>
+                                    <th>서비스 영역</th>
+                                    <th>대상</th>
+                                    <th>주요 서비스</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {summaryRows.map((row, i) => (
+                                    <tr key={i}>
+                                        <td>
+                                            <span className={styles.summaryTableBadge} style={{ backgroundColor: `${row.badge}20`, color: row.badge }}>
+                                                {row.area}
+                                            </span>
+                                        </td>
+                                        <td>{row.target}</td>
+                                        <td>{row.services}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
                     </motion.div>
                 </div>
             </section>
-
         </main>
     );
 }
