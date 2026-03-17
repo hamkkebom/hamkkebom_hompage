@@ -278,20 +278,6 @@ export default function VideoProductionPage() {
                         </div>
                     </motion.div>
 
-                    {/* OUR STRENGTH */}
-                    <motion.div
-                        className={styles.contentCard}
-                        initial="hidden"
-                        animate={sectionInView ? "visible" : "hidden"}
-                        variants={{ ...fadUp, visible: { ...fadUp.visible, transition: { ...fadUp.visible.transition, delay: 0.25 } } }}
-                    >
-                        <span className={styles.cardLabel} style={{ color: COLOR }}>OUR STRENGTH</span>
-                        <h3 className={styles.cardTitle}>핵심 경쟁력</h3>
-                        <div className={styles.strengthQuote}>
-                            <p className={styles.strengthQuoteText}>생성형 AI 기술로 실사 촬영 없이도 고감도 영상을 제작합니다. CF·기업 홍보·브랜드 스토리 필름까지, 합리적인 비용으로 대형 브랜드 수준의 결과물을 제공합니다. SNS 플랫폼별 최적화된 숏폼 콘텐츠를 AI로 빠르게 제작하며, 트렌드 분석을 기반으로 바이럴 확산에 최적화된 영상을 기획·제작합니다. 기존 영상 제작 대비 제작 기간 50% 단축 · 비용 1/3 절감을 실현합니다.</p>
-                        </div>
-                    </motion.div>
-
                     {/* SERVICES */}
                     <motion.div
                         className={styles.contentCard}
@@ -304,27 +290,18 @@ export default function VideoProductionPage() {
                         <h3 className={styles.cardTitle}>서비스 구성</h3>
 
                         <div className={styles.serviceCategoriesGrid}>
-                            {serviceCategories.map((cat) => (
-                                <div key={cat.num} className={styles.serviceCategoryCard} style={{ "--card-accent": COLOR } as React.CSSProperties}>
-                                    <div className={styles.serviceCategoryNumBar}>
-                                        <span className={styles.serviceCategoryNumber} style={{ color: COLOR }}>{cat.num}</span>
-                                    </div>
-                                    <div className={styles.serviceCategoryContent}>
-                                        <h4 className={styles.serviceCategoryTitle}>{cat.title}</h4>
-                                        <p className={styles.serviceCategorySlogan}>&ldquo;{cat.slogan}&rdquo;</p>
-                                        <p className={styles.serviceCategoryDesc}>{cat.desc}</p>
-                                        <ul className={styles.serviceCategoryItems}>
-                                            {cat.items.map((item, i) => (
-                                                <li key={i} className={styles.serviceCategoryItem}>
-                                                    <span className={styles.serviceCategoryItemDot} style={{ backgroundColor: COLOR }} />
-                                                    <span>{item}</span>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
+                             {serviceCategories.map((cat) => (
+                                 <div key={cat.num} className={styles.serviceCategoryCard} style={{ "--card-accent": COLOR } as React.CSSProperties}>
+                                     <div className={styles.serviceCategoryNumber} style={{ color: COLOR }}>{cat.num}</div>
+                                     <h4 className={styles.serviceCategoryTitle}>{cat.title}</h4>
+                                     <p className={styles.serviceCategorySlogan}>&ldquo;{cat.slogan}&rdquo;</p>
+                                     <p className={styles.serviceCategoryDesc}>{cat.desc}</p>
+                                     <ul className={styles.serviceCategoryItems}>
+                                         {cat.items.map((item, i) => (<li key={i} className={styles.serviceCategoryItem}><span className={styles.serviceCategoryItemDot} style={{ backgroundColor: COLOR }} /><span>{item}</span></li>))}
+                                     </ul>
+                                 </div>
+                             ))}
+                         </div>
                     </motion.div>
 
                     {/* PACKAGES */}
@@ -340,7 +317,7 @@ export default function VideoProductionPage() {
 
                         <div className={styles.packageGrid}>
                             {packages.map((pkg, i) => (
-                                <div key={i} className={styles.packageCard} style={{ "--pkg-color": pkg.badge, "--pkg-glow": pkg.badge } as React.CSSProperties}>
+                                <div key={i} className={styles.packageCard}>
                                     <div className={styles.packageBadge} style={{ backgroundColor: pkg.badge }} />
                                     <div className={styles.packageName}>{pkg.name}</div>
                                     <div className={styles.packageLength}>{pkg.length}</div>
@@ -364,7 +341,7 @@ export default function VideoProductionPage() {
                         <div className={styles.processTimeline}>
                             {processSteps.map((step) => (
                                 <div key={step.num} className={styles.processTimelineStep}>
-                                    <div className={styles.processTimelineNum} style={{ backgroundColor: COLOR, "--step-glow": `${COLOR}40` } as React.CSSProperties}>{step.num}</div>
+                                    <div className={styles.processTimelineNum} style={{ backgroundColor: COLOR } as React.CSSProperties}>{step.num}</div>
                                     <div>
                                         <div className={styles.processTimelineLabel}>{step.label}</div>
                                         <div className={styles.processTimelineDesc}>{step.desc}</div>
