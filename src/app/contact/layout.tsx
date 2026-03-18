@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
+import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
 
 export const metadata: Metadata = {
-  title: "문의하기",
+  title: "프로젝트 문의하기 — 무료 상담 & 견적 요청",
   description:
-    "함께봄에 영상 제작, 마케팅, 교육 관련 문의를 남겨주세요. 빠르게 답변 드리겠습니다.",
+    "함께봄에 AI 영상 제작, 퍼포먼스 마케팅, AI 교육 관련 프로젝트를 문의하세요. 평일 10시~19시 운영, 24시간 이내 답변 드립니다.",
   alternates: { canonical: "https://hamkkebom.com/contact" },
   openGraph: {
-    title: "문의하기 | 함께봄",
+    title: "프로젝트 문의하기 | 함께봄",
     description:
-      "영상 제작 · 마케팅 · 교육 문의. 함께봄 전문팀이 빠르게 답변드립니다.",
+      "AI 영상 제작 · 마케팅 · 교육 문의. 함께봄 전문팀이 24시간 내 답변드립니다.",
     url: "https://hamkkebom.com/contact",
   },
 };
@@ -56,6 +57,12 @@ export default function ContactLayout({
 }) {
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "홈", url: "https://hamkkebom.com" },
+          { name: "문의하기", url: "https://hamkkebom.com/contact" },
+        ]}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}

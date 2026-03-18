@@ -11,22 +11,32 @@ export default function Home() {
     <>
       <GNB />
       <SmoothScroll>
-        <main style={{ position: "relative", backgroundColor: "var(--bg-color)" }}>
-          {/* 첫 번째 섹션: 비디오 Shatter 효과 */}
-          <HeroScene />
+        <main
+          id="main-content"
+          style={{ position: "relative", backgroundColor: "var(--bg-color)" }}
+        >
+          {/* 히어로 섹션: AI 브랜드 영상 제작 인트로 */}
+          <section aria-label="AI 브랜드 영상 제작 소개">
+            <HeroScene />
+          </section>
 
-          {/* 두 번째 섹션: ROAS 퍼포먼스 쇼케이스 */}
-          <RoasShowcase />
+          {/* ROAS 퍼포먼스 쇼케이스 */}
+          <section aria-label="유튜브 마케팅 성과 ROAS 쇼케이스">
+            <RoasShowcase />
+          </section>
 
-          {/* 세 번째 섹션: 브랜드 스토리 */}
-          <BrandStory />
+          {/* 브랜드 스토리 */}
+          <section aria-label="함께봄 브랜드 스토리">
+            <BrandStory />
+          </section>
 
-          {/* 네 번째 섹션: 포트폴리오 및 파트너 리스트 */}
-          <PortfolioAndPartners />
+          {/* 포트폴리오 및 파트너 리스트 */}
+          <section aria-label="포트폴리오 및 파트너사">
+            <PortfolioAndPartners />
+          </section>
 
-          {/* 네 번째 섹션: 문의하기 및 Footer */}
+          {/* 문의하기 및 Footer */}
           <ContactAndFooter />
-
         </main>
       </SmoothScroll>
     </>

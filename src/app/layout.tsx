@@ -1,6 +1,9 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import { Noto_Sans_KR, Outfit } from "next/font/google";
 import "./globals.css";
+
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
 
 const notoSansKr = Noto_Sans_KR({
   subsets: ["latin"],
@@ -108,11 +111,10 @@ export const metadata: Metadata = {
     },
   },
   verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION,
     other: {
       "naver-site-verification": ["cc5029b2a4ab2c6cda70d3520165c6338db2c2d7"],
     },
-    // TODO: Google Search Console 인증 코드를 여기에 추가하세요:
-    // google: "YOUR_GOOGLE_VERIFICATION_CODE",
   },
 };
 
@@ -136,6 +138,18 @@ export default function RootLayout({
         />
       </head>
       <body className={`${notoSansKr.variable} ${outfit.variable} antialiased`}>
+        <a href="#main-content" className="skip-to-content">본문으로 건너뛰기</a>
+        {GA_ID && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="ga4-init" strategy="afterInteractive">
+              {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${GA_ID}',{page_path:window.location.pathname});`}
+            </Script>
+          </>
+        )}
         {children}
       </body>
     </html>

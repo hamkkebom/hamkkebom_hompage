@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { createClient } from "@supabase/supabase-js";
+import { BLOG_POSTS } from "@/data/blog-posts";
 
 const BASE_URL = "https://hamkkebom.com";
 
@@ -34,18 +35,18 @@ async function getWorkData(): Promise<WorkData[]> {
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes = [
-    { path: "", lastMod: new Date("2026-03-01"), priority: 1.0, freq: "weekly" as const },
-    { path: "/about", lastMod: new Date("2026-02-01"), priority: 0.8, freq: "monthly" as const },
-    { path: "/about/intro", lastMod: new Date("2026-02-01"), priority: 0.7, freq: "monthly" as const },
-    { path: "/about/org", lastMod: new Date("2026-02-01"), priority: 0.7, freq: "monthly" as const },
-    { path: "/about/location", lastMod: new Date("2026-02-01"), priority: 0.7, freq: "monthly" as const },
-    { path: "/services/education", lastMod: new Date("2026-02-15"), priority: 0.8, freq: "monthly" as const },
-    { path: "/services/planning", lastMod: new Date("2026-02-15"), priority: 0.8, freq: "monthly" as const },
-    { path: "/services/video", lastMod: new Date("2026-02-15"), priority: 0.8, freq: "monthly" as const },
-    { path: "/services/marketing", lastMod: new Date("2026-02-15"), priority: 0.8, freq: "monthly" as const },
-    { path: "/works", lastMod: new Date("2026-03-01"), priority: 0.9, freq: "weekly" as const },
-    { path: "/contact", lastMod: new Date("2026-01-01"), priority: 0.7, freq: "monthly" as const },
-    { path: "/faq", lastMod: new Date("2026-01-01"), priority: 0.6, freq: "monthly" as const },
+    { path: "", lastMod: new Date("2026-03-18"), priority: 1.0, freq: "weekly" as const },
+    { path: "/services/video", lastMod: new Date("2026-03-18"), priority: 0.9, freq: "monthly" as const },
+    { path: "/services/marketing", lastMod: new Date("2026-03-18"), priority: 0.9, freq: "monthly" as const },
+    { path: "/services/education", lastMod: new Date("2026-03-18"), priority: 0.9, freq: "monthly" as const },
+    { path: "/services/planning", lastMod: new Date("2026-03-18"), priority: 0.9, freq: "monthly" as const },
+    { path: "/works", lastMod: new Date("2026-03-18"), priority: 0.9, freq: "weekly" as const },
+    { path: "/about", lastMod: new Date("2026-03-01"), priority: 0.8, freq: "monthly" as const },
+    { path: "/about/intro", lastMod: new Date("2026-03-01"), priority: 0.7, freq: "monthly" as const },
+    { path: "/about/org", lastMod: new Date("2026-03-01"), priority: 0.7, freq: "monthly" as const },
+    { path: "/about/location", lastMod: new Date("2026-03-01"), priority: 0.7, freq: "monthly" as const },
+    { path: "/contact", lastMod: new Date("2026-03-01"), priority: 0.8, freq: "monthly" as const },
+    { path: "/faq", lastMod: new Date("2026-03-18"), priority: 0.7, freq: "monthly" as const },
     // /square는 noindex이므로 sitemap에서 제외
   ];
 
@@ -64,5 +65,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
-  return [...staticEntries, ...workEntries];
+  const blogEntries = BLOG_POSTS.map((post) => ({
+    url: `${BASE_URL}/blog/${post.slug}`,
+    lastModified: new Date(post.updatedAt),
+    changeFrequency: "monthly" as const,
+    priority: 0.7,
+  }));
+
+  return [...staticEntries, ...workEntries, ...blogEntries];
 }

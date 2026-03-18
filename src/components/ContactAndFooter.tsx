@@ -104,13 +104,14 @@ export default function ContactAndFooter() {
             </div>
 
             {/* Footer */}
-            <footer className="footer-container" style={{ borderTop: "1px solid rgba(255,255,255,0.05)", marginTop: "4rem" }}>
-                <div style={{ maxWidth: "1400px", margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: "2rem" }}>
+            <footer className="footer-container" role="contentinfo" style={{ borderTop: "1px solid rgba(255,255,255,0.05)", marginTop: "4rem" }}>
+                <div style={{ maxWidth: "1400px", margin: "0 auto", display: "grid", gridTemplateColumns: "1.5fr 1fr 1fr 1fr", gap: "2rem", alignItems: "start" }}>
+                    {/* 회사 정보 */}
                     <div>
                         <div style={{ marginBottom: "1.5rem" }}>
                             <Image
                                 src="/logo-white.png"
-                                alt="함께봄 로고"
+                                alt="함께봄 — AI 영상 브랜딩 스튜디오 로고"
                                 width={150}
                                 height={65}
                                 style={{ objectFit: "contain" }}
@@ -122,10 +123,39 @@ export default function ContactAndFooter() {
                             주소 : 서울 종로구 효자로7길 10 1층(서촌 한옥체)<br />
                         </p>
                     </div>
-                    <div style={{ display: "flex", gap: "1.5rem", color: "var(--text-secondary)", fontSize: "0.9rem" }}>
-                        <a href="https://www.instagram.com/hamkkebom_official" target="_blank" rel="noopener noreferrer" onMouseEnter={(e) => e.currentTarget.style.color = "#fff"} onMouseLeave={(e) => e.currentTarget.style.color = "var(--text-secondary)"} style={{ transition: "color 0.3s" }}>Instagram</a>
-                        <a href="https://www.youtube.com/@hamkkesong" target="_blank" rel="noopener noreferrer" onMouseEnter={(e) => e.currentTarget.style.color = "#fff"} onMouseLeave={(e) => e.currentTarget.style.color = "var(--text-secondary)"} style={{ transition: "color 0.3s" }}>YouTube</a>
-                        <a href="https://hamkkebom.kr/" target="_blank" rel="noopener noreferrer" onMouseEnter={(e) => e.currentTarget.style.color = "#fff"} onMouseLeave={(e) => e.currentTarget.style.color = "var(--text-secondary)"} style={{ transition: "color 0.3s" }}>Blog</a>
+
+                    {/* 서비스 링크 */}
+                    <nav aria-label="서비스 바로가기">
+                        <h3 style={{ color: "#fff", fontSize: "0.85rem", fontWeight: 700, letterSpacing: "0.1em", marginBottom: "1rem", textTransform: "uppercase" }}>Services</h3>
+                        <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
+                            <Link href="/services/video" style={{ color: "var(--text-secondary)", fontSize: "0.85rem", transition: "color 0.3s" }}>AI 영상제작</Link>
+                            <Link href="/services/marketing" style={{ color: "var(--text-secondary)", fontSize: "0.85rem", transition: "color 0.3s" }}>퍼포먼스 마케팅</Link>
+                            <Link href="/services/education" style={{ color: "var(--text-secondary)", fontSize: "0.85rem", transition: "color 0.3s" }}>AI 교육 & 컨설팅</Link>
+                            <Link href="/services/planning" style={{ color: "var(--text-secondary)", fontSize: "0.85rem", transition: "color 0.3s" }}>기획개발</Link>
+                        </div>
+                    </nav>
+
+                    {/* 회사 링크 */}
+                    <nav aria-label="회사 정보 바로가기">
+                        <h3 style={{ color: "#fff", fontSize: "0.85rem", fontWeight: 700, letterSpacing: "0.1em", marginBottom: "1rem", textTransform: "uppercase" }}>Company</h3>
+                        <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
+                            <Link href="/about/intro" style={{ color: "var(--text-secondary)", fontSize: "0.85rem", transition: "color 0.3s" }}>회사 소개</Link>
+                            <Link href="/about/org" style={{ color: "var(--text-secondary)", fontSize: "0.85rem", transition: "color 0.3s" }}>조직도</Link>
+                            <Link href="/about/location" style={{ color: "var(--text-secondary)", fontSize: "0.85rem", transition: "color 0.3s" }}>오시는 길</Link>
+                            <Link href="/works" style={{ color: "var(--text-secondary)", fontSize: "0.85rem", transition: "color 0.3s" }}>포트폴리오</Link>
+                            <Link href="/faq" style={{ color: "var(--text-secondary)", fontSize: "0.85rem", transition: "color 0.3s" }}>자주 묻는 질문</Link>
+                        </div>
+                    </nav>
+
+                    {/* 소셜 & 문의 */}
+                    <div>
+                        <h3 style={{ color: "#fff", fontSize: "0.85rem", fontWeight: 700, letterSpacing: "0.1em", marginBottom: "1rem", textTransform: "uppercase" }}>Connect</h3>
+                        <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
+                            <Link href="/contact" style={{ color: "var(--accent-color)", fontSize: "0.85rem", fontWeight: 600, transition: "color 0.3s" }}>프로젝트 문의하기</Link>
+                            <a href="https://www.instagram.com/hamkkebom_official" target="_blank" rel="noopener noreferrer" style={{ color: "var(--text-secondary)", fontSize: "0.85rem", transition: "color 0.3s" }}>Instagram</a>
+                            <a href="https://www.youtube.com/@hamkkesong" target="_blank" rel="noopener noreferrer" style={{ color: "var(--text-secondary)", fontSize: "0.85rem", transition: "color 0.3s" }}>YouTube</a>
+                            <a href="https://hamkkebom.kr/" target="_blank" rel="noopener noreferrer" style={{ color: "var(--text-secondary)", fontSize: "0.85rem", transition: "color 0.3s" }}>Blog</a>
+                        </div>
                     </div>
                 </div>
                 <div style={{ maxWidth: "1400px", margin: "2rem auto 0", borderTop: "1px solid rgba(255,255,255,0.05)", paddingTop: "2rem", color: "rgba(255,255,255,0.2)", fontSize: "0.8rem", textAlign: "center" }}>
@@ -160,12 +190,14 @@ export default function ContactAndFooter() {
                         justify-content: center !important;
                     }
                     .footer-container > div:first-child {
-                        flex-direction: column !important;
-                        align-items: center !important;
-                        text-align: center !important;
+                        grid-template-columns: 1fr 1fr !important;
+                        text-align: left !important;
                     }
-                    .footer-container > div:first-child > div:last-child {
-                        justify-content: center !important;
+                }
+                @media (max-width: 480px) {
+                    .footer-container > div:first-child {
+                        grid-template-columns: 1fr !important;
+                        text-align: center !important;
                     }
                 }
             `}</style>

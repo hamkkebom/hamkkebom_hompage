@@ -168,7 +168,7 @@ export default function GNB() {
             </Link>
 
             {/* Central Navigation - The "Exhibition" Layout */}
-            <nav className="gnb-desktop-nav" style={{
+            <nav className="gnb-desktop-nav" aria-label="메인 내비게이션" style={{
                 position: "absolute",
                 left: "50%",
                 transform: "translateX(-50%)",
@@ -462,14 +462,16 @@ export default function GNB() {
                     })}
                 </div>
 
-                <div
+                <button
                     onClick={() => setMenuOpen(!menuOpen)}
-                    style={{ cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "6px", position: "relative", width: "32px", height: "20px" }}
+                    aria-label={menuOpen ? "메뉴 닫기" : "메뉴 열기"}
+                    aria-expanded={menuOpen}
+                    style={{ cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "6px", position: "relative", width: "32px", height: "20px", background: "none", border: "none", padding: 0 }}
                 >
                     <div style={{ width: menuOpen ? "32px" : "32px", height: "1px", backgroundColor: "#fff", transition: "all 0.3s ease", position: "absolute", top: menuOpen ? "10px" : "0", transform: menuOpen ? "rotate(45deg)" : "rotate(0)" }} />
                     <div style={{ width: menuOpen ? "0" : "20px", height: "1px", backgroundColor: "#fff", transition: "all 0.3s ease", position: "absolute", top: "8px", opacity: menuOpen ? 0 : 1 }} />
                     <div style={{ width: menuOpen ? "32px" : "26px", height: "1px", backgroundColor: "#fff", transition: "all 0.3s ease", position: "absolute", top: menuOpen ? "10px" : "16px", transform: menuOpen ? "rotate(-45deg)" : "rotate(0)" }} />
-                </div>
+                </button>
             </div>
 
             {/* Mobile Menu Overlay */}

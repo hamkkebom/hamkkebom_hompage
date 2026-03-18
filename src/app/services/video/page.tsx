@@ -391,6 +391,25 @@ export default function VideoProductionPage() {
                     </motion.div>
                 </div>
             </section>
+
+            {/* CTA Section */}
+            <section aria-label="프로젝트 문의" style={{ maxWidth: "900px", margin: "6rem auto 4rem", padding: "3rem 2rem", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "16px", textAlign: "center" }}>
+                <h2 style={{ fontSize: "clamp(1.5rem, 3vw, 2.2rem)", fontWeight: 800, marginBottom: "1rem", wordBreak: "keep-all" }}>
+                    프로젝트를 시작할 준비가 되셨나요?
+                </h2>
+                <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "1.05rem", lineHeight: 1.7, marginBottom: "2rem", wordBreak: "keep-all" }}>
+                    함께봄 전문팀과 함께 브랜드의 가치를 영상으로 만들어 보세요.<br />
+                    무료 상담을 통해 최적의 솔루션을 제안드립니다.
+                </p>
+                <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
+                    <Link href="/contact" style={{ display: "inline-block", background: "#fff", color: "#000", padding: "0.9rem 2.5rem", borderRadius: "8px", fontWeight: 700, textDecoration: "none", fontSize: "1rem", transition: "all 0.3s ease" }}>
+                        프로젝트 문의하기 →
+                    </Link>
+                    <Link href="/works" style={{ display: "inline-block", background: "transparent", color: "#fff", padding: "0.9rem 2.5rem", borderRadius: "8px", fontWeight: 600, textDecoration: "none", fontSize: "1rem", border: "1px solid rgba(255,255,255,0.2)", transition: "all 0.3s ease" }}>
+                        포트폴리오 보기
+                    </Link>
+                </div>
+            </section>
         </main>
     );
 }
