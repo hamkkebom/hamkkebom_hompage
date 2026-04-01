@@ -119,8 +119,8 @@ export default function ContactAndFooter() {
                         </div>
                         <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.8 }}>
                             대표이사 : 노수빈<br />
-                            이메일 : hamkkebom12@gmail.com<br />
-                            주소 : 서울 종로구 효자로7길 10 1층(서촌 한옥체)<br />
+                            이메일 : info@hamkkebom.com<br />
+                            주소 : 서울 종로구 효자로7길 10 함께봄<br />
                         </p>
                     </div>
 

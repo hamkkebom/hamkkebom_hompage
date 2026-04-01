@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>함께봄 기획개발 서비스 가이드</title>
+    <meta name="description" content="함께봄 기획개발 서비스 가이드 - 랜딩페이지, 홈페이지, 이커머스, 플랫폼 제작">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+KR:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0e1a;
+            --bg-secondary: #111827;
+            --bg-card: rgba(17, 24, 39, 0.6);
+            --bg-card-hover: rgba(30, 41, 59, 0.7);
+            --border-subtle: rgba(99, 102, 241, 0.15);
+            --border-glow: rgba(99, 102, 241, 0.4);
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --accent-start: #6366f1;
+            --accent-end: #8b5cf6;
+            --accent-bright: #a78bfa;
+            --price-start: #f59e0b;
+            --price-end: #ef4444;
+            --success: #10b981;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', 'Inter', -apple-system, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(ellipse 80% 50% at 20% 20%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse 60% 40% at 80% 80%, rgba(139, 92, 246, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse 40% 60% at 50% 50%, rgba(245, 158, 11, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 24px 60px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 50px 40px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-start), var(--accent-end), var(--price-start));
+            border-radius: 24px 24px 0 0;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-bright) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-weight: 400;
+        }
+
+        /* ===== SECTION TITLE ===== */
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 28px;
+            margin-top: 56px;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .section-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: white;
+            flex-shrink: 0;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .section-title h2 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .event-badge-text {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #fbbf24;
+            letter-spacing: 0;
+        }
+
+        /* ===== PRICING CARDS ===== */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            animation: fadeInUp 0.7s ease-out;
+        }
+
+        .pricing-card {
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            padding: 32px 28px;
+            backdrop-filter: blur(16px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-content {
+            flex: 1;
+        }
+
+        .card-pricing-area {
+            margin-top: auto;
+            padding-top: 20px;
+        }
+
+        /* Plan Grid - subgrid로 행 정렬 */
+        .plan-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: repeat(7, auto);
+            gap: 0 12px;
+        }
+
+        .plan-box {
+            display: grid;
+            grid-row: span 7;
+            grid-template-rows: subgrid;
+            row-gap: 6px;
+            padding: 16px 14px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 14px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            align-content: start;
+        }
+
+        .plan-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            border-radius: 14px 14px 0 0;
+        }
+
+        .plan-box:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        /* ===== PLAN 1 & 2 공통 테마 (색상 동일화) ===== */
+        .plan-box.plan-1,
+        .plan-box.plan-2 {
+            border-color: rgba(99, 102, 241, 0.3);
+            background: linear-gradient(180deg, rgba(99, 102, 241, 0.08) 0%, rgba(99, 102, 241, 0.02) 100%);
+        }
+
+        .plan-box.plan-1::before,
+        .plan-box.plan-2::before {
+            background: linear-gradient(90deg, var(--accent-start), var(--accent-end));
+        }
+
+        .plan-box.plan-1 .plan-name,
+        .plan-box.plan-2 .plan-name {
+            background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+            color: white;
+        }
+
+        .plan-box.plan-1 .plan-monthly-value,
+        .plan-box.plan-2 .plan-monthly-value {
+            color: var(--accent-bright);
+        }
+
+        .plan-name {
+            display: inline-flex;
+            align-items: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            padding: 4px 10px;
+            background: rgba(99, 102, 241, 0.2);
+            border-radius: 6px;
+            justify-self: start;
+        }
+
+        .plan-desc {
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #fbbf24;
+            padding: 4px 8px;
+            background: rgba(251, 191, 36, 0.08);
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            border-radius: 6px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 취소선 가독성 향상 (반투명 라인 적용) */
+        .plan-original {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #cbd5e1;
+            text-decoration: line-through;
+            text-decoration-color: rgba(239, 68, 68, 0.45);
+            /* 반투명 빨간선으로 글씨가 보이게 처리 */
+            text-decoration-thickness: 1.5px;
+            /* 선을 약간 얇게 */
+            opacity: 1;
+            display: flex;
+            align-items: flex-end;
+            margin-bottom: 2px;
+        }
+
+        .plan-price {
+            font-size: 1.15rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--price-start), var(--price-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.3;
+            display: flex;
+            align-items: center;
+        }
+
+        .plan-monthly {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 7px 10px;
+            background: rgba(99, 102, 241, 0.06);
+            /* 초록색 제거, 인디고 공통 적용 */
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            /* 초록색 제거, 인디고 공통 적용 */
+            border-radius: 8px;
+        }
+
+        .plan-monthly-label {
+            font-size: 0.72rem;
+            color: var(--text-secondary);
+        }
+
+        /* 월 텍스트 내의 취소선 반투명 처리 */
+        .plan-monthly-label s {
+            color: #cbd5e1;
+            text-decoration-color: rgba(239, 68, 68, 0.45);
+            text-decoration-thickness: 1.5px;
+        }
+
+        .plan-monthly-value {
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        /* 의무기간 스타일 */
+        .plan-mandatory {
+            font-size: 0.75rem;
+            color: #fca5a5;
+            background: rgba(239, 68, 68, 0.06);
+            border: 1px dashed rgba(239, 68, 68, 0.25);
+            border-radius: 6px;
+            padding: 5px 8px;
+            text-align: center;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .pricing-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-start), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--border-glow);
+            background: var(--bg-card-hover);
+            box-shadow:
+                0 20px 40px rgba(0, 0, 0, 0.3),
+                0 0 30px rgba(99, 102, 241, 0.08);
+        }
+
+        .pricing-card:hover::before {
+            opacity: 1;
+        }
+
+        .pricing-card.featured {
+            border-color: rgba(99, 102, 241, 0.35);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(139, 92, 246, 0.05));
+        }
+
+        .pricing-card.featured::after {
+            content: 'BEST';
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+            color: white;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 6px;
+            letter-spacing: 1px;
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.12), rgba(139, 92, 246, 0.08));
+            border: 1px solid rgba(99, 102, 241, 0.15);
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .card-description {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .card-price {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--price-start), var(--price-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 4px;
+        }
+
+        /* 플랫폼 섹션 원가격 취소선 반투명 처리 */
+        .card-original-price {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #cbd5e1;
+            text-decoration: line-through;
+            text-decoration-color: rgba(239, 68, 68, 0.45);
+            text-decoration-thickness: 1.5px;
+            margin-bottom: 6px;
+            opacity: 1;
+        }
+
+        .card-price-label {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        /* Feature Highlight Badge */
+        .highlight-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(239, 68, 68, 0.1));
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #fbbf24;
+            white-space: nowrap;
+        }
+
+        .highlight-badge::before {
+            content: '✦';
+            font-size: 0.6rem;
+        }
+
+        /* DB Analysis Detail Section */
+        .db-analysis-detail {
+            margin-top: 12px;
+            padding: 14px 16px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.06), rgba(139, 92, 246, 0.04));
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            border-radius: 12px;
+        }
+
+        .db-analysis-detail .detail-title {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--accent-bright);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .db-analysis-detail .detail-list {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .db-analysis-detail .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.76rem;
+            color: var(--text-secondary);
+        }
+
+        .db-analysis-detail .detail-item::before {
+            content: '';
+            width: 4px;
+            height: 4px;
+            background: var(--accent-bright);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* Admin Features Detail */
+        .admin-features {
+            margin-top: 12px;
+            padding: 14px 16px;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.06), rgba(99, 102, 241, 0.04));
+            border: 1px solid rgba(16, 185, 129, 0.15);
+            border-radius: 12px;
+        }
+
+        .admin-features .admin-title {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #34d399;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .admin-features .admin-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5px;
+        }
+
+        .admin-features .admin-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.74rem;
+            color: var(--text-secondary);
+        }
+
+        .admin-features .admin-item::before {
+            content: '✓';
+            color: #34d399;
+            font-size: 0.7rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        /* Domain Notice */
+        .domain-notice {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+            padding: 14px 20px;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(239, 68, 68, 0.04));
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 12px;
+        }
+
+        .domain-notice .notice-icon {
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .domain-notice .notice-text {
+            font-size: 0.82rem;
+            color: #fbbf24;
+            font-weight: 500;
+        }
+
+        .domain-notice .notice-sub {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .card-divider {
+            height: 1px;
+            background: var(--glass-border);
+            margin: 20px 0;
+        }
+
+        .card-monthly {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            background: rgba(99, 102, 241, 0.06);
+            border: 1px solid rgba(99, 102, 241, 0.12);
+            border-radius: 10px;
+        }
+
+        .card-monthly-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .card-monthly-price {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--accent-bright);
+        }
+
+        /* ===== DATA TABLE (Sections 2 & 3) ===== */
+        .data-table-wrapper {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            overflow: hidden;
+            backdrop-filter: blur(16px);
+            animation: fadeInUp 0.7s ease-out;
+            width: 100%;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table thead th {
+            background: rgba(99, 102, 241, 0.08);
+            color: var(--accent-bright);
+            font-size: 0.78rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            padding: 16px 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .data-table thead th:first-child {
+            text-align: left;
+        }
+
+        .data-table tbody td {
+            padding: 18px 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            transition: background 0.3s ease;
+        }
+
+        .data-table tbody td:first-child {
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .data-table tbody tr:hover td {
+            background: rgba(99, 102, 241, 0.04);
+        }
+
+        .data-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            font-weight: 600;
+        }
+
+        .tag-blue {
+            background: rgba(99, 102, 241, 0.12);
+            color: var(--accent-bright);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .tag-green {
+            background: rgba(16, 185, 129, 0.1);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        /* ===== ADD-ON SECTION ===== */
+        .addon-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            animation: fadeInUp 0.7s ease-out;
+        }
+
+        .addon-card {
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 18px;
+            padding: 28px 24px;
+            backdrop-filter: blur(16px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .addon-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-start), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .addon-card:hover {
+            border-color: var(--border-glow);
+            background: var(--bg-card-hover);
+            transform: translateY(-4px);
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.25), 0 0 20px rgba(99, 102, 241, 0.06);
+        }
+
+        .addon-card:hover::before {
+            opacity: 1;
+        }
+
+        .addon-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            margin-bottom: 18px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.12), rgba(139, 92, 246, 0.08));
+            border: 1px solid rgba(99, 102, 241, 0.15);
+        }
+
+        .addon-label {
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+        }
+
+        .addon-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .addon-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            transition: background 0.3s ease;
+        }
+
+        .addon-item:hover {
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .addon-price {
+            font-weight: 700;
+            color: var(--success);
+            white-space: nowrap;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            margin-top: 56px;
+            padding: 28px 32px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            backdrop-filter: blur(16px);
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .footer p {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.9;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .footer p::before {
+            content: '•';
+            position: absolute;
+            left: 4px;
+            color: var(--accent-start);
+        }
+
+        .footer p+p {
+            margin-top: 6px;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== RESPONSIVE (MOBILE) ===== */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 16px 60px;
+            }
+
+            .header {
+                padding: 30px 20px;
+                margin-bottom: 40px;
+                border-radius: 16px;
+            }
+
+            .header h1 {
+                font-size: 1.6rem;
+                margin-bottom: 8px;
+            }
+
+            .header p {
+                font-size: 0.85rem;
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-card {
+                padding: 24px 20px;
+            }
+
+            .admin-features .admin-list {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                margin-top: 40px;
+                margin-bottom: 20px;
+            }
+
+            /* 모바일 유지보수 테이블 최적화 (가로 스크롤 방지, 자동 축소) */
+            .data-table-wrapper {
+                overflow-x: hidden;
+            }
+
+            .data-table {
+                min-width: 100%;
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 12px 8px;
+                /* 여백 대폭 축소 */
+                white-space: normal;
+                /* 자연스러운 줄바꿈 허용 */
+                word-break: keep-all;
+                /* 단어 단위로 깔끔하게 줄바꿈 */
+            }
+
+            .data-table thead th {
+                font-size: 0.75rem;
+                padding: 10px 8px;
+            }
+
+            .data-table tbody td {
+                font-size: 0.8rem;
+            }
+
+            .data-table tbody td:first-child {
+                font-size: 0.85rem;
+            }
+
+            .tag {
+                padding: 3px 8px;
+                font-size: 0.7rem;
+            }
+
+            .tag .duration {
+                display: block;
+                margin-top: 2px;
+            }
+
+            .addon-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            /* 요금제(Plan) 박스 모바일 크기 최적화 */
+            .plan-box {
+                padding: 12px 10px;
+            }
+
+            .plan-name {
+                font-size: 0.7rem;
+                padding: 3px 8px;
+            }
+
+            .plan-desc {
+                font-size: 0.65rem;
+                padding: 3px 6px;
+            }
+
+            .plan-original {
+                font-size: 0.75rem;
+            }
+
+            .plan-price {
+                font-size: 1.05rem;
+            }
+
+            .plan-monthly {
+                padding: 6px 8px;
+            }
+
+            .plan-monthly-label {
+                font-size: 0.65rem;
+            }
+
+            .plan-monthly-value {
+                font-size: 0.75rem;
+            }
+
+            .plan-mandatory {
+                font-size: 0.7rem;
+                padding: 4px 6px;
+            }
+        }
+
+        /* 좁은 모바일 화면 (480px 이하) 추가 대응 */
+        @media (max-width: 480px) {
+
+            .data-table th,
+            .data-table td {
+                padding: 10px 6px;
+                /* 최소한의 여백만 허용 */
+            }
+
+            .card-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                margin-bottom: 16px;
+            }
+
+            .card-title {
+                font-size: 1.05rem;
+            }
+
+            /* Plan 1, Plan 2 박스가 좁은 화면에서 뭉개지지 않도록 세로로 배치 */
+            .plan-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto;
+                gap: 12px;
+            }
+
+            .plan-box {
+                grid-row: auto;
+                grid-template-rows: auto;
+                row-gap: 8px;
+            }
+        }
+
+        /* ===== PRINT ===== */
+        @media print {
+            :root {
+                --bg-primary: #fff;
+                --bg-secondary: #fff;
+                --bg-card: #fff;
+                --text-primary: #1a1a2e;
+                --text-secondary: #333;
+                --text-muted: #666;
+                --border-subtle: #ddd;
+                --glass-bg: #fff;
+                --glass-border: #eee;
+            }
+
+            body {
+                background: white;
+                color: #1a1a2e;
+            }
+
+            body::before {
+                display: none;
+            }
+
+            .container {
+                max-width: 100%;
+                padding: 10mm;
+            }
+
+            .header {
+                border: 1px solid #ddd;
+                box-shadow: none;
+            }
+
+            .header h1 {
+                -webkit-text-fill-color: #1a1a2e;
+                color: #1a1a2e;
+            }
+
+            .pricing-card {
+                border: 1px solid #ddd;
+                box-shadow: none;
+                page-break-inside: avoid;
+            }
+
+            .pricing-card:hover {
+                transform: none;
+                box-shadow: none;
+            }
+
+            .card-price {
+                -webkit-text-fill-color: #d9480f;
+                color: #d9480f;
+            }
+
+            .data-table-wrapper {
+                border: 1px solid #ddd;
+            }
+
+            .data-table thead th {
+                background: #f0f0f5;
+                color: #333;
+            }
+
+            .data-table tbody td {
+                color: #333;
+            }
+
+            .addon-row {
+                border: 1px solid #ddd;
+            }
+
+            .footer {
+                border: 1px solid #ddd;
+            }
+
+            .footer p {
+                color: #666;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>함께봄 기획개발 서비스 가이드</h1>
+            <p>단순한 구축을 넘어, 지속 가능한 성장을 위한 시스템을 설계합니다</p>
+        </header>
+
+        <div class="section-title">
+            <div class="section-number">01</div>
+            <h2>서비스별 제작 및 관리 비용 <span class="event-badge-text">(서비스 오픈 이벤트 가격)</span></h2>
+        </div>
+
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <div class="card-content">
+                    <div class="card-icon">🚀</div>
+                    <div class="card-title">랜딩 / 원페이지</div>
+                    <div class="card-description">섹션 5개 이내 + <span class="highlight-badge">DB분석 포함</span></div>
+                    <div class="db-analysis-detail">
+                        <div class="detail-title">📊 DB 분석 대시보드</div>
+                        <div class="detail-list">
+                            <div class="detail-item">방문자 통계 및 페이지뷰 분석</div>
+                            <div class="detail-item">유입 경로별 트래픽 리포트</div>
+                            <div class="detail-item">실시간 데이터 조회 화면</div>
+                            <div class="detail-item">기본 차트/그래프 시각화</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-pricing-area">
+                    <div class="plan-grid">
+                        <div class="plan-box plan-1">
+                            <div class="plan-name">Plan 1</div>
+                            <div class="plan-desc">💰 초기 제작 + 월관리</div>
+                            <div class="plan-original">제작비 30만원</div>
+                            <div class="plan-price">제작비 19만원</div>
+                            <div class="plan-monthly">
+                                <span class="plan-monthly-label">월 관리비</span>
+                                <span class="plan-monthly-value">포함</span>
+                            </div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                        <div class="plan-box plan-2">
+                            <div class="plan-name">Plan 2</div>
+                            <div class="plan-desc">💡 제작비 없이 월정액</div>
+                            <div class="plan-original"></div>
+                            <div class="plan-price">제작비 0원</div>
+                            <div class="plan-monthly">
+                                <span class="plan-monthly-label">월 관리비</span>
+                                <span class="plan-monthly-value">월 3만원</span>
+                            </div>
+                            <div class="plan-mandatory">⏳ 의무기간 6개월</div>
+                            <div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pricing-card">
+                <div class="card-content">
+                    <div class="card-icon">🌐</div>
+                    <div class="card-title">홈페이지</div>
+                    <div class="card-description">기본 8페이지 + <span class="highlight-badge">문의 게시판</span></div>
+                    <div class="admin-features">
+                        <div class="admin-title">📋 문의 게시판 기능</div>
+                        <div class="admin-list">
+                            <div class="admin-item">고객 문의 접수</div>
+                            <div class="admin-item">답변 등록/관리</div>
+                            <div class="admin-item">문의 상태 관리</div>
+                            <div class="admin-item">글 목록/검색</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-pricing-area">
+                    <div class="plan-grid">
+                        <div class="plan-box plan-1">
+                            <div class="plan-name">Plan 1</div>
+                            <div class="plan-desc">💰 초기 제작 + 월관리</div>
+                            <div class="plan-original">제작비 150만원 + 월 15만원</div>
+                            <div class="plan-price">제작비 100만원</div>
+                            <div class="plan-monthly">
+                                <span class="plan-monthly-label">월 관리비</span>
+                                <span class="plan-monthly-value">10만원</span>
+                            </div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                        <div class="plan-box plan-2">
+                            <div class="plan-name">Plan 2</div>
+                            <div class="plan-desc">💡 제작비 없이 월정액</div>
+                            <div class="plan-original"></div>
+                            <div class="plan-price">제작비 0원</div>
+                            <div class="plan-monthly">
+                                <span class="plan-monthly-label"><s>월 25만원</s></span>
+                                <span class="plan-monthly-value">월 15만원</span>
+                            </div>
+                            <div class="plan-mandatory">⏳ 의무기간 10개월</div>
+                            <div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pricing-card featured">
+                <div class="card-content">
+                    <div class="card-icon">🛒</div>
+                    <div class="card-title">이커머스</div>
+                    <div class="card-description">사용자 12p + 관리자 8p = 총 20페이지 <span class="highlight-badge">관리자 포함</span>
+                    </div>
+                    <div class="admin-features">
+                        <div class="admin-title">🔧 관리자 페이지 기능</div>
+                        <div class="admin-list">
+                            <div class="admin-item">상품 등록/수정/삭제</div>
+                            <div class="admin-item">메인 배너/캐러셀 변경</div>
+                            <div class="admin-item">카테고리 관리</div>
+                            <div class="admin-item">주문/배송 상태 관리</div>
+                            <div class="admin-item">공지사항/이벤트 관리</div>
+                            <div class="admin-item">매출/주문 통계 조회</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-pricing-area">
+                    <div class="plan-grid">
+                        <div class="plan-box plan-1">
+                            <div class="plan-name">Plan 1</div>
+                            <div class="plan-desc">💰 초기 제작 + 월관리</div>
+                            <div class="plan-original">제작비 300만원 + 월 20만원</div>
+                            <div class="plan-price">제작비 150만원</div>
+                            <div class="plan-monthly">
+                                <span class="plan-monthly-label">월 관리비</span>
+                                <span class="plan-monthly-value">15만원</span>
+                            </div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                        <div class="plan-box plan-2">
+                            <div class="plan-name">Plan 2</div>
+                            <div class="plan-desc">💡 제작비 없이 월정액</div>
+                            <div class="plan-original"></div>
+                            <div class="plan-price">제작비 0원</div>
+                            <div class="plan-monthly">
+                                <span class="plan-monthly-label"><s>월 60만원</s></span>
+                                <span class="plan-monthly-value">월 30만원</span>
+                            </div>
+                            <div class="plan-mandatory">⏳ 의무기간 10개월</div>
+                            <div class="plan-monthly" style="margin-top: 4px;">
+                                <span class="plan-monthly-label">→ 1년 후</span>
+                                <span class="plan-monthly-value">월 15만원</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pricing-card">
+                <div class="card-content">
+                    <div class="card-icon">⚡</div>
+                    <div class="card-title">플랫폼 제작</div>
+                    <div class="card-description">사용자 12p + 관리자 8p = 총 20페이지 <span class="highlight-badge">관리자 포함</span>
+                    </div>
+                    <div class="admin-features">
+                        <div class="admin-title">🔧 관리자 페이지 기능</div>
+                        <div class="admin-list">
+                            <div class="admin-item">콘텐츠 등록/수정/삭제</div>
+                            <div class="admin-item">메인 배너/캐러셀 변경</div>
+                            <div class="admin-item">회원/권한 관리</div>
+                            <div class="admin-item">매칭/정산 상태 관리</div>
+                            <div class="admin-item">서버/DB 모니터링</div>
+                            <div class="admin-item">매출/운영 통계 조회</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-pricing-area">
+                    <div class="card-original-price">제작비 600만원 + 월 50만원</div>
+                    <div class="card-price">제작비 500만원</div>
+                    <div class="card-price-label">제작비 (할인가)</div>
+                    <div class="card-divider"></div>
+                    <div class="card-monthly">
+                        <span class="card-monthly-label">월 관리비</span>
+                        <span class="card-monthly-price">40만원</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-title">
+            <div class="section-number">02</div>
+            <h2>유지보수 및 사후관리 규정</h2>
+        </div>
+
+        <div class="data-table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>구분</th>
+                        <th>무상 A/S (하자보수)</th>
+                        <th>정기 관리 (월)</th>
+                        <th>보장 범위</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>랜딩</td>
+                        <td><span class="tag tag-blue">완료 후 <span class="duration">2주</span></span></td>
+                        <td>1회</td>
+                        <td>텍스트/이미지 교체</td>
+                    </tr>
+                    <tr>
+                        <td>홈페이지</td>
+                        <td><span class="tag tag-blue">완료 후 <span class="duration">1개월</span></span></td>
+                        <td>2회</td>
+                        <td>콘텐츠 및 게시판 관리</td>
+                    </tr>
+                    <tr>
+                        <td>이커머스</td>
+                        <td><span class="tag tag-green">완료 후 <span class="duration">2개월</span></span></td>
+                        <td>3회</td>
+                        <td>결제모듈 점검/운영지원</td>
+                    </tr>
+                    <tr>
+                        <td>플랫폼</td>
+                        <td><span class="tag tag-green">완료 후 <span class="duration">3개월</span></span></td>
+                        <td>5회</td>
+                        <td>서버모니터링/긴급장애</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section-title">
+            <div class="section-number">03</div>
+            <h2>추가 기능 구현 단가 (최소 기준)</h2>
+        </div>
+
+        <div class="addon-grid">
+            <div class="addon-card">
+                <div class="addon-icon">📄</div>
+                <div class="addon-label">페이지 추가</div>
+                <div class="addon-list">
+                    <div class="addon-item">
+                        <span>일반</span>
+                        <span class="addon-price">10~20만원~</span>
+                    </div>
+                    <div class="addon-item">
+                        <span>데이터 연동형</span>
+                        <span class="addon-price">20만원~</span>
+                    </div>
+                </div>
+            </div>
+            <div class="addon-card">
+                <div class="addon-icon">⚙️</div>
+                <div class="addon-label">기능 개발</div>
+                <div class="addon-list">
+                    <div class="addon-item">
+                        <span>단순 DB연동</span>
+                        <span class="addon-price">15만원~</span>
+                    </div>
+                    <div class="addon-item">
+                        <span>결제/회원 로직</span>
+                        <span class="addon-price">30~50만원~</span>
+                    </div>
+                </div>
+            </div>
+            <div class="addon-card">
+                <div class="addon-icon">🔗</div>
+                <div class="addon-label">외부 연동</div>
+                <div class="addon-list">
+                    <div class="addon-item">
+                        <span>단순 API(지도)</span>
+                        <span class="addon-price">20만원~</span>
+                    </div>
+                    <div class="addon-item">
+                        <span>고도화 API</span>
+                        <span class="addon-price">40만원~</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>모든 제작 과정 중 무상 수정은 기획·디자인, 개발·검수 각 총 2회 제공됩니다.</p>
+            <p>레이아웃 30% 이상 변경 시 별도 비용이 발생할 수 있습니다.</p>
+            <p>월 비용에는 호스팅 비용 및 정기 유지보수 관리가 포함되어 있습니다.</p>
+            <div class="domain-notice">
+                <span class="notice-icon">🌍</span>
+                <div>
+                    <div class="notice-text">도메인 비용은 별도입니다</div>
+                    <div class="notice-sub">도메인 등록/갱신 비용은 제작비 및 월 관리비에 포함되지 않습니다. (연 1~3만원 수준)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

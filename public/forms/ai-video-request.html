@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>함께봄 AI 영상 제작 상세 의뢰서</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --bg: #f8fafc;
+            --accent: #10b981;
+            --gray: #64748b;
+            --border: #e2e8f0;
+            --danger: #ef4444;
+            --notice-bg: #fffbeb;
+            --notice-border: #fef08a;
+            --notice-text: #b45309;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: var(--bg);
+            color: #1e293b;
+            padding: 20px;
+            line-height: 1.6;
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 50px 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-weight: 800;
+            font-size: 2.2rem;
+            letter-spacing: -1px;
+            word-break: keep-all;
+        }
+
+        .subtitle {
+            color: var(--gray);
+            font-size: 1rem;
+            word-break: keep-all;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section:last-of-type {
+            border-bottom: none;
+            padding-bottom: 10px;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            word-break: keep-all;
+        }
+
+        .section-title::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 24px;
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #334155;
+            font-size: 0.95rem;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="url"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+            font-family: inherit;
+            background-color: #fff;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .input-hint {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-top: -10px;
+            margin-bottom: 15px;
+            word-break: keep-all;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .grid-manager {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1.5fr 2fr;
+            gap: 10px;
+        }
+
+        /* 비용 변경 가능 고지 알림창 */
+        .notice-box {
+            background-color: var(--notice-bg);
+            border: 1px solid var(--notice-border);
+            color: var(--notice-text);
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            word-break: keep-all;
+        }
+
+        /* 서비스 카드 */
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .service-card {
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 20px 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            background: #fff;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .service-card:hover {
+            border-color: #a5b4fc;
+            transform: translateY(-2px);
+        }
+
+        .service-card.active {
+            border-color: var(--primary);
+            background: #eef2ff;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
+        }
+
+        .service-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .service-name {
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: #1e293b;
+            font-size: 0.95rem;
+            word-break: keep-all;
+        }
+
+        .service-desc {
+            font-size: 0.8rem;
+            color: var(--gray);
+            word-break: keep-all;
+        }
+
+        /* 체크박스 그룹 (최하단 저작권용) */
+        .checkbox-group {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            margin-bottom: 15px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-weight: 500;
+            color: #1e293b;
+            cursor: pointer;
+            margin-bottom: 15px;
+            word-break: keep-all;
+        }
+
+        .checkbox-label:last-child {
+            margin-bottom: 0;
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            margin: 2px 0 0 0;
+            accent-color: var(--primary);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .checkbox-desc {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--danger);
+            margin-top: 4px;
+        }
+
+        /* 동적 추가 버튼 등 */
+        .dynamic-item {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+
+        .dynamic-item-wrapper {
+            flex: 1;
+            display: flex;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .btn-add {
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px dashed #cbd5e1;
+            padding: 14px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            width: 100%;
+            transition: 0.3s;
+            font-size: 1rem;
+        }
+
+        .btn-add:hover {
+            background: #e2e8f0;
+            border-color: #94a3b8;
+        }
+
+        .btn-remove {
+            background: #fff;
+            color: var(--danger);
+            border: 1px solid var(--border);
+            padding: 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .btn-remove:hover {
+            background: #fee2e2;
+        }
+
+        .info-box {
+            display: none;
+            background: #f0fdf4;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #bbf7d0;
+            margin-top: 15px;
+        }
+
+        .schedule-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            word-break: keep-all;
+        }
+
+        .schedule-row b {
+            color: var(--accent);
+            text-align: right;
+            margin-left: 10px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 20px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background: var(--primary-hover);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        /* 모바일 최적화 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 40px 25px;
+            }
+
+            .service-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .grid-manager {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 0;
+                background: #fff;
+            }
+
+            .container {
+                padding: 30px 20px;
+                border-radius: 0;
+                box-shadow: none;
+            }
+
+            .header-section h1 {
+                font-size: 1.6rem;
+            }
+
+            .grid-2 {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .grid-manager {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .dynamic-item {
+                flex-direction: column;
+                background: #f8fafc;
+                padding: 15px;
+                border: 1px solid var(--border);
+                border-radius: 8px;
+            }
+
+            .dynamic-item-wrapper {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .dynamic-item input {
+                margin-bottom: 10px !important;
+            }
+
+            .btn-remove {
+                width: 100%;
+                padding: 12px;
+            }
+
+            .btn-remove::after {
+                content: ' 항목 삭제';
+                font-weight: normal;
+            }
+
+            .service-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .schedule-row {
+                flex-direction: column;
+                gap: 5px;
+                border-bottom: 1px dashed #cbd5e1;
+                padding-bottom: 10px;
+                margin-bottom: 10px;
+            }
+
+            .schedule-row:last-child {
+                border-bottom: none;
+                margin-bottom: 0;
+                padding-bottom: 0;
+            }
+
+            .schedule-row b {
+                text-align: left;
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="header-section">
+            <h1>함께봄 AI 영상 제작 상세 의뢰서</h1>
+            <p class="subtitle">체계적인 기획과 명확한 리소스 분석으로 성공적인 프로젝트를 설계합니다.</p>
+        </div>
+
+        <form id="aiVideoForm" onsubmit="event.preventDefault(); alert('제출 완료 (테스트)');">
+
+            <div class="section">
+                <div class="section-title">01. 프로젝트 및 기업 기본 정보</div>
+                <div class="grid-2">
+                    <div>
+                        <label>회사명 (업체명)</label>
+                        <input type="text" name="company_name" placeholder="정확한 업체명을 입력해 주세요" required>
+                    </div>
+                    <div>
+                        <label>프로젝트명</label>
+                        <input type="text" name="project_title" placeholder="예: 브랜드 런칭 캠페인, 숏폼 시리즈 등" required>
+                    </div>
+                </div>
+
+                <div>
+                    <label>담당자 상세 정보</label>
+                    <div class="grid-manager">
+                        <input type="text" name="m_name" placeholder="성함" required>
+                        <input type="text" name="m_pos" placeholder="직함" required>
+                        <input type="text" name="m_phone" placeholder="연락처" required>
+                        <input type="email" name="m_email" placeholder="이메일" required>
+                    </div>
+                </div>
+
+                <div>
+                    <label>영상의 주요 목적</label>
+                    <input type="text" name="video_purpose" list="purpose_list" placeholder="목록에서 선택하거나 직접 입력해 주세요"
+                        required>
+                    <span class="input-hint">* 화살표를 눌러 선택하거나 텍스트를 직접 입력할 수 있습니다.</span>
+                    <datalist id="purpose_list">
+                        <option value="브랜드 홍보 (Brand Film)"></option>
+                        <option value="제품/서비스 상세 설명 (Explainer)"></option>
+                        <option value="SNS 퍼포먼스 광고 (Short-form)"></option>
+                        <option value="채용 및 기업 문화 홍보"></option>
+                        <option value="사내 교육 및 프레젠테이션"></option>
+                    </datalist>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">02. 자료 제출 및 참고 레퍼런스</div>
+
+                <label>브랜드 리소스 (로고, 가이드, 사진 등)</label>
+                <div id="resContainer">
+                    <div class="dynamic-item">
+                        <div class="dynamic-item-wrapper">
+                            <input type="text" name="res_type[]" list="res_type_list" placeholder="자료 유형 선택/입력"
+                                style="flex:1; margin:0;">
+                            <input type="file" name="res_file[]"
+                                style="flex:2; padding:11px 14px; margin:0; background:#fff;">
+                        </div>
+                        <button type="button" onclick="this.parentElement.remove()" class="btn-remove">✕</button>
+                    </div>
+                </div>
+                <datalist id="res_type_list">
+                    <option value="로고 원본(AI/SVG)"></option>
+                    <option value="브랜드 컬러/디자인 가이드"></option>
+                    <option value="고화질 제품/인물 사진"></option>
+                    <option value="기획안/스크립트(Word/PDF)"></option>
+                </datalist>
+                <button type="button" class="btn-add" onclick="addRes()" style="margin-bottom: 25px;">+ 파일 업로드 항목
+                    추가</button>
+
+                <label>참고 영상 (레퍼런스 URL)</label>
+                <div id="refContainer">
+                    <div class="dynamic-item">
+                        <div class="dynamic-item-wrapper">
+                            <input type="url" name="refs[]" placeholder="https:// (참고 영상 URL)"
+                                style="flex:2; margin:0;">
+                            <input type="text" name="ref_notes[]" placeholder="참고 포인트" style="flex:1; margin:0;">
+                        </div>
+                        <button type="button" onclick="this.parentElement.remove()" class="btn-remove">✕</button>
+                    </div>
+                </div>
+                <button type="button" class="btn-add" onclick="addRef()">+ 참고 사이트/영상 추가</button>
+            </div>
+
+            <div class="section">
+                <div class="section-title">03. 서비스 유형 및 예산 선택</div>
+
+                <div class="notice-box">
+                    <span>💡</span>
+                    <div><strong>안내:</strong> 기획/카피라이팅 의뢰, 다국어 자막, 프리미엄 모델 라이선스, 납기 급행 등의 특약 사항 및 추가 옵션 선택에 따라 최종 견적 비용은
+                        변경될 수 있습니다.</div>
+                </div>
+
+                <div class="service-grid">
+                    <div class="service-card" onclick="selectService('shortform', this)">
+                        <div class="service-icon">📱</div>
+                        <div class="service-name">AI 숏폼 / SNS</div>
+                        <div class="service-desc">15~40초 숏폼 광고</div>
+                    </div>
+                    <div class="service-card" onclick="selectService('explainer', this)">
+                        <div class="service-icon">🖥️</div>
+                        <div class="service-name">AI 설명 / 소개</div>
+                        <div class="service-desc">1~2분 스토리텔링</div>
+                    </div>
+                    <div class="service-card" onclick="selectService('campaign', this)">
+                        <div class="service-icon">🎬</div>
+                        <div class="service-name">AI 캠페인 / 필름</div>
+                        <div class="service-desc">고퀄리티 시네마틱</div>
+                    </div>
+                    <div class="service-card" onclick="selectService('hybrid', this)">
+                        <div class="service-icon">🤝</div>
+                        <div class="service-name">실촬영 + AI 혼합</div>
+                        <div class="service-desc">인터뷰/그래픽 합성</div>
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div>
+                        <label>상세 모델 선택</label>
+                        <input type="text" id="detail_model_input" name="detail_model" list="detail_model_list"
+                            placeholder="위 서비스 유형을 먼저 선택해 주세요" required>
+                        <datalist id="detail_model_list"></datalist>
+                    </div>
+                    <div>
+                        <label>맞춤형 예산 범위</label>
+                        <input type="text" id="budget_input" name="budget" list="budget_list"
+                            placeholder="선택하거나 예산을 직접 입력해 주세요" required>
+                        <datalist id="budget_list"></datalist>
+                    </div>
+                </div>
+
+                <div id="scheduleBox" class="info-box">
+                    <h4 style="margin:0 0 10px 0; color:#166534;">📅 프로젝트 예상 타임라인</h4>
+                    <div class="schedule-row"><span>1단계: 자료 검토 및 초안 발송</span><b id="s1">-</b></div>
+                    <div class="schedule-row"><span>2단계: 피드백 및 최종 납품</span><b id="s2">-</b></div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">04. 저작권 및 법적 권리 동의 <span
+                        style="color:var(--danger); font-size:0.9rem;">(필수)</span></div>
+
+                <div>
+                    <label>영상 최종 활용 범위</label>
+                    <input type="text" name="usage_scope" list="usage_list" placeholder="목록에서 선택하거나 직접 입력해 주세요"
+                        required>
+                    <datalist id="usage_list">
+                        <option value="내부 소장 및 사내 교육용"></option>
+                        <option value="자사 공식 SNS 및 홈페이지 게시 (오가닉)"></option>
+                        <option value="유료 매체 광고 집행 (유튜브, 메타 등 광고 라이선스 필요)"></option>
+                        <option value="옥외 광고 및 방송 송출"></option>
+                    </datalist>
+                </div>
+
+                <div class="checkbox-group" style="margin-top: 15px;">
+                    <label class="checkbox-label">
+                        <input type="checkbox" required>
+                        <div>
+                            제공 리소스 저작권 동의
+                            <span class="checkbox-desc">귀사가 제공하는 이미지, 로고, 폰트는 저작권 분쟁의 소지가 없는 합법적 소스임을 확인합니다.</span>
+                        </div>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" required>
+                        <div>
+                            인물 초상권 및 학습 동의
+                            <span class="checkbox-desc">실제 인물 사진을 AI 학습 및 변환에 사용할 경우, 대상자의 명시적 이용 동의를 얻었음을 확인합니다.</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn">프로젝트 의뢰 확정하기</button>
+        </form>
+    </div>
+
+    <script>
+        function addRes() {
+            const div = document.createElement('div');
+            div.className = 'dynamic-item';
+            div.innerHTML = `
+                <div class="dynamic-item-wrapper">
+                    <input type="text" name="res_type[]" list="res_type_list" placeholder="자료 유형 선택/입력" style="flex:1; margin:0;">
+                    <input type="file" name="res_file[]" style="flex:2; padding:11px 14px; margin:0; background:#fff;">
+                </div>
+                <button type="button" onclick="this.parentElement.remove()" class="btn-remove">✕</button>
+            `;
+            document.getElementById('resContainer').appendChild(div);
+        }
+
+        function addRef() {
+            const div = document.createElement('div');
+            div.className = 'dynamic-item';
+            div.innerHTML = `
+                <div class="dynamic-item-wrapper">
+                    <input type="url" name="refs[]" placeholder="https:// (참고 영상 URL)" style="flex:2; margin:0;">
+                    <input type="text" name="ref_notes[]" placeholder="참고 포인트" style="flex:1; margin:0;">
+                </div>
+                <button type="button" onclick="this.parentElement.remove()" class="btn-remove">✕</button>
+            `;
+            document.getElementById('refContainer').appendChild(div);
+        }
+
+        const serviceData = {
+            shortform: {
+                models: ["템플릿형 (이미지+텍스트+AI보이스)", "커스텀 모션형 (브랜드 컬러 반영)", "광고 퍼포먼스형 (카피라이팅 포함)", "시리즈 패키지 (월 8~20편)"],
+                budgets: ["150,000원 ~ 400,000원", "400,000원 ~ 900,000원", "700,000원 ~ 1,500,000원", "월 패키지 (편당 30만~70만)"],
+                s1: "2영업일 이내", s2: "피드백 접수 후 2영업일 이내"
+            },
+            explainer: {
+                models: ["기본형 (AI아바타 + 이미지)", "스탠다드 (스토리텔링 + 모션그래픽)", "프리미엄 (콘셉트기획 + 그래픽디자인)"],
+                budgets: ["900,000원 ~ 2,000,000원", "2,000,000원 ~ 4,500,000원", "4,500,000원 ~ 9,000,000원"],
+                s1: "5영업일 이내", s2: "피드백 접수 후 3영업일 이내"
+            },
+            campaign: {
+                models: ["온라인 광고용 (30~60초)", "브랜드 필름 (1~3분)", "대형 캠페인 (시리즈 형태 3~10편)"],
+                budgets: ["4,000,000원 ~ 10,000,000원", "9,000,000원 ~ 25,000,000원", "20,000,000원 이상"],
+                s1: "10영업일 이내", s2: "세부 일정 별도 협의"
+            },
+            hybrid: {
+                models: ["인터뷰 촬영 + AI편집", "촬영 + 광고그래픽 + 다버전 납품", "전방위 캠페인 패키지"],
+                budgets: ["2,500,000원 ~ 6,000,000원", "6,000,000원 ~ 15,000,000원", "15,000,000원 이상"],
+                s1: "촬영 완료 후 7영업일 이내", s2: "피드백 접수 후 5영업일 이내"
+            }
+        };
+
+        function selectService(type, el) {
+            document.querySelectorAll('.service-card').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+
+            const data = serviceData[type];
+
+            const modelList = document.getElementById('detail_model_list');
+            modelList.innerHTML = '';
+            data.models.forEach(val => {
+                modelList.innerHTML += `<option value="${val}"></option>`;
+            });
+            document.getElementById('detail_model_input').value = '';
+            document.getElementById('detail_model_input').placeholder = "목록에서 선택하거나 직접 입력";
+
+            const budgetList = document.getElementById('budget_list');
+            budgetList.innerHTML = '';
+            data.budgets.forEach(val => {
+                budgetList.innerHTML += `<option value="${val}"></option>`;
+            });
+            document.getElementById('budget_input').value = '';
+            document.getElementById('budget_input').placeholder = "목록에서 선택하거나 직접 입력";
+
+            document.getElementById('s1').innerText = data.s1;
+            document.getElementById('s2').innerText = data.s2;
+            document.getElementById('scheduleBox').style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>

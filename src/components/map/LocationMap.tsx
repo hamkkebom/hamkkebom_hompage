@@ -23,9 +23,9 @@ export default function LocationMap() {
         lat: 37.5786908,
         lng: 126.9731271,
         title: "함께봄 본사",
-        address: "서울 종로구 효자로7길 10 1층(서촌 한옥체)",
+        address: "서울 종로구 효자로7길 10 함께봄",
         phone: "02-1234-5678",
-        email: "hamkkebom12@gmail.com",
+        email: "info@hamkkebom.com",
     };
 
     // MapLibre 초기화

@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>함께봄 프로젝트 상세 의뢰 및 자료 요청</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --bg: #f8fafc;
+            --accent: #10b981;
+            --gray: #64748b;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: var(--bg);
+            color: #1e293b;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 5px;
+            font-weight: 800;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--gray);
+            margin-bottom: 40px;
+            font-size: 0.95rem;
+        }
+
+        .section {
+            margin-bottom: 45px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 25px;
+            border-left: 5px solid var(--primary);
+            padding-left: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #334155;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+
+        /* 담당자 정보 4열 그리드 */
+        .grid-manager {
+            display: grid;
+            grid-template-columns: 1fr 0.8fr 1.5fr 2fr;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        /* 동적 추가 그룹 */
+        .dynamic-group {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 15px;
+        }
+
+        .dynamic-item {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            align-items: center;
+        }
+
+        .btn-add {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        .btn-remove {
+            background: #ef4444;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        /* 서비스 대분류 카드 */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 25px;
+            cursor: pointer;
+            transition: 0.3s;
+            background: #fff;
+            text-align: center;
+        }
+
+        .card:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .card.active {
+            border-color: var(--primary);
+            background: #f5f7ff;
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.1);
+        }
+
+        /* 일정 안내 */
+        .info-box {
+            display: none;
+            margin-top: 25px;
+            background: #f0f7ff;
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 6px solid var(--primary);
+            animation: fadeIn 0.5s;
+        }
+
+        .schedule-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .schedule-row b {
+            color: var(--primary);
+        }
+
+        /* 상세 모델 카드 (상세 구성 포함) */
+        .template-area {
+            display: none;
+            margin-top: 40px;
+            animation: fadeIn 0.5s;
+        }
+
+        .template-card {
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+            background: #fff;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+
+        .template-card.selected {
+            border-color: var(--accent);
+            background: #f0fdf4;
+        }
+
+        .template-card h4 {
+            margin: 0 0 10px 0;
+            color: #1e293b;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .template-card ul {
+            padding-left: 20px;
+            margin: 0;
+            font-size: 0.88rem;
+            color: #475569;
+        }
+
+        .template-card ul li {
+            margin-bottom: 5px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 22px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.3rem;
+            font-weight: 800;
+            cursor: pointer;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>프로젝트 상세 의뢰서</h1>
+        <p class="subtitle">체계적인 기획과 리소스 분류를 통해 프로젝트의 성공을 설계합니다</p>
+
+        <form id="mainForm">
+            <div class="section">
+                <div class="section-title">01. 프로젝트 및 기업 기본 정보</div>
+                <div class="grid-2">
+                    <div class="form-group"><label>회사명 (업체명)</label><input type="text" name="company_name"
+                            placeholder="정확한 업체명을 입력해 주세요" required></div>
+                    <div class="form-group"><label>프로젝트명</label><input type="text" name="project_title"
+                            placeholder="예: 함께봄 리뉴얼, 가위닥터 상세페이지 구축 등" required></div>
+                </div>
+
+                <div class="form-group" style="margin-top:10px;">
+                    <label>담당자 상세 정보 (성함 / 직함 / 연락처 / 이메일)</label>
+                    <div class="grid-manager">
+                        <input type="text" name="m_name" placeholder="성함" required>
+                        <input type="text" name="m_pos" placeholder="직함" required>
+                        <input type="text" name="m_phone" placeholder="연락처" required>
+                        <input type="email" name="m_email" placeholder="이메일" required>
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="form-group"><label>예산 범위</label><select name="budget">
+                            <option>100만 원 미만</option>
+                            <option>100~500만 원</option>
+                            <option>500만 원 이상</option>
+                        </select></div>
+                    <div class="form-group"><label>기존 정보 유무</label><select name="has_data">
+                            <option>아이디어 단계</option>
+                            <option>기획안 보유</option>
+                            <option>기존 사이트 리뉴얼</option>
+                        </select></div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">02. 자료 제출 및 참고 사이트</div>
+                <div class="form-group">
+                    <label>브랜드 리소스 (항목별 파일 업로드)</label>
+                    <div id="resContainer" class="dynamic-group">
+                        <div class="dynamic-item">
+                            <select name="res_type[]" style="flex:1;">
+                                <option value="logo">로고 원본(AI/SVG)</option>
+                                <option value="guide">브랜드 가이드</option>
+                                <option value="intro">회사소개서/기획안</option>
+                                <option value="photo">고화질 사진/영상</option>
+                            </select>
+                            <input type="file" name="res_file[]" style="flex:2; border:none; background:none;">
+                        </div>
+                    </div>
+                    <button type="button" class="btn-add" onclick="addRes()">+ 리소스 항목 추가</button>
+                </div>
+
+                <div class="form-group" style="margin-top:20px;">
+                    <label>참고 사이트 (블로그, 플레이스, 경쟁사 등 무제한 추가)</label>
+                    <div id="refContainer" class="dynamic-group">
+                        <div class="dynamic-item">
+                            <input type="url" name="refs[]" placeholder="https:// (URL)" style="flex:2.5;">
+                            <input type="text" name="ref_notes[]" placeholder="참고 내용 (예: 디자인 참고)" style="flex:1;">
+                        </div>
+                    </div>
+                    <button type="button" class="btn-add" onclick="addRef()" style="background:var(--gray);">+ 사이트
+                        추가하기</button>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">03. 서비스 유형 및 예상 일정</div>
+                <div class="grid-2">
+                    <div class="card" onclick="selectService('landing', this)">🚀 <b>랜딩 / 원페이지</b><br><small>섹션 5개 내외 +
+                            DB 분석</small></div>
+                    <div class="card" onclick="selectService('homepage', this)">🌐 <b>일반 홈페이지</b><br><small>기본 8페이지 + 문의
+                            게시판</small></div>
+                    <div class="card" onclick="selectService('ecommerce', this)">🛒 <b>이커머스</b><br><small>상품/주문/배송 통합
+                            운영</small></div>
+                    <div class="card" onclick="selectService('platform', this)">⚡ <b>플랫폼 제작</b><br><small>회원/매칭/정산 로직
+                            설계</small></div>
+                </div>
+
+                <div id="scheduleBox" class="info-box">
+                    <h4 style="margin:0 0 10px 0;">📅 약속드리는 프로젝트 타임라인</h4>
+                    <div class="schedule-row"><span>1단계: 자료 검토 및 첫 시안 발송</span><b id="s1">-</b></div>
+                    <div class="schedule-row"><span>2단계: 피드백 반영 및 수정 완료</span><b id="s2">-</b></div>
+                    <p style="font-size:0.85rem; color:var(--gray); margin-top:10px;">* 시안 발송 후 원페이지는 1주, 그 외 서비스는 2주의
+                        수정 기간이 포함됩니다.</p>
+                </div>
+            </div>
+
+            <div id="templateArea" class="template-area section">
+                <div class="section-title">04. 상세 모델 및 구성 선택</div>
+                <p style="font-size: 0.95rem; color: #64748b; margin-bottom: 20px;">비즈니스 목적에 최적화된 상세 모델을 하나 선택해 주세요.</p>
+                <div id="templateGrid" class="grid-2"></div>
+            </div>
+
+            <button type="submit" class="submit-btn">프로젝트 의뢰 확정하기</button>
+        </form>
+    </div>
+
+    <script>
+        function addRes() {
+            const div = document.createElement('div'); div.className = 'dynamic-item';
+            div.innerHTML = '<select name="res_type[]" style="flex:1;"><option value="logo">로고 원본(AI/SVG)</option><option value="guide">브랜드 가이드</option><option value="intro">회사소개서/기획안</option><option value="photo">고화질 사진/영상</option></select><input type="file" name="res_file[]" style="flex:2; border:none; background:none;"><button type="button" onclick="this.parentElement.remove()" class="btn-remove">✕</button>';
+            document.getElementById('resContainer').appendChild(div);
+        }
+        function addRef() {
+            const div = document.createElement('div'); div.className = 'dynamic-item';
+            div.innerHTML = '<input type="url" name="refs[]" placeholder="https://" style="flex:2.5;"><input type="text" name="ref_notes[]" placeholder="참고 내용" style="flex:1;"><button type="button" onclick="this.parentElement.remove()" class="btn-remove">✕</button>';
+            document.getElementById('refContainer').appendChild(div);
+        }
+
+        const serviceData = {
+            landing: {
+                s1: "1주일 이내 발송", s2: "피드백 후 1주일 내 완료",
+                t: [
+                    { n: "A. DB 수집형", c: ["메인 카피", "문제 제기", "해결책 제안", "이용 후기", "상담 신청 폼"] },
+                    { n: "B. 제품 홍보형", c: ["제품 특장점(USP)", "디테일 컷", "가격/혜택", "구매 버튼(CTA)"] },
+                    { n: "C. 브랜드 소개형", c: ["브랜드 스토리", "핵심 가치", "실적/연혁", "오시는 길(지도)"] },
+                    { n: "D. 사전예약형", c: ["티징 카피", "이벤트 안내", "참여 방법", "사전예약 폼"] }
+                ]
+            },
+            homepage: {
+                s1: "2주일 이내 발송", s2: "피드백 후 2주일 내 완료",
+                t: [
+                    { n: "A. 기업 표준형", c: ["인사말/연혁", "사업영역 상세(2p)", "공지사항", "문의하기/오시는길"] },
+                    { n: "B. 포트폴리오형", c: ["브랜드 스토리", "작업 리스트", "상세 페이지", "작업 프로세스"] },
+                    { n: "C. 서비스/기관형", c: ["이용 가이드", "FAQ", "자료실", "공지사항/문의"] },
+                    { n: "D. 뉴스/미디어형", c: ["실시간 뉴스", "카테고리 리스트", "칼럼", "제보하기/회사소개"] }
+                ]
+            },
+            ecommerce: {
+                s1: "1개월 이내 발송", s2: "피드백 후 2주일 내 완료",
+                t: [
+                    { n: "A. 자사 브랜드몰", c: ["감성 UI 홈/룩북", "브랜드 스토리", "쿠폰/적립금", "마이페이지"] },
+                    { n: "B. 유통 종합몰", c: ["검색/필터 시스템", "대량 구매 문의", "카테고리 관리", "재고 연동"] },
+                    { n: "C. 콘텐츠몰", c: ["미리보기", "결제 후 즉시 다운로드", "수강평 관리", "내 강의실"] },
+                    { n: "D. 공동구매/예약형", c: ["D-day 한정 판매", "목표 수량 표시", "예약 결제", "실시간 현황"] }
+                ]
+            },
+            platform: {
+                s1: "1개월 이내 발송", s2: "피드백 후 2주일 내 완료",
+                t: [
+                    { n: "A. 구인구직/매칭형", c: ["이력서/공고 등록", "채팅 매칭", "평가/리뷰", "안심 결제"] },
+                    { n: "B. 예약/공유형", c: ["리소스 등록/승인", "실시간 예약", "정산 대시보드", "캘린더 연동"] },
+                    { n: "C. 커뮤니티형", c: ["등급별 권한", "유료 멤버십", "전문가 답변", "포인트 랭킹"] },
+                    { n: "D. 포인트/리워드형", c: ["미션 수행", "포인트 적립 로그", "기프티콘 교환", "출금 신청"] }
+                ]
+            }
+        };
+
+        function selectService(type, el) {
+            document.querySelectorAll('.card').forEach(c => c.classList.remove('active')); el.classList.add('active');
+            document.getElementById('s1').innerText = serviceData[type].s1; document.getElementById('s2').innerText = serviceData[type].s2;
+            document.getElementById('scheduleBox').style.display = 'block';
+            const grid = document.getElementById('templateGrid'); grid.innerHTML = '';
+            serviceData[type].t.forEach(i => {
+                let li = i.c.map(v => `<li>${v}</li>`).join('');
+                grid.innerHTML += `<div class="card template-card" onclick="selectTemplate(this)"><h4>${i.n}</h4><ul>${li}</ul></div>`;
+            });
+            document.getElementById('templateArea').style.display = 'block';
+            window.scrollTo({ top: document.getElementById('scheduleBox').offsetTop - 50, behavior: 'smooth' });
+        }
+
+        function selectTemplate(el) {
+            document.querySelectorAll('.template-card').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+        }
+    </script>
+</body>
+
+</html>

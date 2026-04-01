@@ -35,7 +35,7 @@ const localBusinessJsonLd = {
     latitude: 37.5792,
     longitude: 126.9738,
   },
-  email: "hamkkebom12@gmail.com",
+  email: "info@hamkkebom.com",
   // ⚠️ 전화번호 02-1234-5678은 플레이스홀더이므로 포함하지 않음
   openingHoursSpecification: {
     "@type": "OpeningHoursSpecification",

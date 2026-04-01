@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 영상 제작 B2B 단가표</title>
+    <meta name="description" content="AI 영상 제작 B2B 단가표 - 숏폼, 설명형, 광고 캠페인, 혼합 제작">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+KR:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0e1a;
+            --bg-secondary: #111827;
+            --bg-card: rgba(17, 24, 39, 0.6);
+            --bg-card-hover: rgba(30, 41, 59, 0.7);
+            --border-subtle: rgba(99, 102, 241, 0.15);
+            --border-glow: rgba(99, 102, 241, 0.4);
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --accent-start: #6366f1;
+            --accent-end: #8b5cf6;
+            --accent-bright: #a78bfa;
+            --price-start: #f59e0b;
+            --price-end: #ef4444;
+            --success: #10b981;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', 'Inter', -apple-system, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(ellipse 80% 50% at 20% 20%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse 60% 40% at 80% 80%, rgba(139, 92, 246, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse 40% 60% at 50% 50%, rgba(245, 158, 11, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 50px 40px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-start), var(--accent-end), var(--price-start));
+            border-radius: 24px 24px 0 0;
+        }
+
+        .header-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(139, 92, 246, 0.1));
+            border: 1px solid rgba(99, 102, 241, 0.25);
+            padding: 6px 18px;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent-bright);
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-bright) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            margin-top: 64px;
+        }
+
+        .section-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .section-title-text h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .section-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .data-table-wrapper {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            overflow: hidden;
+            backdrop-filter: blur(16px);
+            margin-bottom: 20px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table thead th {
+            background: rgba(99, 102, 241, 0.08);
+            color: var(--accent-bright);
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 18px 24px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .data-table thead th:first-child { text-align: left; width: 45%; }
+        .data-table thead th:last-child { text-align: right; }
+
+        .data-table tbody td {
+            padding: 20px 24px;
+            text-align: center;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .data-table tbody td:first-child {
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .data-table tbody td:last-child {
+            text-align: right;
+            font-weight: 700;
+            color: var(--success);
+            font-size: 1.05rem;
+        }
+
+        .td-sub {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
+
+        .addon-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .addon-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 18px;
+            padding: 28px 24px;
+            min-height: 160px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .addon-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .addon-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.12), rgba(139, 92, 246, 0.08));
+            border: 1px solid rgba(99, 102, 241, 0.15);
+        }
+
+        .addon-label { font-weight: 700; font-size: 1.05rem; color: var(--text-primary); }
+
+        .addon-price-large {
+            font-size: 1.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--price-start), var(--price-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-top: auto;
+        }
+
+        @media (max-width: 768px) {
+            .addon-grid { grid-template-columns: 1fr; }
+            .addon-card { flex-direction: row; align-items: center; justify-content: space-between; min-height: auto; }
+            .addon-header { margin-bottom: 0; }
+            .addon-price-large { margin-top: 0; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-badge">2026 현실시장 기준</div>
+            <h1>AI 영상 제작 B2B 단가표</h1>
+            <p>비즈니스 목적에 최적화된 고품질 AI 영상 솔루션을 제공합니다</p>
+        </header>
+
+        <div class="section-title">
+            <div class="section-number">01</div>
+            <div class="section-title-text">
+                <h2>AI 기반 숏폼 / SNS 광고 영상</h2>
+                <div class="section-subtitle">쇼츠 / 릴스 / 채용광고 / 퍼포먼스 광고용</div>
+            </div>
+        </div>
+        <div class="data-table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr><th>구분</th><th>길이</th><th>단가 (원)</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>템플릿형<span class="td-sub">(이미지 + 텍스트 + AI보이스)</span></td><td>15~30초</td><td>150,000 ~ 400,000</td></tr>
+                    <tr><td>커스텀 모션형<span class="td-sub">(브랜드 컬러 반영)</span></td><td>20~40초</td><td>400,000 ~ 900,000</td></tr>
+                    <tr><td>광고 퍼포먼스형<span class="td-sub">(카피라이팅 포함)</span></td><td>20~40초</td><td>700,000 ~ 1,500,000</td></tr>
+                    <tr><td>시리즈 패키지<span class="td-sub">(월 8~20편 기준)</span></td><td>-</td><td>편당 300,000 ~ 700,000</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section-title">
+            <div class="section-number">02</div>
+            <div class="section-title-text">
+                <h2>AI 설명형 / 서비스 소개 영상</h2>
+                <div class="section-subtitle">회사소개 / 채용브랜딩 / 플랫폼 소개</div>
+            </div>
+        </div>
+        <div class="data-table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr><th>구분</th><th>길이</th><th>단가 (원)</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>기본형<span class="td-sub">(AI아바타 + 이미지)</span></td><td>60초</td><td>900,000 ~ 2,000,000</td></tr>
+                    <tr><td>스탠다드<span class="td-sub">(스토리텔링 + 모션그래픽)</span></td><td>60~90초</td><td>2,000,000 ~ 4,500,000</td></tr>
+                    <tr><td>프리미엄<span class="td-sub">(콘셉트기획 + 그래픽디자인)</span></td><td>1~2분</td><td>4,500,000 ~ 9,000,000</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section-title">
+            <div class="section-number">03</div>
+            <div class="section-title-text">
+                <h2>AI 광고 캠페인 / 브랜딩 필름</h2>
+                <div class="section-subtitle">런칭 캠페인 / 브랜드 필름 / 대행사 협업</div>
+            </div>
+        </div>
+        <div class="data-table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr><th>구분</th><th>길이</th><th>단가 (원)</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>온라인 광고용</td><td>30~60초</td><td>4,000,000 ~ 10,000,000</td></tr>
+                    <tr><td>브랜드 필름</td><td>1~3분</td><td>9,000,000 ~ 25,000,000</td></tr>
+                    <tr><td>대형 캠페인<span class="td-sub">(시리즈 형태)</span></td><td>3~10편</td><td>20,000,000 ~ 60,000,000</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section-title">
+            <div class="section-number">04</div>
+            <div class="section-title-text">
+                <h2>AI + 실촬영 혼합 제작</h2>
+                <div class="section-subtitle">인터뷰 + AI그래픽 + 광고</div>
+            </div>
+        </div>
+        <div class="data-table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr><th style="width: 60%;">구분</th><th>단가 (원)</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>인터뷰 촬영 + AI편집</td><td>2,500,000 ~ 6,000,000</td></tr>
+                    <tr><td>촬영 + 광고그래픽 + 다버전 납품</td><td>6,000,000 ~ 15,000,000</td></tr>
+                    <tr><td>캠페인 패키지</td><td>15,000,000 ~ 40,000,000</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section-title">
+            <div class="section-number">05</div>
+            <div class="section-title-text">
+                <h2>옵션 비용 <span style="font-size: 0.9rem; color: #fbbf24;">(B2B 분리 청구)</span></h2>
+                <div class="section-subtitle">추가로 발생하는 필수/선택적 항목입니다</div>
+            </div>
+        </div>
+        <div class="addon-grid">
+            <div class="addon-card"><div class="addon-header"><div class="addon-icon">📝</div><div class="addon-label">기획 / 카피라이팅</div></div><div class="addon-price-large">200,000 ~ 1,500,000</div></div>
+            <div class="addon-card"><div class="addon-header"><div class="addon-icon">🔄</div><div class="addon-label">수정 (2회 초과)</div></div><div class="addon-price-large">회당 100,000 ~ 500,000</div></div>
+            <div class="addon-card"><div class="addon-header"><div class="addon-icon">🌐</div><div class="addon-label">자막 번역</div></div><div class="addon-price-large">100,000 ~ 400,000</div></div>
+            <div class="addon-card"><div class="addon-header"><div class="addon-icon">👤</div><div class="addon-label">모델 라이선스</div></div><div class="addon-price-large">200,000 ~ 2,000,000</div></div>
+            <div class="addon-card"><div class="addon-header"><div class="addon-icon">📜</div><div class="addon-label">광고사용권 (6개월)</div></div><div class="addon-price-large">제작비의 20~40%</div></div>
+            <div class="addon-card"><div class="addon-header"><div class="addon-icon">⚡</div><div class="addon-label">납기 급행</div></div><div class="addon-price-large">+ 30% 할증</div></div>
+        </div>
+    </div>
+</body>
+</html>

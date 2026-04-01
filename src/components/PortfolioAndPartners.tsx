@@ -79,10 +79,14 @@ export default function PortfolioAndPartners() {
                         letterSpacing: "0.05em",
                         whiteSpace: "nowrap",
                         fontFamily: "var(--font-geist-sans)",
-                        transition: "color 0.4s cubic-bezier(0.16, 1, 0.3, 1)"
+                        transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+                        padding: "0.5rem 1.2rem",
+                        border: "1px solid rgba(255,255,255,0.15)",
+                        borderRadius: "8px",
+                        background: "rgba(255,255,255,0.03)",
                     }}
-                        onMouseEnter={(e) => { e.currentTarget.style.color = "#fff"; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(255,255,255,0.8)"; }}
+                        onMouseEnter={(e) => { e.currentTarget.style.color = "#fff"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.3)"; e.currentTarget.style.background = "rgba(255,255,255,0.06)"; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(255,255,255,0.8)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)"; e.currentTarget.style.background = "rgba(255,255,255,0.03)"; }}
                     >
                         {partner.name}
                     </span>

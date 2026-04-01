@@ -91,6 +91,7 @@ export default function GNB() {
                 ]
             },
             { name: "WORKS", label: "WORKS", href: "/works" },
+            { name: "PRESS", label: "보도자료", href: "/media" },
             {
                 name: "CONTACT",
                 label: "문의하기",
@@ -173,7 +174,7 @@ export default function GNB() {
                 left: "50%",
                 transform: "translateX(-50%)",
                 display: "flex",
-                gap: "5vw",
+                gap: "clamp(1.5rem, 3vw, 4rem)",
                 alignItems: "center",
                 zIndex: 1
             }}>

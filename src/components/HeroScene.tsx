@@ -446,7 +446,7 @@ export default function HeroScene() {
                         </span>
                         <div style={{ fontSize: "clamp(1.8rem, 5vw, 4rem)", fontWeight: 900, lineHeight: 1.3 }}>
                             방금 당신이 본 영상,<br />
-                            <span style={{ color: "var(--text-secondary)", fontSize: "0.8em" }}>단 한 명의 현실도 </span>
+                            <span style={{ color: "var(--text-secondary)", fontSize: "0.8em" }}>단 하나의 현실도 </span>
                             <span className="hero-glitch-intense" style={{
                                 display: "inline-block",
                                 color: "var(--accent-color)",

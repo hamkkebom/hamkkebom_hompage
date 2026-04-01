@@ -24,7 +24,7 @@ const organizationJsonLd = {
   url: "https://hamkkebom.com",
   logo: "https://hamkkebom.com/logo.png",
   description: "AI 음원 기반 브랜드 영상 제작 및 퍼포먼스 마케팅 전문 스튜디오",
-  email: "hamkkebom12@gmail.com",
+  email: "info@hamkkebom.com",
   sameAs: [
     "https://www.instagram.com/hamkkebom_official",
     "https://www.youtube.com/@hamkkesong",

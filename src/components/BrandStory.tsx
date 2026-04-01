@@ -57,7 +57,7 @@ export default function BrandStory() {
                 color: "#fff",
                 position: "relative",
                 zIndex: 10,
-                padding: "clamp(4rem, 10vw, 8rem) clamp(1rem, 4vw, 2rem)",
+                padding: "clamp(2rem, 5vw, 4rem) clamp(1rem, 4vw, 2rem)",
             }}
         >
             <div className="brand-story-container" style={{ maxWidth: "900px", width: "100%", display: "flex", flexDirection: "column", gap: "clamp(4rem, 10vw, 6rem)" }}>
