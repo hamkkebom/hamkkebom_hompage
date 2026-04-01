@@ -157,44 +157,6 @@ export const MEDIA_POSTS: MediaPost[] = [
     publishedAt: "2026-03-18",
     sourceColor: "#0284C7",
   },
-
-  // ── 블로그 리뷰 ──
-  {
-    id: "naver-blog-hlp5476",
-    title: "주인장과나그네 — 헐버트 전시회 관람 후기",
-    description:
-      "서촌 한옥 함께봄에서 열린 헐버트 아리랑 채보 130주년 전시를 다녀온 블로그 관람 후기.",
-    category: "review",
-    source: "Naver Blog",
-    sourceUrl: "https://blog.naver.com/hlp5476/224224861328",
-    publishedAt: "2026-03-18",
-    sourceColor: "#03C75A",
-  },
-  {
-    id: "naver-blog-hamkkebom-review",
-    title: "서촌 한옥 함께봄 — 전통과 현대가 만나는 문화 공간 탐방",
-    description:
-      "서울 종로구 서촌에 위치한 한옥 문화 공간 함께봄을 방문한 블로그 리뷰. 한옥의 고즈넉한 멋과 현대적 감각이 어우러진 공간에서의 특별한 경험.",
-    category: "review",
-    source: "Naver Blog",
-    sourceUrl: "https://m.blog.naver.com/vuswl57/224231174733",
-    publishedAt: "2026-03-15",
-    sourceColor: "#03C75A",
-  },
-
-  // ── 전시회 ──
-  {
-    id: "ariang-130-exhibition",
-    title: "아리랑 130년, 전 한국의 보물을 찾다 — 서울 종로구 서촌 한옥 함께봄 전시",
-    description:
-      "130여 년 전 한국의 문화를 세계에 알린 아리랑의 역사를 되짚는 전시. 서촌 한옥 함께봄에서 열린 특별 전시 관람 후기.",
-    category: "review",
-    source: "Facebook",
-    sourceUrl:
-      "https://www.facebook.com/mingyeong.o.599534/posts/2026-210%EC%84%9C%EC%9A%B8-%EC%A2%85%EB%A1%9C%EA%B5%AC-%EC%84%9C%EC%B4%8C-%ED%95%9C%EC%98%A5%ED%95%A8%EA%BB%98%EB%B4%84%EC%97%90%EC%84%9C-%EC%95%84%EB%A6%AC%EB%9E%91-130%EB%85%84-%EC%A0%84-%ED%95%9C%EA%B5%AD%EC%9D%98-%EB%B3%B4%EB%AC%BC%EC%9D%84-%EC%B0%BE%EB%8B%A4%EB%A5%BC-%EA%B4%80%EB%9E%8C%EC%9D%B4%EB%B2%88-%EC%A0%84%EC%8B%9C%EB%8A%94-130%EC%97%AC-%EB%85%84-%EC%A0%84-%ED%95%9C%EA%B5%AD%EC%9D%98-%EB%AC%B8%ED%99%94%EB%A5%BC-%EC%84%B8%EA%B3%84%EC%97%90-%EC%95%8C/3848874948755468/",
-    publishedAt: "2026-02-10",
-    sourceColor: "#1877F2",
-  },
 ];
 
 export function getMediaPostById(id: string): MediaPost | undefined {
