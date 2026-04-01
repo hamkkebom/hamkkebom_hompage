@@ -11,6 +11,7 @@ export default function robots(): MetadataRoute.Robots {
           "/square",
           "/_next/",
           "/forms/",
+          "/guides/",
           "/seo-1000-methods.md",
         ],
       },
