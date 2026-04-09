@@ -27,7 +27,7 @@ const organizationJsonLd = {
   email: "info@hamkkebom.com",
   sameAs: [
     "https://www.instagram.com/hamkkebom_official",
-    "https://www.youtube.com/@hamkkesong",
+    "https://www.youtube.com/@hamkkessong",
     "https://hamkkebom.kr",
   ],
   address: {

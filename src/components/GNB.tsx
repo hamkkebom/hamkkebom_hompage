@@ -427,7 +427,7 @@ export default function GNB() {
             <div style={{ zIndex: 100, display: "flex", gap: "2rem", alignItems: "center", opacity: 1, padding: "10px" }}>
                 <div className="gnb-desktop-utils" style={{ display: "flex", gap: "1.5rem", alignItems: "center", marginRight: "1rem" }}>
                     {[
-                        { name: "YOUTUBE", href: "https://www.youtube.com/@hamkkesong", Icon: SocialYoutube, color: "#ff0000" },
+                        { name: "YOUTUBE", href: "https://www.youtube.com/@hamkkessong", Icon: SocialYoutube, color: "#ff0000" },
                         { name: "INSTAGRAM", href: "https://www.instagram.com/hamkkebom_official", Icon: SocialInstagram, color: "#E1306C" },
                         { name: "BLOG", href: "https://hamkkebom.kr/", Icon: SocialBlog, color: "#ffffff" }
                     ].map((social) => {

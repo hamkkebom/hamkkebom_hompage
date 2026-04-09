@@ -153,7 +153,7 @@ export default function ContactAndFooter() {
                         <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
                             <Link href="/contact" style={{ color: "var(--accent-color)", fontSize: "0.85rem", fontWeight: 600, transition: "color 0.3s" }}>프로젝트 문의하기</Link>
                             <a href="https://www.instagram.com/hamkkebom_official" target="_blank" rel="noopener noreferrer" style={{ color: "var(--text-secondary)", fontSize: "0.85rem", transition: "color 0.3s" }}>Instagram</a>
-                            <a href="https://www.youtube.com/@hamkkesong" target="_blank" rel="noopener noreferrer" style={{ color: "var(--text-secondary)", fontSize: "0.85rem", transition: "color 0.3s" }}>YouTube</a>
+                            <a href="https://www.youtube.com/@hamkkessong" target="_blank" rel="noopener noreferrer" style={{ color: "var(--text-secondary)", fontSize: "0.85rem", transition: "color 0.3s" }}>YouTube</a>
                             <a href="https://hamkkebom.kr/" target="_blank" rel="noopener noreferrer" style={{ color: "var(--text-secondary)", fontSize: "0.85rem", transition: "color 0.3s" }}>Blog</a>
                         </div>
                     </div>
