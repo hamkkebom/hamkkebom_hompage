@@ -1,39 +1,9 @@
 import type { MetadataRoute } from "next";
-import { createClient } from "@supabase/supabase-js";
 import { BLOG_POSTS } from "@/data/blog-posts";
 
 const BASE_URL = "https://hamkkebom.com";
 
-interface WorkData {
-  uid: string;
-  createdAt: string;
-}
-
-async function getWorkData(): Promise<WorkData[]> {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseKey =
-    process.env.SUPABASE_SERVICE_ROLE_KEY ||
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
-
-  if (!supabaseUrl || !supabaseKey) return [];
-
-  try {
-    const supabase = createClient(supabaseUrl, supabaseKey);
-    const { data, error } = await supabase
-      .from("videos")
-      .select("streamUid, createdAt")
-      .order("createdAt", { ascending: false });
-
-    if (error || !data) return [];
-    return data
-      .filter((v) => v.streamUid)
-      .map((v) => ({ uid: v.streamUid, createdAt: v.createdAt }));
-  } catch {
-    return [];
-  }
-}
-
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = [
     { path: "", lastMod: new Date("2026-03-18"), priority: 1.0, freq: "weekly" as const },
     { path: "/services/video", lastMod: new Date("2026-03-18"), priority: 0.9, freq: "monthly" as const },
@@ -57,14 +27,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority,
   }));
 
-  const workData = await getWorkData();
-  const workEntries = workData.map(({ uid, createdAt }) => ({
-    url: `${BASE_URL}/works/${uid}`,
-    lastModified: createdAt ? new Date(createdAt) : new Date("2026-01-01"),
-    changeFrequency: "monthly" as const,
-    priority: 0.6,
-  }));
-
   const blogEntries = BLOG_POSTS.map((post) => ({
     url: `${BASE_URL}/blog/${post.slug}`,
     lastModified: new Date(post.updatedAt),
@@ -72,5 +34,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  return [...staticEntries, ...workEntries, ...blogEntries];
+  return [...staticEntries, ...blogEntries];
 }

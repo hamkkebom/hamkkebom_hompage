@@ -21,6 +21,16 @@ const budgetLabels: Record<string, string> = {
   undecided: '아직 미정 (상담 후 결정)',
 };
 
+/* ─── 사용자 입력을 이메일 HTML에 넣기 전 escape ─── */
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 /* ─── HTML 이메일 본문 생성 ─── */
 function buildEmailHtml(data: {
   name: string; company: string; phone: string; email: string;
@@ -39,7 +49,7 @@ function buildEmailHtml(data: {
     ...(data.reference ? [['레퍼런스', data.reference]] : []),
   ];
   const tableRows = rows.map(([label, value]) =>
-    `<tr style="border-bottom:1px solid #f0f0f0"><td style="padding:12px 0;font-weight:bold;color:#666;width:30%">${label}</td><td style="padding:12px 0;color:#333">${value}</td></tr>`
+    `<tr style="border-bottom:1px solid #f0f0f0"><td style="padding:12px 0;font-weight:bold;color:#666;width:30%">${label}</td><td style="padding:12px 0;color:#333">${escapeHtml(value)}</td></tr>`
   ).join('');
 
   return `<!DOCTYPE html><html><body style="font-family:Arial,sans-serif;background:#fff;margin:0;padding:0">
@@ -50,7 +60,7 @@ function buildEmailHtml(data: {
   <table style="width:100%;border-collapse:collapse;font-size:14px"><tbody>${tableRows}</tbody></table>
   <div style="margin-top:30px">
     <h2 style="font-size:16px;font-weight:bold;color:#333;margin-bottom:12px">상세 문의 내용</h2>
-    <div style="background:#f9f9f9;padding:15px;border-radius:4px;color:#333;font-size:14px;line-height:1.6;white-space:pre-wrap;word-wrap:break-word">${data.message}</div>
+    <div style="background:#f9f9f9;padding:15px;border-radius:4px;color:#333;font-size:14px;line-height:1.6;white-space:pre-wrap;word-wrap:break-word">${escapeHtml(data.message)}</div>
   </div>
   <div style="text-align:center;border-top:2px solid #f0f0f0;padding-top:20px;margin-top:30px;color:#999;font-size:12px">
     <p style="margin:0">함께봄 문의 알림 시스템</p>
@@ -114,6 +124,16 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: `필수 항목이 누락되었습니다: ${missing.join(', ')}` }, { status: 400 });
   }
 
+  // 6-1. Field length limits (spam/abuse guard)
+  const { deadline: rawDeadline, reference: rawReference } = body as Record<string, unknown>;
+  const lengthLimits: [unknown, number][] = [
+    [name, 50], [company, 100], [phone, 20], [email, 254], [projectType, 50], [budget, 50],
+    [message, 5000], [rawDeadline, 50], [rawReference, 1000],
+  ];
+  if (lengthLimits.some(([value, max]) => value != null && String(value).length > max)) {
+    return NextResponse.json({ error: '입력 내용이 너무 깁니다.' }, { status: 400 });
+  }
+
   // 7. Email format validation
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(String(email))) {
@@ -123,7 +143,6 @@ export async function POST(request: Request) {
   // 8. Korean phone number validation (more flexible: allows 010, 011, 016, 017, 018, 019 with or without dashes)
   const phoneRegex = /^01[016789]-?\d{3,4}-?\d{4}$/;
   if (!phoneRegex.test(String(phone).replace(/\s/g, ''))) {
-    console.error('[Contact API] Invalid phone:', String(phone));
     return NextResponse.json({ error: '올바른 전화번호 형식이 아닙니다. (예: 010-1234-5678)' }, { status: 400 });
   }
 
@@ -150,7 +169,7 @@ export async function POST(request: Request) {
       from: '함께봄 문의 <onboarding@resend.dev>',
       to: toEmail,
       replyTo: String(email),
-      subject: `[새 문의] ${String(company)} - ${projectTypeLabels[String(projectType)] || String(projectType)}`,
+      subject: `[새 문의] ${String(company).replace(/[\r\n]+/g, ' ')} -${projectTypeLabels[String(projectType)] || String(projectType)}`,
       html: buildEmailHtml({
         name: String(name),
         company: String(company),

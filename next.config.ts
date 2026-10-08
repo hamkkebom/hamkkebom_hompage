@@ -24,6 +24,12 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "*.r2.cloudflarestorage.com" },
     ],
   },
+  async redirects() {
+    return [
+      // 기존 /works/{streamUid} 상세 페이지 제거 — 색인된 URL은 포트폴리오 목록으로 보냄
+      { source: "/works/:id", destination: "/works", permanent: true },
+    ];
+  },
   async headers() {
     return [
       {
