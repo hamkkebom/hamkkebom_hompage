@@ -1,0 +1,335 @@
+.story {
+  position: relative;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  color: var(--r-ink);
+}
+
+.bg {
+  position: absolute;
+  inset: 0;
+  background-color: var(--r-paper);
+}
+
+/* ── 0장: 워드마크 ── */
+.wordmark {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.04em;
+  font-size: clamp(96px, 21vw, 360px);
+  font-weight: 800;
+  letter-spacing: -0.06em;
+  line-height: 1;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.wordmark span {
+  display: inline-block;
+  will-change: transform;
+}
+
+.wordmark span:last-child {
+  color: var(--r-spring);
+}
+
+.intro {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 9vh;
+  margin: 0;
+  text-align: center;
+  font-size: clamp(15px, 1.3vw, 19px);
+  color: var(--r-muted);
+}
+
+.scrollHint {
+  display: block;
+  margin-top: 18px;
+  font-size: 12px;
+  letter-spacing: 0.3em;
+  color: var(--r-faint);
+  animation: hint 1.8s ease-in-out infinite;
+}
+
+@keyframes hint {
+  0%, 100% { transform: translateY(0); opacity: 0.4; }
+  50% { transform: translateY(8px); opacity: 1; }
+}
+
+/* ── 1장: 갤러리 ── */
+.center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+}
+
+.card {
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin: 0;
+  translate: -50% -50%;
+  aspect-ratio: 389 / 1081;
+  background: #fff;
+  padding: 8px;
+  box-shadow: 0 30px 60px -20px rgba(40, 30, 10, 0.35);
+  will-change: transform, opacity;
+}
+
+.card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ── 2장: 벽과 파편, 영상 ── */
+.videoLayer {
+  position: absolute;
+  inset: 0;
+  background: #0d0c0a;
+}
+
+.video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.videoShade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.15) 30%, rgba(0, 0, 0, 0.75) 100%);
+}
+
+.wall {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.shard {
+  position: absolute;
+  inset: -1px;
+  background: var(--r-ink);
+  will-change: transform, opacity;
+}
+
+.shard:nth-child(3n) {
+  background: #1f1c17;
+}
+
+.shard:nth-child(5n) {
+  background: #24201a;
+}
+
+.wallText {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: clamp(30px, 4.6vw, 72px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.25;
+}
+
+/* ── 3장: 꽃잎과 사람 ── */
+.petal {
+  position: absolute;
+  left: 50%;
+  top: 60%;
+  width: 18px;
+  height: 12px;
+  border-radius: 80% 0 80% 0;
+  background: var(--r-spring);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.petal:nth-child(2n) {
+  background: #f7c6a3;
+  width: 12px;
+  height: 9px;
+}
+
+.petal:nth-child(3n) {
+  background: #ffd36e;
+}
+
+.people {
+  position: absolute;
+  left: 50%;
+  bottom: 9vh;
+  translate: -50% 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  width: min(1080px, 88vw);
+  will-change: transform;
+}
+
+.person {
+  margin: 0;
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  box-shadow: 0 24px 48px -24px rgba(80, 50, 10, 0.45);
+}
+
+.person img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.person figcaption {
+  position: absolute;
+  left: 10px;
+  bottom: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+}
+
+/* ── 장 제목 ── */
+.chapters {
+  position: absolute;
+  left: max(24px, 6vw);
+  top: calc(68px + 7vh);
+  pointer-events: none;
+}
+
+.chapter {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: min(520px, 86vw);
+}
+
+.chapter h2 {
+  margin: 6px 0 14px;
+  font-size: clamp(40px, 5.4vw, 84px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+}
+
+.chapter p {
+  margin: 0;
+  font-size: clamp(15px, 1.25vw, 19px);
+  line-height: 1.7;
+  color: var(--r-muted);
+}
+
+.num {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--r-spring);
+}
+
+.onDark h2 {
+  color: #fff;
+}
+
+.onDark p {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+/* ── 마무리 ── */
+.final {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(68px + 8vh);
+  text-align: center;
+  padding: 0 24px;
+}
+
+.finalEyebrow {
+  margin: 0 0 18px;
+  font-size: clamp(14px, 1.1vw, 17px);
+  color: var(--r-muted);
+}
+
+.finalTitle {
+  margin: 0;
+  font-size: clamp(44px, 6.4vw, 104px);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 1.08;
+}
+
+.finalCtas {
+  margin-top: 32px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.ctaPrimary,
+.ctaGhost {
+  display: inline-flex;
+  align-items: center;
+  height: 52px;
+  padding: 0 26px;
+  border-radius: 999px;
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.ctaPrimary {
+  background: var(--r-ink);
+  color: #fff;
+}
+
+.ctaGhost {
+  border: 1.5px solid var(--r-ink);
+  color: var(--r-ink);
+}
+
+.ctaPrimary:hover,
+.ctaGhost:hover {
+  transform: translateY(-2px);
+}
+
+@media (max-width: 767px) {
+  .card {
+    padding: 5px;
+  }
+
+  .people {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    bottom: 6vh;
+  }
+
+  .final {
+    top: 50%;
+    translate: 0 -50%;
+  }
+
+  .chapters {
+    top: calc(68px + 4vh);
+  }
+}

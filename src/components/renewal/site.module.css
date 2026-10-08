@@ -1,0 +1,706 @@
+/* ── 페이지 토큰 ── */
+.page {
+  --r-ink: #17140f;
+  --r-paper: #fbf8f2;
+  --r-tint: #f4efe5;
+  --r-spring: #f2a12e;
+  --r-spring-soft: #fff3de;
+  --r-muted: #5f5a52;
+  --r-faint: #9a948a;
+  --r-line: rgba(23, 20, 15, 0.12);
+
+  position: relative;
+  background: var(--r-paper);
+  color: var(--r-ink);
+  font-family: "Pretendard Variable", Pretendard, var(--font-noto-kr), -apple-system, sans-serif;
+  word-break: keep-all;
+  overflow-x: clip;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.container {
+  width: min(1200px, 100% - 48px);
+  margin: 0 auto;
+}
+
+/* ── 헤더 ── */
+.header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 100;
+  transition: background 0.25s ease, box-shadow 0.25s ease;
+}
+
+.headerScrolled {
+  background: rgba(251, 248, 242, 0.88);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 1px 0 var(--r-line);
+}
+
+.headerInner {
+  width: min(1200px, 100% - 48px);
+  margin: 0 auto;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  color: var(--r-ink);
+  text-decoration: none;
+}
+
+.logo span,
+.footerLogo span {
+  color: var(--r-spring);
+}
+
+.nav {
+  display: flex;
+  gap: 28px;
+  margin-left: auto;
+}
+
+.nav a {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--r-ink);
+  text-decoration: none;
+  opacity: 0.82;
+}
+
+.nav a:hover {
+  opacity: 1;
+}
+
+.headerCta {
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 18px;
+  border-radius: 999px;
+  background: var(--r-ink);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.menuButton {
+  display: none;
+  margin-left: auto;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  background: transparent;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.menuBar {
+  width: 22px;
+  height: 2px;
+  background: var(--r-ink);
+}
+
+.mobileNav {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 24px 24px;
+  background: var(--r-paper);
+  border-bottom: 1px solid var(--r-line);
+}
+
+.mobileNav a {
+  padding: 14px 0;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--r-ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--r-line);
+}
+
+.mobileNav .mobileCta {
+  margin-top: 16px;
+  border: 0;
+  text-align: center;
+  border-radius: 999px;
+  background: var(--r-ink);
+  color: #fff;
+}
+
+/* ── 공통 섹션 ── */
+.section {
+  padding: clamp(80px, 11vw, 150px) 0;
+}
+
+.sectionTint {
+  background: var(--r-tint);
+}
+
+.sectionSpring {
+  background: var(--r-spring-soft);
+}
+
+.sectionHead {
+  max-width: 720px;
+  margin-bottom: clamp(40px, 5vw, 64px);
+}
+
+.sectionHeadRow {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: clamp(32px, 4vw, 48px);
+}
+
+.eyebrow {
+  margin: 0 0 14px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--r-spring);
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: clamp(32px, 4vw, 56px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.18;
+}
+
+.sectionLead {
+  margin: 22px 0 0;
+  font-size: clamp(16px, 1.3vw, 19px);
+  line-height: 1.75;
+  color: var(--r-muted);
+}
+
+.textLink {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--r-ink);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.more {
+  margin-top: auto;
+  padding-top: 24px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+/* ── 서비스 ── */
+.serviceGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.serviceCard {
+  display: flex;
+  flex-direction: column;
+  min-height: 300px;
+  padding: clamp(28px, 3vw, 40px);
+  border-radius: 20px;
+  background: #fff;
+  border: 1px solid var(--r-line);
+  color: var(--r-ink);
+  text-decoration: none;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.serviceCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 48px -28px rgba(60, 40, 10, 0.35);
+}
+
+.serviceNo {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--r-faint);
+}
+
+.serviceCard h3 {
+  margin: 18px 0 12px;
+  font-size: clamp(24px, 2.2vw, 32px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.serviceCard p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--r-muted);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tags li {
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--r-tint);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* ── 포트폴리오 ── */
+.workGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px 20px;
+}
+
+.workCard {
+  color: var(--r-ink);
+  text-decoration: none;
+}
+
+.workThumb {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #ddd;
+}
+
+.workThumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.workCard:hover .workThumb img {
+  transform: scale(1.04);
+}
+
+.play {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.92);
+  font-size: 13px;
+}
+
+.workKind {
+  margin: 14px 0 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--r-faint);
+}
+
+.workTitle {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* ── 프로젝트 ── */
+.projectGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.projectCard {
+  display: grid;
+  grid-template-columns: 38% 1fr;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid var(--r-line);
+}
+
+.projectImage {
+  min-height: 240px;
+  background: var(--r-tint);
+}
+
+.projectImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.projectBody {
+  display: flex;
+  flex-direction: column;
+  padding: 28px;
+}
+
+.projectBody h3 {
+  margin: 8px 0 10px;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.35;
+}
+
+.projectBody p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--r-muted);
+}
+
+.projectLabel {
+  font-size: 13px !important;
+  font-weight: 700;
+  color: var(--r-spring) !important;
+}
+
+.projectMeta {
+  margin-top: auto !important;
+  padding-top: 16px;
+  font-size: 13px !important;
+  font-weight: 600;
+  color: var(--r-faint) !important;
+}
+
+.platformRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.platformHead {
+  margin: 0 12px 0 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--r-muted);
+}
+
+.platform {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--r-line);
+  background: #fff;
+  color: var(--r-ink);
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.platform span {
+  color: var(--r-muted);
+}
+
+/* ── 숫자 ── */
+.numbers {
+  background: var(--r-ink);
+  color: #fff;
+  padding: clamp(56px, 7vw, 88px) 0;
+}
+
+.numberGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.number strong {
+  display: block;
+  font-size: clamp(40px, 5vw, 72px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--r-spring);
+}
+
+.number span {
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+/* ── 함께하기 ── */
+.joinGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.joinCard {
+  display: flex;
+  flex-direction: column;
+  min-height: 280px;
+  padding: 28px;
+  border-radius: 20px;
+  background: #fff;
+  color: var(--r-ink);
+  text-decoration: none;
+  transition: transform 0.25s ease;
+}
+
+.joinCard:hover {
+  transform: translateY(-4px);
+}
+
+.joinWho {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--r-faint);
+}
+
+.joinCard h3 {
+  margin: 10px 0 12px;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.joinCard p:not(.joinWho) {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--r-muted);
+}
+
+/* ── 소식 ── */
+.pressList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--r-ink);
+}
+
+.pressList a {
+  display: grid;
+  grid-template-columns: 140px 1fr auto;
+  gap: 20px;
+  align-items: center;
+  padding: 22px 4px;
+  border-bottom: 1px solid var(--r-line);
+  color: var(--r-ink);
+  text-decoration: none;
+}
+
+.pressList a:hover .pressTitle {
+  text-decoration: underline;
+}
+
+.pressSource {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--r-muted);
+}
+
+.pressTitle {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+/* ── 문의 띠 ── */
+.ctaBand {
+  padding: clamp(80px, 10vw, 130px) 0;
+  background: var(--r-spring);
+  text-align: center;
+}
+
+.ctaBand h2 {
+  margin: 0;
+  font-size: clamp(32px, 4.4vw, 60px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.ctaBand p {
+  margin: 16px 0 0;
+  font-size: 18px;
+}
+
+.ctaRow {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.ctaLight,
+.ctaOutline {
+  display: inline-flex;
+  align-items: center;
+  height: 54px;
+  padding: 0 28px;
+  border-radius: 999px;
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.ctaLight {
+  background: var(--r-ink);
+  color: #fff;
+}
+
+.ctaOutline {
+  border: 1.5px solid var(--r-ink);
+  color: var(--r-ink);
+}
+
+/* ── 푸터 ── */
+.footer {
+  padding: 64px 0 40px;
+  background: var(--r-paper);
+  border-top: 1px solid var(--r-line);
+}
+
+.footerTop {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
+  padding-bottom: 36px;
+  border-bottom: 1px solid var(--r-line);
+}
+
+.footerLogo {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+}
+
+.footerSlogan {
+  margin: 8px 0 0;
+  color: var(--r-muted);
+}
+
+.footerNav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 28px;
+  max-width: 560px;
+}
+
+.footerNav a {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--r-ink);
+  text-decoration: none;
+}
+
+.footerInfo {
+  padding-top: 28px;
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--r-muted);
+}
+
+.footerInfo p {
+  margin: 0;
+}
+
+.footerSocial {
+  display: flex;
+  gap: 18px;
+  margin: 16px 0;
+}
+
+.footerSocial a {
+  color: var(--r-ink);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.copy {
+  color: var(--r-faint);
+}
+
+/* ── 반응형 ── */
+@media (max-width: 1023px) {
+  .nav,
+  .headerCta {
+    display: none;
+  }
+
+  .menuButton {
+    display: flex;
+  }
+
+  .joinGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .projectGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 767px) {
+  .container,
+  .headerInner {
+    width: calc(100% - 32px);
+  }
+
+  .serviceGrid,
+  .joinGrid,
+  .workGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .projectCard {
+    grid-template-columns: 1fr;
+  }
+
+  .projectImage {
+    min-height: 0;
+    aspect-ratio: 16 / 9;
+  }
+
+  .numberGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sectionHeadRow {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .pressList a {
+    grid-template-columns: 1fr auto;
+    gap: 6px 16px;
+  }
+
+  .pressSource {
+    grid-column: 1 / -1;
+  }
+}

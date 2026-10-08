@@ -19,20 +19,23 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
             smoothWheel: true,
             wheelMultiplier: isMobile ? 1.5 : 1,
             touchMultiplier: isMobile ? 5 : 2,
+            // 고정 헤더(68px) 아래로 앵커 이동
+            anchors: { offset: -68 },
         });
 
         // ★ 핵심: Lenis 스크롤 이벤트를 GSAP ScrollTrigger에 전달 ★
         lenis.on("scroll", ScrollTrigger.update);
 
         // ★ 핵심: GSAP ticker에 Lenis의 raf loop을 연결 ★
-        gsap.ticker.add((time) => {
+        const tick = (time: number) => {
             lenis.raf(time * 1000); // GSAP ticker는 초 단위, Lenis는 밀리초 단위
-        });
+        };
+        gsap.ticker.add(tick);
         gsap.ticker.lagSmoothing(0); // Lag smoothing 비활성화로 더 정확한 동기화
 
         return () => {
+            gsap.ticker.remove(tick);
             lenis.destroy();
-            gsap.ticker.remove(lenis.raf as any);
         };
     }, []);
 
