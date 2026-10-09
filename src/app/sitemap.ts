@@ -11,6 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/services/education", lastMod: new Date("2026-03-18"), priority: 0.9, freq: "monthly" as const },
     { path: "/services/planning", lastMod: new Date("2026-03-18"), priority: 0.9, freq: "monthly" as const },
     { path: "/works", lastMod: new Date("2026-03-18"), priority: 0.9, freq: "weekly" as const },
+    { path: "/join", lastMod: new Date("2026-10-08"), priority: 0.9, freq: "weekly" as const },
     { path: "/about", lastMod: new Date("2026-03-01"), priority: 0.8, freq: "monthly" as const },
     { path: "/about/intro", lastMod: new Date("2026-03-01"), priority: 0.7, freq: "monthly" as const },
     { path: "/about/org", lastMod: new Date("2026-03-01"), priority: 0.7, freq: "monthly" as const },

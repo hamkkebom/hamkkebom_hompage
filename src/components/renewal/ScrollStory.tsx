@@ -1,297 +1,655 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef, type CSSProperties, type MouseEvent, type ReactNode } from "react";
+import { preload } from "react-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { getLenis } from "@/components/SmoothScroll";
 import styles from "./story.module.css";
+import { serifKr } from "./fonts";
+import { buildStory, type StoryApi } from "./storyTimeline";
+import StoryStatic from "./StoryStatic";
+import {
+  BLANK_GIF,
+  CRACKS,
+  DESKTOP_ONLY_MEDIA,
+  GATHER,
+  HEROES,
+  PEOPLE,
+  PETALS,
+  SATELLITES,
+  SHARDS,
+  SLATES,
+  heroById,
+  type Hero,
+  type Satellite,
+} from "./storyData";
 
 gsap.registerPlugin(ScrollTrigger);
 
-/* 1장 「함께 보다」 — 한옥 사진들이 액자처럼 모여든다 (x, y: 화면 중앙 기준 vw/vh) */
-const GALLERY = [
-  { src: "/renewal/hanok-office.webp", alt: "서촌 한옥 사무실", x: -2, y: -6, r: -5, h: 44 },
-  { src: "/renewal/hanok-wall.webp", alt: "한옥 처마와 담장", x: 14, y: 10, r: 3, h: 40 },
-  { src: "/renewal/hanok-studio.webp", alt: "한옥 영상 스튜디오", x: 29, y: -8, r: -2, h: 46 },
-  { src: "/renewal/hanok-meeting.webp", alt: "한옥 회의실", x: 42, y: 12, r: 5, h: 38 },
-  { src: "/renewal/hanok-lattice.webp", alt: "창호 격자", x: 20, y: -20, r: 1, h: 24 },
-];
+const useIsoLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
-/* 3장 「함께 봄을 맞이하다」 — 함께하는 사람들 */
-const PEOPLE = [
-  { src: "/renewal/team-video.webp", alt: "AI 영상제작팀" },
-  { src: "/renewal/team-marketing.webp", alt: "마케팅 솔루션팀" },
-  { src: "/renewal/team-education.webp", alt: "AI 교육·컨설팅팀" },
-  { src: "/renewal/team-planning.webp", alt: "AI 기획개발팀" },
-];
+type Vars = CSSProperties & Record<`--${string}`, string | number | undefined>;
+const cx = (...c: (string | false | undefined)[]) => c.filter(Boolean).join(" ");
 
-/* 2장 「함께 깨다」 — 화면을 덮은 벽을 삼각형 파편으로 쪼갠다.
-   SSR/CSR 결과가 같도록 고정 시드 난수로 생성한다. */
-function seeded(seed: number) {
-  return () => {
-    seed = (seed * 16807) % 2147483647;
-    return (seed - 1) / 2147483646;
+const STACKED_MEDIA = "(max-width: 767px), (max-aspect-ratio: 4/5)";
+const MOTION_OK = "(prefers-reduced-motion: no-preference)";
+const REDUCED = "(prefers-reduced-motion: reduce)";
+const HERO_SIZES = "(max-width: 767px) 92vw, (max-aspect-ratio: 4/5) 92vw, 50vw";
+const SAT_SIZES = "(max-width: 767px) 46vw, (max-aspect-ratio: 4/5) 46vw, 22vw";
+/* 3장 사람들 띠: 데스크톱 min(1040px, 74vw) 를 3칸으로 (사이 16px 둘), 세로형은 두 칸(2+1) */
+const PEOPLE_SIZES =
+  "(max-width: 767px) calc((min(100vw, 592px) - 40px) / 2), (max-aspect-ratio: 4/5) calc((min(100vw, 592px) - 40px) / 2), min(336px, calc((74vw - 32px) / 3))";
+const srcSetOf = (h: { src: string; src800?: string; w800?: number; w: number }) =>
+  h.src800 ? `${h.src800} ${h.w800 ?? 800}w, ${h.src} ${h.w}w` : undefined;
+
+/** 첫 두 장면 뒤의 사진은 load 이후에 순서대로 받는다 — 첫 화면(워드마크·첫 사진)과 대역폭을 다투지 않게.
+    실제 주소는 data-src/data-srcset 에 두고, ScrollStory 의 대기열이 장면 순서(data-order)대로 몇 장씩 붙인다. */
+function deferred(src: string, srcSet: string | undefined, order: number) {
+  return { src: BLANK_GIF, "data-src": src, "data-srcset": srcSet, "data-order": order } as const;
+}
+
+/* ── 글자·줄 마스크 (JSX 에서 미리 쪼갠다 — 하이드레이션 뒤 DOM 변형 없음) ── */
+function Line({ children, className }: { children: ReactNode; className?: string }) {
+  return (
+    <span className={cx(styles.lineMask, className)}>
+      <span className={styles.lineInner} data-line>
+        {children}
+      </span>
+    </span>
+  );
+}
+
+function Chars({ text }: { text: string }) {
+  return (
+    <span className={styles.charMask} aria-hidden="true">
+      {Array.from(text).map((ch, i) => (
+        <span key={i} className={styles.char} data-char>
+          {ch === " " ? " " : ch}
+        </span>
+      ))}
+    </span>
+  );
+}
+
+function ChapterHead({ num, title }: { num: string; title: string }) {
+  return (
+    <>
+      <span className={cx(styles.lineMask, styles.numMask)}>
+        <span className={cx(styles.lineInner, styles.num)} data-num>
+          {num}
+        </span>
+      </span>
+      {/* 낭독용 제목은 실제 글자로 — 일부 화면낭독기의 읽기 모드는 aria-label 대신 내용을 읽는다 */}
+      <h2 className={styles.chTitle}>
+        <span className={styles.srOnly}>{title}</span>
+        <Chars text={title} />
+      </h2>
+    </>
+  );
+}
+
+/* ── 사진 한 장 (인화 / 화면 재질) ── */
+function ScreenFx({ progress }: { progress: number }) {
+  return (
+    <span className={styles.screenFx} aria-hidden="true">
+      <span className={styles.play}>▶</span>
+      <span className={styles.progress}>
+        <i style={{ width: `${progress}%` }} />
+      </span>
+    </span>
+  );
+}
+
+function HeroShot({ h, index }: { h: Hero; index: number }) {
+  // 첫 장면(문 뒤)과 둘째 장면만 바로 받는다. 움직임 줄이기에서는 이 무대를 쓰지 않으므로 받지 않는다.
+  const eager = index < 2;
+  const vars: Vars = { "--a": h.a, "--cap": `${h.cap}px`, zIndex: h.z };
+  const imgProps = eager ? { src: h.src, srcSet: srcSetOf(h) } : deferred(h.src, srcSetOf(h), index * 10);
+  return (
+    <figure className={cx(styles.shot, styles.plate, h.material === "print" ? styles.print : styles.screen)} style={vars} data-plate={h.id}>
+      <div className={styles.drift} data-drift>
+        <div className={styles.frame} data-frame>
+          <div className={styles.mask} data-mask>
+            <picture>
+              {eager && <source media={REDUCED} srcSet={BLANK_GIF} />}
+              <img
+                {...imgProps}
+                sizes={h.src800 ? HERO_SIZES : undefined}
+                alt={h.alt}
+                width={h.w}
+                height={h.h}
+                fetchPriority={index === 0 ? "high" : eager ? "auto" : "low"}
+                decoding="async"
+                style={h.objectPosition ? { objectPosition: h.objectPosition } : undefined}
+                data-img
+              />
+            </picture>
+          </div>
+          {h.material === "screen" && <ScreenFx progress={28 + ((index * 17) % 46)} />}
+        </div>
+        <figcaption className={cx(styles.cap, h.capSide === "right" && styles.capRight, h.capHideM && styles.capNoM)} data-cap>
+          {h.caption}
+        </figcaption>
+      </div>
+    </figure>
+  );
+}
+
+function SatShot({ s, index }: { s: Satellite; index: number }) {
+  const hero = heroById(s.hero);
+  const heroIndex = HEROES.indexOf(hero);
+  const vars: Vars = {
+    "--a": s.a,
+    "--ha": hero.a,
+    "--hcap": `${hero.cap}px`,
+    "--sx": s.sx,
+    "--sy": s.sy,
+    "--sw": s.sw,
+    "--msx": s.m?.sx ?? s.sx,
+    "--msy": s.m?.sy ?? s.sy,
+    "--msw": s.m?.sw ?? s.sw,
+    "--r": `${s.r}deg`,
   };
+  const img = (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      {...deferred(s.src, s.src600 ? `${s.src600} 600w, ${s.src} ${s.w}w` : undefined, heroIndex * 10 + 1 + index)}
+      sizes={s.src600 ? SAT_SIZES : undefined}
+      alt={s.alt}
+      width={s.w}
+      height={s.h}
+      fetchPriority="low"
+      decoding="async"
+      style={s.objectPosition ? { objectPosition: s.objectPosition } : undefined}
+      data-img
+    />
+  );
+  return (
+    <figure
+      className={cx(styles.shot, styles.sat, s.material === "print" ? styles.print : styles.screen, s.mat && styles.mat, !s.m && styles.dOnly)}
+      style={vars}
+      data-sat={s.id}
+    >
+      <div className={styles.drift} data-drift>
+        <div className={styles.frame} data-frame>
+          <div className={styles.mask} data-mask>
+            {s.m ? (
+              img
+            ) : (
+              <picture>
+                <source media={DESKTOP_ONLY_MEDIA} srcSet={BLANK_GIF} />
+                {img}
+              </picture>
+            )}
+          </div>
+          {s.material === "screen" && <ScreenFx progress={34 + ((index * 23) % 40)} />}
+        </div>
+        {s.caption && (
+          <figcaption className={cx(styles.satCap, s.capM && styles.satCapM, s.capTop && styles.satCapTop)} data-cap>
+            <span className={styles.satCapTitle}>{s.caption}</span>
+            {s.sub && <span className={styles.satCapSub}>{s.sub}</span>}
+          </figcaption>
+        )}
+      </div>
+    </figure>
+  );
 }
 
-function buildShards(cols: number, rows: number) {
-  const rand = seeded(20260128);
-  const pts: [number, number][][] = [];
-  for (let r = 0; r <= rows; r++) {
-    const row: [number, number][] = [];
-    for (let c = 0; c <= cols; c++) {
-      const edgeX = c === 0 || c === cols;
-      const edgeY = r === 0 || r === rows;
-      const jx = edgeX ? 0 : (rand() - 0.5) * (70 / cols);
-      const jy = edgeY ? 0 : (rand() - 0.5) * (70 / rows);
-      row.push([(c / cols) * 100 + jx, (r / rows) * 100 + jy]);
-    }
-    pts.push(row);
-  }
-  const shards: { clip: string; cx: number; cy: number }[] = [];
-  for (let r = 0; r < rows; r++) {
-    for (let c = 0; c < cols; c++) {
-      const a = pts[r][c], b = pts[r][c + 1], d = pts[r + 1][c], e = pts[r + 1][c + 1];
-      const tris = rand() > 0.5 ? [[a, b, e], [a, e, d]] : [[a, b, d], [b, e, d]];
-      for (const t of tris) {
-        shards.push({
-          clip: `polygon(${t.map(([x, y]) => `${x.toFixed(2)}% ${y.toFixed(2)}%`).join(",")})`,
-          cx: (t[0][0] + t[1][0] + t[2][0]) / 3,
-          cy: (t[0][1] + t[1][1] + t[2][1]) / 3,
-        });
-      }
-    }
-  }
-  return shards;
+const DIGITS20 = Array.from({ length: 20 }, (_, i) => i % 10);
+
+function Odometer() {
+  return (
+    <span className={styles.odo} data-odo>
+      <span className={styles.srOnly}>1896년, 헐버트가 아리랑을 처음 서양 악보로 옮겼습니다. 2026년, 서촌 한옥에서 헐버트 사진전이 열립니다.</span>
+      <span className={styles.odoDigits} aria-hidden="true">
+        {[1, 8, 9, 6].map((d, i) => (
+          <span key={i} className={styles.odoCol}>
+            <span className={styles.odoStrip} style={{ transform: `translateY(${-d * 5}%)` }} data-strip>
+              {DIGITS20.map((n, k) => (
+                <span key={k}>{n}</span>
+              ))}
+            </span>
+          </span>
+        ))}
+      </span>
+      <span className={styles.odoLabels} aria-hidden="true">
+        <span data-odo-label="0">헐버트, 아리랑을 처음 서양 악보로 옮기다</span>
+        <span data-odo-label="1">헐버트 사진전 · 서촌 한옥</span>
+      </span>
+    </span>
+  );
 }
 
-const SHARDS = buildShards(6, 4);
-const PETALS = Array.from({ length: 14 }, (_, i) => i);
+/** 올라가는 숫자: 화면용 숫자는 낭독에서 빼고, 실제 값은 숨은 글로 읽힌다 */
+function Count({ value, width }: { value: number; width: string }) {
+  const label = value.toLocaleString("ko-KR");
+  return (
+    <>
+      <span className={styles.count} style={{ minWidth: width }} data-count={value} aria-hidden="true">
+        {label}
+      </span>
+      <span className={styles.srOnly}>{label}</span>
+    </>
+  );
+}
+
+function SlateBody({ id, body, bodyM }: { id: string; body: string; bodyM?: string }) {
+  if (id === "4") {
+    return (
+      <>
+        꿈꾸는 아리랑 AI 영상 공모전 · 출품 <Count value={462} width="2.9ch" />편 · AI꿈 참여자 <Count value={2384} width="4.4ch" />명
+      </>
+    );
+  }
+  if (!bodyM) return <>{body}</>;
+  return (
+    <>
+      <span className={styles.bodyD}>{body}</span>
+      <span className={styles.bodyM}>{bodyM}</span>
+    </>
+  );
+}
+
+const RAIL = [
+  { id: "ch1", n: "01", label: "보다" },
+  { id: "ch2", n: "02", label: "깨다" },
+  { id: "ch3", n: "03", label: "봄" },
+];
+
+/** 대기열 순서: 장면 사진(10·20…)과 위성 → 모여드는 인화(100+) → 3장 사람들(200+) */
+const GATHER_ORDER = 100;
+const PEOPLE_ORDER = 200;
 
 export default function ScrollStory() {
   const root = useRef<HTMLElement>(null);
+  const api = useRef<StoryApi | null>(null);
 
-  useEffect(() => {
+  // 1장 첫 장면(문 뒤의 사람들)만 미리 받는다 — 움직임 줄이기에서는 이 무대를 쓰지 않으므로 받지 않는다
+  const h1 = HEROES[0];
+  preload(h1.src, { as: "image", fetchPriority: "high", imageSrcSet: srcSetOf(h1), imageSizes: HERO_SIZES, media: MOTION_OK });
+
+  useIsoLayoutEffect(() => {
     const el = root.current;
     if (!el) return;
+    ScrollTrigger.config({ ignoreMobileResize: true });
+    const classic = new URLSearchParams(window.location.search).get("shatter") === "classic";
+    const scrollTo = (y: number, immediate = false) => {
+      const lenis = getLenis();
+      if (lenis) lenis.scrollTo(y, immediate ? { immediate: true, force: true } : { duration: 1.6 });
+      else window.scrollTo({ top: y, behavior: immediate ? "auto" : "smooth" });
+    };
 
-    const q = gsap.utils.selector(el);
+    // load 뒤: 미뤄 둔 사진의 주소를 장면 순서대로 몇 장씩 붙이고(앞 묶음을 다 받아 디코드한 뒤 다음 묶음),
+    // 한가할 때 미리 디코드한다 — 등장 프레임에 디코드가 걸리지 않고, 뒤 장면 사진이 앞 장면과 대역폭을 다투지 않게.
+    const idle: (cb: () => void) => number =
+      "requestIdleCallback" in window ? (cb) => window.requestIdleCallback(cb, { timeout: 1500 }) : (cb) => window.setTimeout(cb, 120);
+    // 화면이 바뀌어(태블릿 회전·창 넓히기) 새로 보이게 된 사진도 붙도록 여러 번 불러도 된다 — 붙인 사진은 data-src 가 지워진다
+    let alive = true;
+    const queue = () => {
+      if (!alive || !window.matchMedia(MOTION_OK).matches) return;
+      const imgs = Array.from(el.querySelectorAll<HTMLImageElement>("[data-stage] img[data-src]"))
+        .filter((img) => img.offsetParent !== null)
+        .sort((a, b) => Number(a.dataset.order) - Number(b.dataset.order));
+      const BATCH = 4;
+      const next = () => {
+        if (!alive) return;
+        const batch = imgs.splice(0, BATCH).filter((img) => img.dataset.src);
+        if (!batch.length) return;
+        batch.forEach((img) => {
+          if (img.dataset.srcset) img.srcset = img.dataset.srcset;
+          img.src = img.dataset.src!;
+          img.removeAttribute("data-src");
+        });
+        idle(() => {
+          Promise.all(batch.map((img) => img.decode().catch(() => {}))).finally(next);
+        });
+      };
+      next();
+    };
     const mm = gsap.matchMedia();
-
     mm.add(
       {
-        motion: "(prefers-reduced-motion: no-preference)",
-        mobile: "(max-width: 767px)",
+        motion: MOTION_OK,
+        stacked: STACKED_MEDIA,
+        fine: "(pointer: fine)",
       },
       (ctx) => {
-        const { motion, mobile } = ctx.conditions as { motion: boolean; mobile: boolean };
-
-        // 움직임 줄이기 설정: 연출 없이 마지막 장면만 보여준다
-        if (!motion) {
-          gsap.set(q("[data-final]"), { autoAlpha: 1, y: 0 });
-          gsap.set(q("[data-person]"), { autoAlpha: 1, y: 0 });
-          gsap.set(q("[data-wordmark]"), { autoAlpha: 0 });
-          gsap.set(q("[data-bg]"), { backgroundColor: "#FFF3DE" });
-          return;
-        }
-
-        const rand = seeded(7);
-        const vw = window.innerWidth / 100;
-        const vh = window.innerHeight / 100;
-
-        // 초기 상태
-        gsap.set(q("[data-gallery]"), { autoAlpha: 0, scale: 0.3, x: 0, y: 30 * vh, rotate: 0 });
-        gsap.set(q("[data-shard]"), { autoAlpha: 0 });
-        gsap.set(q("[data-wall-text]"), { autoAlpha: 0 });
-        gsap.set(q("[data-video]"), { autoAlpha: 0 });
-        gsap.set(q("[data-person]"), { autoAlpha: 0, y: 60 * vh });
-        gsap.set(q("[data-petal]"), { autoAlpha: 0 });
-        gsap.set(q("[data-chapter]"), { autoAlpha: 0, y: 30 });
-        gsap.set(q("[data-final]"), { autoAlpha: 0, y: 30 });
-
-        const tl = gsap.timeline({
-          defaults: { ease: "power2.inOut" },
-          scrollTrigger: {
-            trigger: el,
-            start: "top top",
-            end: mobile ? "+=380%" : "+=520%",
-            scrub: 1,
-            pin: true,
-            anticipatePin: 1,
-          },
-        });
-
-        /* 0. 함께봄 → 세 가지 뜻 */
-        tl.to(q("[data-letter='0']"), { x: -6 * vw, duration: 1 }, 0)
-          .to(q("[data-letter='2']"), { x: 6 * vw, duration: 1 }, 0)
-          .to(q("[data-intro]"), { autoAlpha: 0, duration: 0.6 }, 0.2);
-
-        /* 1. 함께 보다 */
-        tl.to(q("[data-wordmark]"), { scale: 0.42, y: -36 * vh, autoAlpha: 0.12, duration: 1.2 }, 1)
-          .to(q("[data-chapter='0']"), { autoAlpha: 1, y: 0, duration: 0.6 }, 1.4);
-        q("[data-gallery]").forEach((card, i) => {
-          const g = GALLERY[i];
-          tl.to(
-            card,
-            { autoAlpha: 1, scale: mobile ? 0.7 : 1, x: (mobile ? g.x - 20 : g.x) * vw, y: (mobile ? g.y + 14 : g.y) * vh, rotate: g.r, duration: 1.3, ease: "power3.out" },
-            1.2 + i * 0.12,
-          );
-        });
-
-        /* 2. 함께 깨다 — 벽이 세워지고, 산산이 부서지며 AI 크리에이터들이 드러난다 */
-        tl.to(q("[data-chapter='0']"), { autoAlpha: 0, y: -30, duration: 0.5 }, 3.1)
-          .to(q("[data-gallery]"), { autoAlpha: 0, scale: 0.85, duration: 0.6 }, 3.1)
-          .set(q("[data-video]"), { autoAlpha: 1 }, 3.3)
-          .to(q("[data-shard]"), { autoAlpha: 1, duration: 0.5, stagger: { each: 0.01, from: "random" } }, 3.2)
-          .to(q("[data-wall-text]"), { autoAlpha: 1, duration: 0.4 }, 3.6)
-          .to(q("[data-wall-text]"), { autoAlpha: 0, scale: 1.08, duration: 0.3 }, 4.4)
-          .to(q("[data-chapter='1']"), { autoAlpha: 1, y: 0, duration: 0.6 }, 4.6);
-        q("[data-shard]").forEach((shard, i) => {
-          const s = SHARDS[i];
-          const dx = (s.cx - 50) * (0.9 + rand()) * vw;
-          const dy = (s.cy - 50) * (0.9 + rand()) * vh + 20 * vh * rand();
-          tl.to(
-            shard,
-            {
-              x: dx,
-              y: dy,
-              rotate: (rand() - 0.5) * 140,
-              scale: 0.6 + rand() * 0.3,
-              autoAlpha: 0,
-              transformOrigin: `${s.cx}% ${s.cy}%`,
-              duration: 1.1,
-              ease: "power3.in",
-            },
-            4.4 + rand() * 0.25,
-          );
-        });
-
-        /* 3. 함께 봄을 맞이하다 — 봄빛으로 물들고, 사람들이 모여든다 */
-        tl.to(q("[data-chapter='1']"), { autoAlpha: 0, y: -30, duration: 0.5 }, 6.1)
-          .to(q("[data-video]"), { autoAlpha: 0, duration: 0.8 }, 6.1)
-          .to(q("[data-bg]"), { backgroundColor: "#FFF3DE", duration: 1 }, 6.2)
-          .to(q("[data-chapter='2']"), { autoAlpha: 1, y: 0, duration: 0.6 }, 6.6)
-          .to(q("[data-person]"), { autoAlpha: 1, y: 0, duration: 1.2, stagger: 0.15, ease: "power3.out" }, 6.4);
-        q("[data-petal]").forEach((p) => {
-          tl.fromTo(
-            p,
-            { autoAlpha: 0, y: 40 * vh, x: (rand() - 0.5) * 90 * vw, rotate: rand() * 180 },
-            { autoAlpha: 0.9, y: -60 * vh, x: `+=${(rand() - 0.5) * 20 * vw}`, rotate: `+=${180 + rand() * 180}`, duration: 2.6, ease: "none" },
-            6.2 + rand() * 1.2,
-          );
-        });
-
-        /* 4. 사람이 모이면, 봄이 됩니다 */
-        tl.to(q("[data-chapter='2']"), { autoAlpha: 0, y: -30, duration: 0.5 }, 8.4)
-          .to(q("[data-wordmark]"), { autoAlpha: 0, duration: 0.4 }, 8.4)
-          .to(q("[data-people]"), mobile ? { autoAlpha: 0, y: 10 * vh, duration: 0.8 } : { y: 16 * vh, scale: 0.7, duration: 1 }, 8.5)
-          .to(q("[data-final]"), { autoAlpha: 1, y: 0, duration: 0.7, stagger: 0.12 }, 8.9)
-          .to({}, { duration: 0.8 });
+        const { motion, stacked, fine } = ctx.conditions as { motion: boolean; stacked: boolean; fine: boolean };
+        // 움직임 줄이기: CSS 가 정적 문서를 보여 준다. JS 는 아무것도 하지 않는다.
+        if (!motion) return;
+        const story = buildStory(el, { stacked, fine, classic }, scrollTo);
+        api.current = story;
+        // 처음 한 번은 load 뒤에 붙인다. 그 뒤 화면 조건이 바뀌면 새로 보이게 된 사진을 바로 붙인다
+        if (document.readyState === "complete") queue();
+        return () => {
+          story.cleanup();
+          api.current = null;
+        };
       },
     );
 
-    return () => mm.revert();
+    // 글꼴이 바뀌면 왼쪽 단의 높이가 달라진다 — 다 받은 뒤 다시 잰다
+    const refresh = () => alive && ScrollTrigger.refresh();
+    document.fonts?.ready.then(refresh).catch(() => {});
+    document.fonts?.load(`600 24px ${serifKr.style.fontFamily}`, "함께보는순간").then(refresh).catch(() => {});
+
+    if (document.readyState !== "complete") window.addEventListener("load", queue, { once: true });
+
+    return () => {
+      alive = false;
+      window.removeEventListener("load", queue);
+      mm.revert();
+    };
   }, []);
 
+  /** 건너뛰기: 이야기 전체를 훑으며 지나가지 않고 바로 다음 구역으로, 포커스도 함께 옮긴다 */
+  const skipStory = (e: MouseEvent<HTMLAnchorElement>) => {
+    const target = document.getElementById("services");
+    if (!target) return;
+    e.preventDefault();
+    const lenis = getLenis();
+    if (lenis) lenis.scrollTo(target, { offset: -68, immediate: true, force: true });
+    else target.scrollIntoView();
+    target.focus({ preventScroll: true });
+  };
+
+  const noscriptCss = `.${styles.stage}{display:none!important}.${styles.static}{display:block!important}.${styles.story}{height:auto!important;overflow:visible!important}`;
+
   return (
-    <section ref={root} className={styles.story} aria-label="함께봄의 세 가지 뜻">
-      <div className={styles.bg} data-bg />
+    <section ref={root} className={cx(styles.story, serifKr.variable)} aria-label="함께봄의 세 가지 뜻">
+      {/* 홈의 제목 — 움직임·정적 문서·스크립트 없음 어느 경우에도 하나만 있다 */}
+      <h1 className={styles.srOnly}>함께봄 — 사람이 모이면, 봄이 됩니다</h1>
+      <noscript dangerouslySetInnerHTML={{ __html: `<style>${noscriptCss}</style>` }} />
 
-      {/* 2장 배경: 100명의 AI 영상 제작자 */}
-      <div className={styles.videoLayer} data-video>
-        <video
-          className={styles.video}
-          src="/videos/main-hero-opt.mp4"
-          poster="/renewal/people-mosaic.webp"
-          muted
-          loop
-          autoPlay
-          playsInline
-          preload="metadata"
-          aria-hidden="true"
-        />
-        <div className={styles.videoShade} />
-      </div>
+      <div className={styles.stage} data-stage>
+        {/* 화면 끝까지 덮는 층(100lvh): 배경 · 영상 · 벽 · 꽃잎 · 그레인 */}
+        <div className={styles.bg} />
+        <div className={styles.bgSpring} data-bg-spring aria-hidden="true">
+          <div className={styles.dawn} data-dawn />
+        </div>
 
-      {/* 0장: 워드마크 */}
-      <div className={styles.wordmark} data-wordmark aria-hidden="true">
-        <span data-letter="0">함께</span>
-        <span data-letter="2">봄</span>
-      </div>
-      <p className={styles.intro} data-intro>
-        함께봄에는 세 가지 뜻이 있습니다
-        <span className={styles.scrollHint}>스크롤</span>
-      </p>
+        {/* 2장 배경: AI로 만든 작업 장면 모자이크(실제 인물 아님) — 1장 후반에 받고, 벽이 깨질 때만 재생한다 */}
+        <div className={styles.videoLayer} data-video aria-hidden="true">
+          <video className={styles.video} muted loop playsInline preload="none" data-video-el>
+            <source src="/videos/ch2-creators-720.mp4" type="video/mp4" media={STACKED_MEDIA} />
+            <source src="/videos/ch2-creators.mp4" type="video/mp4" />
+          </video>
+          <div className={styles.videoShade} />
+        </div>
 
-      {/* 1장 갤러리 */}
-      <div className={styles.center}>
-        {GALLERY.map((g) => (
-          <figure key={g.src} className={styles.card} style={{ height: `${g.h}vh` }} data-gallery>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={g.src} alt={g.alt} loading="eager" />
-          </figure>
+        {/* ── 2장 「함께 깨다」: 벽과 파편 ── */}
+        <div className={styles.wall} aria-hidden="true">
+          {SHARDS.map((s) => (
+            <div
+              key={s.i}
+              className={styles.shard}
+              style={{ left: `${s.box.left}%`, top: `${s.box.top}%`, width: `${s.box.width}%`, height: `${s.box.height}%`, clipPath: s.clip }}
+              data-shard
+            />
+          ))}
+          <svg className={styles.cracks} viewBox="0 0 100 100" preserveAspectRatio="none">
+            {CRACKS.map((d, i) => (
+              <path key={i} d={d} data-crack />
+            ))}
+          </svg>
+          <p className={styles.wallText} data-wall-text>
+            <Line>비싸고, 느리고, 어려운</Line>
+            <Line>
+              <span className={styles.strikeWrap}>
+                늘 하던 방식
+                <span className={styles.strike} data-strike />
+              </span>
+            </Line>
+          </p>
+        </div>
+        <p className={styles.srOnly}>비싸고, 느리고, 어려운 늘 하던 방식을 깨뜨립니다.</p>
+
+        {/* ── 3장: 꽃잎 ── */}
+        {PETALS.map((p) => (
+          <span
+            key={p.i}
+            className={cx(styles.petal, p.i >= 10 && styles.petalExtra)}
+            style={{ "--s": `${p.size}px`, "--fd": `${p.flutter}s`, "--fdl": `${p.delay}s` } as Vars}
+            data-petal
+            aria-hidden="true"
+          >
+            <span className={styles.petalInner} data-hue={p.hue} />
+          </span>
         ))}
-      </div>
 
-      {/* 2장 벽과 파편 */}
-      <div className={styles.wall} aria-hidden="true">
-        {SHARDS.map((s, i) => (
-          <div key={i} className={styles.shard} style={{ clipPath: s.clip }} data-shard />
-        ))}
-        <p className={styles.wallText} data-wall-text>
-          비싸고, 느리고, 어려운
-          <br />
-          늘 하던 방식
-        </p>
-      </div>
+        {/* 글·사진 층(100svh): 휴대폰 주소창이 접혀도 글은 늘 보이는 영역 안에 있다 */}
+        <div className={styles.safe} data-safe>
+          {/* 건너뛰기 → 진행 표시 순서로 맨 앞에 둔다 — 키보드는 마무리 버튼보다 먼저 여기에 닿는다 (보이는 자리는 CSS z-index) */}
+          <a href="#services" className={styles.skip} data-skip onClick={skipStory}>
+            건너뛰기 <span aria-hidden="true">↓</span>
+          </a>
+          <nav className={styles.rail} data-rail aria-label="이야기 진행">
+            <ol>
+              {RAIL.map((r) => (
+                <li key={r.id}>
+                  <button type="button" data-rail-item={r.id} onClick={() => api.current?.jump(r.id)}>
+                    <span className={styles.railNum}>{r.n}</span> {r.label}
+                  </button>
+                </li>
+              ))}
+            </ol>
+            <span className={styles.railTrack} aria-hidden="true">
+              <span className={styles.railFill} data-rail-fill />
+            </span>
+          </nav>
+          <span className={styles.railBar} aria-hidden="true">
+            <span data-railbar-fill />
+          </span>
 
-      {/* 3장 꽃잎 */}
-      {PETALS.map((i) => (
-        <span key={i} className={styles.petal} data-petal aria-hidden="true" />
-      ))}
+          {/* ── 1장 「함께 보다」: 하나의 뷰파인더가 사람들을 차례로 담는다 ── */}
+          <div className={styles.ch1} data-ch1>
+            <div className={cx(styles.layer, styles.layerHero)} data-px="hero">
+              <div className={styles.gather} data-gather aria-hidden="true">
+                {GATHER.map((g) => {
+                  const img = (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      {...deferred(`/renewal/ch1/thumbs/${g.src}.webp`, undefined, GATHER_ORDER + g.rank)}
+                      alt=""
+                      width={480}
+                      height={320}
+                      fetchPriority="low"
+                      decoding="async"
+                    />
+                  );
+                  return (
+                    <figure
+                      key={g.src}
+                      className={cx(styles.printCard, !g.m && styles.dOnly)}
+                      style={{ "--x": g.x, "--y": g.y, "--mx": g.m?.[0] ?? g.x, "--my": g.m?.[1] ?? g.y, zIndex: g.z } as Vars}
+                      data-print
+                      data-i={g.i}
+                    >
+                      <span className={styles.printImg}>
+                        {g.m ? (
+                          img
+                        ) : (
+                          <picture>
+                            <source media={DESKTOP_ONLY_MEDIA} srcSet={BLANK_GIF} />
+                            {img}
+                          </picture>
+                        )}
+                      </span>
+                      <span className={styles.printNo}>
+                        <span className={styles.printNoD}>{g.frame}</span>
+                        {g.mframe && <span className={styles.printNoM}>{g.mframe}</span>}
+                      </span>
+                    </figure>
+                  );
+                })}
+              </div>
+              {HEROES.map((h, i) => (
+                <HeroShot key={h.id} h={h} index={i} />
+              ))}
+              <div className={cx(styles.plate, styles.doors)} style={{ "--a": h1.a, "--cap": `${h1.cap}px` } as Vars} data-doors aria-hidden="true">
+                <span className={cx(styles.door, styles.doorL)} data-door="l" />
+                <span className={cx(styles.door, styles.doorR)} data-door="r" />
+              </div>
+            </div>
 
-      {/* 3장~마무리: 사람들 */}
-      <div className={styles.people} data-people>
-        {PEOPLE.map((p) => (
-          <figure key={p.src} className={styles.person} data-person>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={p.src} alt={p.alt} loading="lazy" />
-            <figcaption>{p.alt}</figcaption>
-          </figure>
-        ))}
-      </div>
+            <div className={cx(styles.layer, styles.layerSat)} data-px="sat">
+              {SATELLITES.map((s, i) => (
+                <SatShot key={s.id} s={s} index={i} />
+              ))}
+            </div>
 
-      {/* 장 제목 */}
-      <div className={styles.chapters}>
-        <div className={styles.chapter} data-chapter="0">
-          <span className={styles.num}>01</span>
-          <h2>함께 보다</h2>
-          <p>한 자리에 모여 같은 것을 바라봅니다.<br />전시, 공모전, 커뮤니티에서 사람이 만납니다.</p>
+            <div className={styles.scrim} data-scrim aria-hidden="true" />
+            <div className={styles.spot} data-spot aria-hidden="true" />
+
+            <div className={cx(styles.layer, styles.layerVf)} data-px="vf">
+              <div className={styles.vf} data-vf aria-hidden="true">
+                {(["tl", "tr", "bl", "br"] as const).map((k) => (
+                  <i key={k} className={cx(styles.corner, styles[k])} data-corner={k} />
+                ))}
+                <i className={styles.cross} data-cross />
+              </div>
+            </div>
+
+            <div className={cx(styles.layer, styles.layerText)} data-px="text">
+              <div className={styles.col}>
+                <div className={styles.colHead} data-col-head>
+                  <ChapterHead num="01" title="함께 보다" />
+                </div>
+
+                {/* 안내 문장 · 슬레이트 · 맺음말은 제목 바로 아래 같은 자리에 차례로 놓인다 (한 번에 하나만) */}
+                <div className={styles.colStack}>
+                  <p className={styles.lead} data-lead>
+                    <Line>같은 장면 앞에 사람이 모입니다.</Line>
+                    <Line>오래된 사진 한 장부터 오늘의 영상까지, 함께봄은 사람을 봅니다.</Line>
+                  </p>
+
+                  <ol className={styles.slates} aria-label="함께 본 장면들">
+                    {SLATES.map((s) => (
+                      <li key={s.id} className={styles.slate} data-slate={s.id}>
+                        {s.odometer && (
+                          <Line className={styles.odoRow}>
+                            <Odometer />
+                          </Line>
+                        )}
+                        <Line className={styles.slateIndex}>{s.index}</Line>
+                        <Line className={styles.slateKicker}>{s.kicker}</Line>
+                        <h3 className={styles.slateTitle}>
+                          <Line>{s.title}</Line>
+                        </h3>
+                        <Line className={styles.slateBody}>
+                          <SlateBody id={s.id} body={s.body} bodyM={s.bodyM} />
+                        </Line>
+                      </li>
+                    ))}
+                  </ol>
+                  <div className={cx(styles.slate, styles.statement)} data-slate="stmt">
+                    <Line className={styles.slateKicker}>함께 보다</Line>
+                    <p className={styles.statementTitle}>
+                      <Line>함께 보는 순간,</Line>
+                      <Line>사람이 모입니다.</Line>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* 0장: 워드마크 — 첫 페인트부터 CSS 로 떠오른다 */}
+          <div className={styles.wordmark} aria-hidden="true">
+            <span className={styles.letter} data-letter="0">
+              <span className={styles.letterInner}>함</span>
+              <span className={styles.letterInner}>께</span>
+            </span>
+            <span className={cx(styles.letter, styles.letterSpring)} data-letter="2">
+              <span className={styles.letterInner}>봄</span>
+            </span>
+          </div>
+          {/* 바깥 p 는 스크롤(GSAP), 안쪽 span 은 첫 페인트 페이드(CSS) — 같은 노드를 두 곳에서 움직이지 않는다 */}
+          <p className={styles.intro} data-intro>
+            <span className={styles.introInner}>
+              함께봄에는 세 가지 뜻이 있습니다
+              <span className={styles.scrollHint} aria-hidden="true">
+                <span className={styles.hintLine} />
+                스크롤
+              </span>
+            </span>
+          </p>
+
+          {/* ── 3장~마무리: 함께하는 사람들 ── */}
+          <div className={styles.people} style={{ "--n": PEOPLE.length } as Vars} data-people>
+            {PEOPLE.map((p, i) => (
+              <figure key={p.src} className={styles.person} data-person>
+                <div className={styles.personMask} data-mask>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    {...deferred(p.src800, `${p.src800} 800w, ${p.src} 1600w`, PEOPLE_ORDER + i)}
+                    sizes={PEOPLE_SIZES}
+                    alt=""
+                    width={800}
+                    height={446}
+                    fetchPriority="low"
+                    decoding="async"
+                    style={{ objectPosition: p.pos }}
+                    data-img
+                  />
+                </div>
+                <figcaption>
+                  <Line>{p.label}</Line>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+
+          {/* 장 제목 */}
+          <div className={styles.chapters}>
+            <div className={cx(styles.chapter, styles.onDark)} data-chapter="1">
+              <ChapterHead num="02" title="함께 깨다" />
+              <p className={styles.chDesc} data-desc>
+                당연하던 상식을 함께 깨부숩니다.
+                <br />
+                AI로 더 빠르고, 더 가볍게 만듭니다.
+              </p>
+            </div>
+            <div className={styles.chapter} data-chapter="2">
+              <ChapterHead num="03" title="함께 봄을 맞이하다" />
+              <p className={styles.chDesc} data-desc>
+                함께 배우고 자라
+                <br />
+                각자의 봄을 피워냅니다.
+              </p>
+            </div>
+          </div>
+
+          {/* 마무리 */}
+          <div className={styles.final} data-final>
+            <p className={styles.finalEyebrow}>
+              <span data-eb>함께 보고,</span> <span data-eb>함께 깨고,</span> <span data-eb>함께 봄을 맞이하는 곳</span>
+            </p>
+            <p className={styles.finalTitle} data-final-title>
+              <Line>사람이 모이면,</Line>
+              <Line>
+                <span className={styles.swashWrap}>
+                  봄<span className={styles.swash} data-swash aria-hidden="true" />
+                </span>
+                이 됩니다.
+              </Line>
+            </p>
+            <div className={styles.finalCtas} data-final-ctas>
+              <a href="/join#apply" className={styles.ctaPrimary} data-cta onFocus={() => api.current?.jump("final", true)}>
+                <span>매칭설명회 신청</span>
+              </a>
+              <a href="/contact" className={styles.ctaPrimary} data-cta onFocus={() => api.current?.jump("final", true)}>
+                <span>제작 문의</span>
+              </a>
+            </div>
+          </div>
         </div>
-        <div className={`${styles.chapter} ${styles.onDark}`} data-chapter="1">
-          <span className={styles.num}>02</span>
-          <h2>함께 깨다</h2>
-          <p>당연하던 상식을 함께 깨부숩니다.<br />AI로 더 빠르고, 더 가볍게 만듭니다.</p>
-        </div>
-        <div className={styles.chapter} data-chapter="2">
-          <span className={styles.num}>03</span>
-          <h2>함께 봄을 맞이하다</h2>
-          <p>함께 배우고 자라<br />각자의 봄을 피워냅니다.</p>
-        </div>
+        <span className={styles.grain} aria-hidden="true" />
       </div>
 
-      {/* 마무리 */}
-      <div className={styles.final}>
-        <p className={styles.finalEyebrow} data-final>함께 보고, 함께 깨고, 함께 봄을 맞이하는 곳</p>
-        <h1 className={styles.finalTitle} data-final>
-          사람이 모이면,
-          <br />
-          봄이 됩니다.
-        </h1>
-        <div className={styles.finalCtas} data-final>
-          <a href="/contact" className={styles.ctaPrimary}>영상·홈페이지 제작 문의</a>
-          <a href="#join" className={styles.ctaGhost}>함께하기</a>
-        </div>
-      </div>
+      {/* 움직임 줄이기 · 스크립트 없음: 같은 이야기를 차분한 문서로 */}
+      <StoryStatic />
     </section>
   );
 }

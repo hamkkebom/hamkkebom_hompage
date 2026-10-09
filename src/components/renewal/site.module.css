@@ -157,6 +157,15 @@
   background: var(--r-spring-soft);
 }
 
+/* 스크롤 이야기(봄빛으로 끝난다) 바로 뒤의 첫 구역: 봄빛에서 종이로 이어 받는다 — 경계선이 생기지 않게 */
+.sectionHandoff {
+  background: linear-gradient(180deg, var(--r-spring-soft), var(--r-paper) min(320px, 40vh));
+}
+
+.sectionHandoff:focus {
+  outline: none;
+}
+
 .sectionHead {
   max-width: 720px;
   margin-bottom: clamp(40px, 5vw, 64px);
@@ -703,4 +712,35 @@
   .pressSource {
     grid-column: 1 / -1;
   }
+}
+
+/* ── 스크롤 스토리가 고정(pin)된 동안의 헤더 ──
+   매 프레임 뒤 장면을 다시 흐리게 하는 backdrop-filter 를 끄고 불투명한 종이색으로 바꾼다.
+   2장(어두운 구간)에서는 투명 + 흰 글씨. ScrollStory 가 html[data-story] 를 바꾼다. */
+:global(html[data-story="on"]) .headerScrolled {
+  background: rgba(251, 248, 242, 0.94);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+:global(html[data-story="dark"]) .header,
+:global(html[data-story="dark"]) .headerScrolled {
+  background: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: none;
+}
+
+:global(html[data-story="dark"]) .logo,
+:global(html[data-story="dark"]) .nav a {
+  color: #fff;
+}
+
+:global(html[data-story="dark"]) .menuBar {
+  background: #fff;
+}
+
+:global(html[data-story="dark"]) .headerCta {
+  background: #fff;
+  color: var(--r-ink);
 }

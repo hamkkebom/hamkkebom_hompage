@@ -36,7 +36,8 @@ const SERVICES = [
 const WORKS = [
   { id: "P1kKoW6Afp0", title: "주안이네 김치 홍보송", kind: "노래광고영상" },
   { id: "tHzauNGtsqw", title: "다온 국제특허 홍보송", kind: "노래광고영상" },
-  { id: "vfrMwQR4ym0", title: "아셀케어 홍보송", kind: "노래광고영상" },
+  // 아셀케어 홍보송(vfrMwQR4ym0)은 썸네일·oEmbed 가 404/403 — 비공개로 보여 고객 확인 전까지 추억송으로 대신한다
+  { id: "mcKKPA3UlSY", title: "추억송", kind: "추억송" },
   { id: "0HzCpVP8vvw", title: "에이스인력 홍보송", kind: "노래광고영상" },
   { id: "h_XBaIOGqN0", title: "구인공고송", kind: "구인공고영상" },
   { id: "It4FXs2A6cc", title: "꿈꾸는 아리랑 공모전 참가작", kind: "AI 뮤직비디오" },
@@ -69,7 +70,7 @@ const PROJECTS = [
     title: "꿈꾸는 아리랑 AI 영상 공모전",
     desc: "전 세계 누구나 AI로 만든 아리랑 뮤직비디오로 참여한 공모전.",
     meta: "출품 462편",
-    image: "/renewal/people-mosaic.webp",
+    image: "/renewal/ch1/platforms/aikkum-arirang-keyvisual.webp",
   },
 ];
 
@@ -122,7 +123,8 @@ export default function HomeSections() {
   return (
     <>
       {/* 서비스 */}
-      <section id="services" className={styles.section}>
+      {/* tabIndex -1: 이야기의 「건너뛰기」가 포커스를 여기로 옮긴다 */}
+      <section id="services" className={`${styles.section} ${styles.sectionHandoff}`} tabIndex={-1}>
         <div className={styles.container}>
           <header className={styles.sectionHead}>
             <p className={styles.eyebrow}>함께 깨다 · 서비스</p>

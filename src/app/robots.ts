@@ -8,6 +8,8 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
         disallow: [
           "/api/",
+          "/admin",
+          "/auth/",
           "/square",
           "/_next/",
           "/forms/",
@@ -18,7 +20,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "Googlebot",
         allow: "/",
-        disallow: ["/api/", "/square", "/_next/", "/forms/"],
+        disallow: ["/api/", "/admin", "/auth/", "/square", "/_next/", "/forms/"],
       },
     ],
     sitemap: "https://hamkkebom.com/sitemap.xml",

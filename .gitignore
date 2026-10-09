@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# 홈 리뉴얼: public 에서 빼 둔 미사용 원본 사진 (배포·저장소에 넣지 않는다)
+/design-assets/
+/.omc/
