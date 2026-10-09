@@ -14,40 +14,47 @@ function ensureEases() {
   easesReady = true;
 }
 
-/** 1장이 끝나는 시각. 승인된 2·3장과 마무리는 예전 시각(1장 끝 = 3.1) + SHIFT 에 그대로 놓는다.
-    1장 장면 간격(약 1.55)은 슬레이트 글이 다 오른 뒤 약 0.85 unit(데스크톱 약 300px) 멈춰 읽히도록 잡았다 */
+/** 뷰파인더 무대(01·02)가 끝나는 시각. 승인된 벽(03)·봄(04)과 마무리는 예전 시각(무대 끝 = 3.1) + SHIFT 에 놓는다.
+    무대 장면 간격(약 1.55)은 슬레이트 글이 다 오른 뒤 약 0.85 unit(데스크톱 약 300px) 멈춰 읽히도록 잡았다 */
 const HANDOFF = 11.7;
 const SHIFT = HANDOFF - 3.1;
 const o = (t: number) => t + SHIFT;
+/** 03 AI 영상 제작: 고객 영상 장면이 다 놓인 뒤에도 읽히도록 04 부터는 EXT 만큼 더 뒤로 민다 */
+const EXT = 0.6;
+const q = (t: number) => o(t) + EXT;
 
 /** 타임라인 단위 시각 (1 unit ≈ 데스크톱 40vh 스크롤) */
 export const T = {
   gate: 0,
   ch1: 1.0,
-  /** 장면 1 — 같은 화면을 함께 보는 사람들 (문이 열리면 보이는 사람들) */
+  /** 01 헐버트 프로젝트 · 장면 1 — 렌즈 앞에 모인 조선의 아이들 (문이 열리면 보이는 사람들) */
   s1: 1.75,
-  /** 장면 2 — 조선 기록 사진 속 사람들 */
+  /** 장면 2 — 장기판을 둘러싼 사람들 */
   s2: 3.3,
-  /** 매치컷 → 장면 3 전시 액자 */
+  /** 매치컷 → 장면 3 서촌 한옥 전시 액자 */
   cut: 4.85,
   /** 장면 3' — 액자가 옆으로 물러나고 헐버트(사람)가 주인공이 된다 (슬레이트 3은 그대로) */
   s3p: 5.85,
-  /** 장면 4 — 꿈꾸는 아리랑 AI 영상 공모전 */
+  /** 02 꿈꾸는 아리랑 · 장면 4 — 아리랑 전시 */
   s4: 6.85,
-  /** 장면 5 — 고객과 함께 만든 영상 */
+  /** 장면 5 — 꿈꾸는 아리랑 AI 영상 공모전 */
   s5: 8.4,
+  /** 모여드는 인화 — 우리의 프로젝트 */
   sheet: 9.95,
   handoff: HANDOFF,
-  /** 벽이 거의 다 선 뒤에 글이 오른다 */
+  /** 03 AI 영상 제작 — 벽이 거의 다 선 뒤에 글이 오른다 */
   wallText: o(3.7),
   shatter: o(4.4),
   ch2Head: o(4.6),
-  ch3: o(6.1),
-  people: o(6.4),
-  /** 영상이 다 걷힌 뒤에 3장 제목이 오른다 */
-  ch3Head: o(6.7),
-  finale: o(8.4),
-  finalIn: o(8.9),
+  /** 고객 영상 장면 */
+  works: o(5.1),
+  /** 04 별님 · 매칭설명회 */
+  ch3: q(6.1),
+  people: q(6.4),
+  /** 영상이 다 걷힌 뒤에 04 제목이 오른다 */
+  ch3Head: q(6.7),
+  finale: q(8.4),
+  finalIn: q(8.9),
 };
 
 /** 먹벽: 셔터가 닫히고 인화 사진이 걷힌 뒤 그 자리에서 번진다 (사진·제목 위에 반투명 벽이 겹치는 순간이 없게).
@@ -57,16 +64,22 @@ const SHARD_GROW = 0.25;
 const WALL_DONE = WALL_AT + SHARD_GROW + Math.max(...SHARDS.map((s) => Math.max(s.rankD, s.rankM))) * 0.008;
 /** 영상 재생 구간 — 벽이 깨지기 직전부터만 (벽 뒤에서 디코드하지 않는다) */
 const PLAY_FROM = T.shatter - 0.15;
-const PLAY_TO = o(6.3);
+const PLAY_TO = q(6.3);
 /** 헤더를 투명·흰 글씨로 바꾸는 어두운 구간 — 벽이 화면을 다 덮은 뒤부터 */
 const DARK_FROM = WALL_DONE + 0.02;
 /** 영상이 아래에서부터 걷히므로 맨 위(헤더 뒤)가 드러나는 무렵까지 어둡게 둔다 */
 const DARK_TO = T.ch3 + 0.4;
-/** 3장 꽃잎 펄럭임(CSS)을 켜는 구간 — 이야기 무대가 고정돼 있는 동안만 */
+/** 04 꽃잎 펄럭임(CSS)을 켜는 구간 — 이야기 무대가 고정돼 있는 동안만 */
 const SPRING_FROM = T.ch3 - 0.2;
 
 /** 레일·포커스 이동 시 도착할 지점 */
-const JUMPS: Record<string, number> = { ch1: 1.5, ch2: o(4.6) + 0.55, ch3: T.ch3Head + 0.65, final: T.finalIn + 1.1 };
+const JUMPS: Record<string, number> = {
+  ch1: 1.5,
+  ch2: T.s4 + 0.95,
+  ch3: T.works + 0.75,
+  ch4: T.ch3Head + 0.75,
+  final: T.finalIn + 1.1,
+};
 
 export type StoryOpts = { stacked: boolean; fine: boolean; classic: boolean };
 export type StoryApi = { jump(id: string, immediate?: boolean): void; cleanup(): void };
@@ -191,12 +204,8 @@ export function buildStory(el: HTMLElement, opts: StoryOpts, scrollTo: (y: numbe
   /* ── 요소 ── */
   const H = { h1: plate("h1"), h2: plate("h2"), h3: plate("h3"), h3p: plate("h3p"), h4: plate("h4"), h5: plate("h5") };
   const S = {
-    s1: sat("s1"),
-    s2: sat("s2"),
     s3a: sat("s3a"),
-    s3b: sat("s3b"),
     s4a: sat("s4a"),
-    s4b: sat("s4b"),
     s5a: sat("s5a"),
     s5b: sat("s5b"),
   };
@@ -211,7 +220,17 @@ export function buildStory(el: HTMLElement, opts: StoryOpts, scrollTo: (y: numbe
   const intro = one("[data-intro]");
   const doors = one("[data-doors]");
   const spot = one("[data-spot]");
-  const colHead = one("[data-col-head]");
+  const colHead = one('[data-col-head="1"]');
+  const colHead2 = one('[data-col-head="2"]');
+  const headIn = (box: HTMLElement, t: number) => {
+    tl.set(box, { opacity: 1 }, t);
+    tl.fromTo(all("[data-num]", box), { yPercent: 112 }, { yPercent: 0, duration: 0.4, ease: "hb.reveal" }, t);
+    tl.fromTo(all("[data-char]", box), { yPercent: 112 }, { yPercent: 0, duration: 0.5, ease: "hb.reveal", stagger: 0.03 }, t + 0.05);
+  };
+  const headOut = (box: HTMLElement, t: number) => {
+    tl.to([...all("[data-num]", box), ...all("[data-char]", box)], { yPercent: -112, duration: 0.25, ease: "hb.exit", stagger: 0.01 }, t);
+    tl.set(box, { opacity: 0 }, t + 0.38);
+  };
   const lead = one("[data-lead]");
   const slate = (id: string) => one(`[data-slate="${id}"]`);
   const strips = all("[data-strip]");
@@ -263,21 +282,16 @@ export function buildStory(el: HTMLElement, opts: StoryOpts, scrollTo: (y: numbe
   tl.fromTo(one('[data-door="r"]'), { xPercent: 0 }, { xPercent: 101, duration: 0.55, ease: "hb.cam" }, 0.95);
   tl.set(doors, { autoAlpha: 0 }, 1.51);
 
-  /* ════════════ 1. 함께 보다 ════════════ */
+  /* ════════════ 01. 헐버트 프로젝트 ════════════ */
   tl.addLabel("ch1", T.ch1);
-  tl.set(colHead, { opacity: 1 }, T.ch1);
-  tl.fromTo(all("[data-num]", colHead), { yPercent: 112 }, { yPercent: 0, duration: 0.4, ease: "hb.reveal" }, T.ch1);
-  tl.fromTo(all("[data-char]", colHead), { yPercent: 112 }, { yPercent: 0, duration: 0.55, ease: "hb.reveal", stagger: 0.035 }, T.ch1 + 0.05);
+  headIn(colHead, T.ch1);
   tl.fromTo(spot, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5 }, 1.05);
   showLines(lead, 1.15, 0.5, 0.08);
   focusLock(1.5, R(H.h1));
   capIn(H.h1, 1.55);
 
-  /* 장면 1 — 같은 화면을 함께 보는 사람들 (함께봄 영상제작팀) + 그들이 만든 고객 영상 */
+  /* 장면 1 — 렌즈 앞에 모인 조선의 아이들 */
   tl.addLabel("s1", T.s1);
-  reveal(S.s1, "bottom", 1.4, 0.5);
-  drift(S.s1, 3, -4, 1.4, T.s2 - 1.4);
-  capIn(S.s1, 1.65);
   hideLines(lead, T.s1);
   showLines(slate("1"), T.s1 + HIDE_GAP);
 
@@ -285,7 +299,6 @@ export function buildStory(el: HTMLElement, opts: StoryOpts, scrollTo: (y: numbe
   tl.addLabel("s2", T.s2);
   hideLines(slate("1"), T.s2);
   capOut(H.h1, T.s2);
-  satOut(S.s1, T.s2, 8);
   reveal(H.h2, "bottom", T.s2, 0.5);
   kenBurns(H.h2, 1.12, 1.02, T.s2, T.cut - T.s2);
   travel(T.s2);
@@ -294,8 +307,6 @@ export function buildStory(el: HTMLElement, opts: StoryOpts, scrollTo: (y: numbe
   showLines(slate("2"), T.s2 + HIDE_GAP);
   focusLock(T.s2 + 0.5, R(H.h2));
   capIn(H.h2, T.s2 + 0.4);
-  reveal(S.s2, "top", T.s2 + 0.25, 0.5);
-  drift(S.s2, -2, 3, T.s2 + 0.25, T.cut - T.s2 - 0.25);
 
   /* 매치컷 — 장기 사진이 한옥 창살 앞 전시 액자 속 그 사진으로 들어간다.
      액자 사진 속 인화지 위치(실측): 중심 50.0% / 43.8%, 폭 30.3%, 높이 29.0% (종횡비 약 1.2).
@@ -318,7 +329,6 @@ export function buildStory(el: HTMLElement, opts: StoryOpts, scrollTo: (y: numbe
   };
   const CUT_D = 0.8;
   tl.addLabel("s3", T.cut);
-  satOut(S.s2, T.cut - 0.25, 6); // 줌이 시작되기 전에 비켜 준다
   // 큰 사진이 화면을 채우는 동안에는 스포트라이트(전체 화면 그라디언트)를 내려 합성 비용을 줄인다
   tl.to(spot, { autoAlpha: 0, duration: 0.1 }, T.cut);
   tl.to(spot, { autoAlpha: 1, duration: 0.3 }, T.cut + CUT_D);
@@ -375,7 +385,8 @@ export function buildStory(el: HTMLElement, opts: StoryOpts, scrollTo: (y: numbe
     // 얼굴(가로 30–70%)은 가리지 않는다. 오른쪽 레일·화면 끝 안쪽으로 붙잡는다
     const maxCx = el.clientWidth - (stacked ? 16 : 96) - w / 2;
     const tx = Math.min(p.L + p.W + w * (stacked ? 0 : 0.05), maxCx);
-    const ty = p.T + p.H * (stacked ? 0.06 : 0.08);
+    // 세로형: 위쪽 모서리에 두면 낮은 휴대폰에서 장 제목을 덮는다 — 오른쪽 아래(어깨) 모서리로
+    const ty = p.T + p.H * (stacked ? 0.7 : 0.08);
     // 매치컷이 남긴 transform-origin(인화지 중심) 기준으로 줄어든 뒤의 중심이 (tx, ty) 에 오게
     const ox = f3.L + c.ox,
       oy = f3.T + c.oy;
@@ -395,71 +406,69 @@ export function buildStory(el: HTMLElement, opts: StoryOpts, scrollTo: (y: numbe
   focusLock(T.s3p + 0.6, R(H.h3p));
   capIn(H.h3p, T.s3p + 0.5);
   if (shown(S.s3a)) tl.fromTo(S.s3a, { autoAlpha: 0, y: () => -vh(4) }, { autoAlpha: 1, y: 0, duration: 0.55, ease: "hb.reveal" }, T.s3p + 0.3);
-  reveal(S.s3b, "bottom", T.s3p + 0.35, 0.5);
-  kenBurns(S.s3b, 1.1, 1, T.s3p + 0.35, 0.7);
-  drift(S.s3b, 2, -4, T.s3p + 0.35, T.s4 - T.s3p - 0.35);
-  capIn(S.s3b, T.s3p + 0.6);
+  drift(S.s3a, 2, -3, T.s3p + 0.3, T.s4 - T.s3p - 0.3);
+  capIn(S.s3a, T.s3p + 0.6);
 
-  /* 장면 4 — 462편의 아리랑을 함께 보다 */
+  /* ════════════ 02. 꿈꾸는 아리랑 ════════════ */
+  /* 장면 4 — 아리랑 전시: 포스터와 AI꿈 키비주얼. 왼쪽 단의 제목이 01 → 02 로 바뀐다 */
   tl.addLabel("s4", T.s4);
+  headOut(colHead, T.s4);
+  headIn(colHead2, T.s4 + 0.2);
   reveal(H.h4, "bottom", T.s4, 0.55);
-  kenBurns(H.h4, 1.15, 1.03, T.s4, T.s5 - T.s4 + 0.2);
+  kenBurns(H.h4, 1.1, 1.02, T.s4, T.s5 - T.s4 + 0.2);
   travel(T.s4);
   frameTo(R(H.h4), T.s4, 0.6);
   focusLock(T.s4 + 0.6, R(H.h4));
   capOut(H.h3p, T.s4);
-  satOut(S.s3b, T.s4, 12);
+  capOut(S.s3a, T.s4);
   if (shown(S.s3a)) tl.to(S.s3a, { y: () => -vh(8), autoAlpha: 0, duration: 0.4, ease: "hb.exit" }, T.s4);
   hideLines(slate("3"), T.s4);
   out(H.h3p, T.s4 + 0.12);
   out(H.h3, T.s4 + 0.06, { scale: COLLAGE_K * 0.94 });
   showLines(slate("4"), T.s4 + HIDE_GAP);
-  // 숫자는 줄이 오르는 동시에 세기 시작해 짧게 끝난다 — 슬레이트가 읽히는 동안에는 늘 실제 값(462 / 2,384)이다
-  counters.forEach((c) => {
-    const target = Number(c.dataset.count);
-    const box = { v: 0 };
-    // React 가 그린 글자 노드를 그대로 두고 값만 바꾼다 (노드를 갈아 끼우지 않는다)
-    const text = c.firstChild as Text;
-    tl.fromTo(
-      box,
-      { v: 0 },
-      {
-        v: target,
-        duration: 0.3,
-        ease: "power1.out",
-        onUpdate: () => {
-          text.nodeValue = Math.round(box.v).toLocaleString("ko-KR");
-        },
-      },
-      T.s4 + HIDE_GAP,
-    );
-  });
-  reveal(S.s4a, "right", T.s4 + 0.25, 0.5);
-  capIn(S.s4a, T.s4 + 0.5);
-  reveal(S.s4b, "bottom", T.s4 + 0.35, 0.5);
-  capIn(H.h4, T.s4 + 0.4);
+  capIn(H.h4, T.s4 + 0.45);
+  reveal(S.s4a, "right", T.s4 + 0.3, 0.55);
+  kenBurns(S.s4a, 1.12, 1, T.s4 + 0.3, 0.9);
+  drift(S.s4a, 2, -3, T.s4 + 0.3, T.s5 - T.s4 - 0.3);
+  capIn(S.s4a, T.s4 + 0.6);
 
-  /* 장면 5 — 고객과 함께 만든 영상 */
+  /* 장면 5 — 462편의 아리랑이 모이다 (꿈꾸는 아리랑 AI 영상 공모전) */
   tl.addLabel("s5", T.s5);
-  reveal(H.h5, "right", T.s5, 0.55);
-  kenBurns(H.h5, 1.12, 1.02, T.s5, T.sheet - T.s5 + 0.2);
+  reveal(H.h5, "bottom", T.s5, 0.55);
+  kenBurns(H.h5, 1.15, 1.03, T.s5, T.sheet - T.s5 + 0.2);
   travel(T.s5);
   frameTo(R(H.h5), T.s5, 0.6);
   focusLock(T.s5 + 0.6, R(H.h5));
   capOut(H.h4, T.s5);
-  satOut(S.s4a, T.s5, 8);
-  satOut(S.s4b, T.s5, 12);
+  satOut(S.s4a, T.s5 - 0.12, 8); // 공모전 화면이 오르기 전에 키비주얼 라벨이 먼저 빠진다
   hideLines(slate("4"), T.s5);
   out(H.h4, T.s5 + 0.12);
   showLines(slate("5"), T.s5 + HIDE_GAP);
-  reveal(S.s5a, "bottom", T.s5 + 0.2, 0.5);
-  capIn(S.s5a, T.s5 + 0.45);
-  reveal(S.s5b, "bottom", T.s5 + 0.3, 0.5);
-  capIn(S.s5b, T.s5 + 0.55);
+  // 숫자는 줄이 오르는 동시에 세기 시작해 짧게 끝난다 — 슬레이트가 읽히는 동안에는 늘 실제 값(462 / 2,384)이다
+  // 글자는 sync() 가 상자 값에서 그린다 — 새로고침·화면 회전으로 타임라인이 콜백 없이(suppressEvents) 건너뛰어도
+  // 숫자가 0 에 멈춰 있지 않다
+  const countBoxes = counters.map((c) => {
+    const box = { v: 0 };
+    tl.fromTo(box, { v: 0 }, { v: Number(c.dataset.count), duration: 0.3, ease: "power1.out" }, T.s5 + HIDE_GAP);
+    // React 가 그린 글자 노드를 그대로 두고 값만 바꾼다 (노드를 갈아 끼우지 않는다)
+    return { box, text: c.firstChild as Text, shown: -1 };
+  });
+  const paintCounters = () => {
+    countBoxes.forEach((k) => {
+      const v = Math.round(k.box.v);
+      if (v === k.shown) return;
+      k.shown = v;
+      k.text.nodeValue = v.toLocaleString("ko-KR");
+    });
+  };
+  reveal(S.s5a, "right", T.s5 + 0.25, 0.5);
+  capIn(S.s5a, T.s5 + 0.5);
+  reveal(S.s5b, "bottom", T.s5 + 0.35, 0.5);
   capIn(H.h5, T.s5 + 0.4);
 
-  /* 당겨 보기 — 화면 밖에서 사람들이 고리를 이루며 모여든다 */
+  /* 당겨 보기 — 두 프로젝트의 사람들과 고객 영상이 고리를 이루며 모여든다 (우리의 프로젝트) */
   tl.addLabel("sheet", T.sheet);
+  headOut(colHead2, T.sheet);
   out(H.h5, T.sheet, { scale: 0.92, duration: 0.4 });
   capOut(H.h5, T.sheet);
   satOut(S.s5a, T.sheet, 8);
@@ -494,12 +503,10 @@ export function buildStory(el: HTMLElement, opts: StoryOpts, scrollTo: (y: numbe
   focusLock(T.sheet + 0.65, gRect);
   showLines(slate("stmt"), T.sheet + 0.35, 0.5, 0.07);
 
-  /* ════════════ 1 → 2: 셔터가 닫히고 먹벽이 그 자리에서 번진다 ════════════ */
+  /* ════════════ 무대 → 03: 셔터가 닫히고 먹벽이 그 자리에서 번진다 ════════════ */
   tl.addLabel("handoff", T.handoff);
-  // 제목·맺음말은 벽이 서기(WALL_AT) 전에 다 빠진다
-  tl.to([...all("[data-num]", colHead), ...all("[data-char]", colHead)], { yPercent: -112, duration: 0.25, ease: "hb.exit", stagger: 0.01 }, T.handoff);
+  // 맺음말은 벽이 서기(WALL_AT) 전에 다 빠진다 (02 제목은 인화가 모일 때 이미 빠졌다)
   hideLines(slate("stmt"), T.handoff);
-  tl.set(colHead, { opacity: 0 }, T.handoff + 0.33);
   const shut = (): Rect => {
     const g = gRect();
     return { L: g.L + g.W / 2, T: g.T + g.H / 2, W: 0, H: 0 };
@@ -532,7 +539,7 @@ export function buildStory(el: HTMLElement, opts: StoryOpts, scrollTo: (y: numbe
   tl.set(videoLayer, { autoAlpha: 1 }, WALL_DONE);
   tl.to([rail, skip], { color: "rgba(255,255,255,0.85)", duration: 0.3 }, DARK_FROM - 0.1);
 
-  /* ════════════ 2. 함께 깨다 (승인안 — 시각만 이동) ════════════ */
+  /* ════════════ 03. AI 영상 제작 (승인된 벽 — 시각만 이동) ════════════ */
   const wallText = one("[data-wall-text]");
   tl.addLabel("ch2", T.wallText);
   showLines(wallText, T.wallText, 0.5, 0.12);
@@ -572,11 +579,23 @@ export function buildStory(el: HTMLElement, opts: StoryOpts, scrollTo: (y: numbe
   tl.fromTo(all("[data-num]", ch2), { yPercent: 112 }, { yPercent: 0, duration: 0.4, ease: "hb.reveal" }, T.ch2Head);
   tl.fromTo(all("[data-char]", ch2), { yPercent: 112 }, { yPercent: 0, duration: 0.55, ease: "hb.reveal", stagger: 0.035 }, T.ch2Head + 0.05);
   tl.fromTo(one("[data-desc]", ch2), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5, ease: "hb.reveal" }, T.ch2Head + 0.3);
+  // 함께 만든 고객 영상의 장면 — 영상 위에 한 장씩 올라온다
+  const works = one("[data-works]");
+  const workItems = all("[data-work]");
+  tl.set(works, { autoAlpha: 1 }, T.works);
+  workItems.forEach((w, i) => {
+    const at = T.works + i * 0.08;
+    tl.fromTo(w, { autoAlpha: 0, y: () => vh(6) }, { autoAlpha: 1, y: 0, duration: 0.5, ease: "hb.reveal" }, at);
+    tl.fromTo(one("[data-mask]", w), { yPercent: 101 }, { yPercent: 0, duration: 0.5, ease: "hb.reveal" }, at);
+    tl.fromTo(one("[data-img]", w), { yPercent: -101, scale: 1.12 }, { yPercent: 0, scale: 1, duration: 0.6, ease: "hb.reveal" }, at);
+  });
 
-  /* ════════════ 3. 함께 봄을 맞이하다 (승인안) ════════════ */
+  /* ════════════ 04. 별님 · 매칭설명회 (승인된 봄) ════════════ */
   tl.addLabel("ch3", T.ch3);
-  // 2장 제목(어두운 후광 포함)은 영상이 걷히는 선이 닿기 전에 빠진다 — 봄빛 위에 검은 얼룩이 남지 않게
+  // 03 제목(어두운 후광 포함)과 고객 영상은 영상이 걷히는 선이 닿기 전에 빠진다 — 봄빛 위에 검은 얼룩이 남지 않게
   tl.to(ch2, { opacity: 0, y: -30, duration: 0.22, ease: "hb.exit" }, T.ch3);
+  tl.to(workItems, { autoAlpha: 0, y: () => -vh(4), duration: 0.25, ease: "hb.exit", stagger: 0.03 }, T.ch3 - 0.15);
+  tl.set(works, { autoAlpha: 0 }, T.ch3 + 0.25);
   // 봄빛 바탕은 영상 뒤에서 먼저 다 깔리고, 영상은 투명해지는 대신 아래에서부터 걷힌다(새벽빛이 차오르는 방향) —
   // 반쯤 비친 회색 모자이크가 화면을 덮는 순간이 없다
   // (배경색 트윈 대신 봄빛 레이어를 겹쳐 띄운다 — 매 프레임 전체 다시 칠하기 없음)
@@ -585,30 +604,48 @@ export function buildStory(el: HTMLElement, opts: StoryOpts, scrollTo: (y: numbe
   tl.fromTo(videoLayer, { clipPath: "inset(0% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 100% 0%)", duration: VIDEO_WIPE, ease: "hb.cam" }, T.ch3);
   tl.set(videoLayer, { autoAlpha: 0 }, T.ch3 + VIDEO_WIPE);
   tl.to([rail, skip], { color: "#17140f", duration: 0.2 }, T.ch3 + 0.15);
-  tl.fromTo(one("[data-dawn]"), { y: () => vh(18) }, { y: 0, duration: T.finale - o(6.2) }, o(6.2));
+  tl.fromTo(one("[data-dawn]"), { y: () => vh(18) }, { y: 0, duration: T.finale - q(6.2) }, q(6.2));
   all("[data-petal]").forEach((p, i) => {
     const c = PETALS[i];
     tl.fromTo(
       p,
       { autoAlpha: 0, y: () => vh(40) * c.travel, x: () => vw(c.x0), rotate: c.rot0 },
       { autoAlpha: c.opacity, y: () => -vh(60) * c.travel, x: () => vw(c.x0 + c.drift), rotate: c.rot0 + c.spin, duration: 2.6 },
-      o(6.2) + c.at,
+      q(6.2) + c.at,
     );
   });
   const peopleBox = one("[data-people]");
   const persons = all("[data-person]");
+  if (stacked) {
+    // 세로형: 사람들 띠를 04 설명·일정 바로 아래로 끌어올린다 — 글과 사진 사이에 빈 띠가 남지 않게 (아래로는 내리지 않는다)
+    const dates = one("[data-dates]");
+    tl.set(
+      peopleBox,
+      {
+        y: () => {
+          const d = rectOf(dates),
+            p = rectOf(peopleBox);
+          return Math.min(0, d.T + d.H + vh(5) - p.T);
+        },
+      },
+      T.people,
+    );
+  }
   persons.forEach((p, i) => {
     tl.set(p, { autoAlpha: 1 }, T.people);
     tl.fromTo(p, { y: () => vh(PEOPLE_RISE[i % PEOPLE_RISE.length]) }, { y: 0, duration: 1.2, ease: "hb.reveal" }, T.people);
     tl.fromTo(one("[data-mask]", p), { yPercent: 100 }, { yPercent: 0, duration: 0.9, ease: "hb.reveal" }, T.people + 0.1 + i * 0.06);
     tl.fromTo(one("[data-img]", p), { yPercent: -100, scale: 1.15 }, { yPercent: 0, scale: 1, duration: 1.1, ease: "hb.reveal" }, T.people + 0.1 + i * 0.06);
-    tl.fromTo(all("[data-line]", p), { yPercent: 112 }, { yPercent: 0, duration: 0.45, ease: "hb.reveal" }, T.people + 0.8 + i * 0.06);
   });
+  const peopleNote = one("[data-people-note]");
+  tl.set(peopleNote, { opacity: 1 }, T.people + 0.8);
+  tl.fromTo(all("[data-line]", peopleNote), { yPercent: 112 }, { yPercent: 0, duration: 0.45, ease: "hb.reveal" }, T.people + 0.8);
   const ch3 = one('[data-chapter="2"]');
   tl.set(ch3, { opacity: 1 }, T.ch3Head);
   tl.fromTo(all("[data-num]", ch3), { yPercent: 112 }, { yPercent: 0, duration: 0.4, ease: "hb.reveal" }, T.ch3Head);
   tl.fromTo(all("[data-char]", ch3), { yPercent: 112 }, { yPercent: 0, duration: 0.55, ease: "hb.reveal", stagger: 0.035 }, T.ch3Head + 0.05);
   tl.fromTo(one("[data-desc]", ch3), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5, ease: "hb.reveal" }, T.ch3Head + 0.3);
+  tl.fromTo(one("[data-dates]", ch3), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.45, ease: "hb.reveal" }, T.ch3Head + 0.45);
 
   /* ════════════ 마무리 — 사람이 모이면, 봄이 됩니다 ════════════ */
   tl.addLabel("finale", T.finale);
@@ -626,7 +663,7 @@ export function buildStory(el: HTMLElement, opts: StoryOpts, scrollTo: (y: numbe
       const k = Math.max(0.6, Math.min(1, (vh(97) - want) / pr.H));
       return { y: want - pr.T, k };
     };
-    tl.to(peopleBox, { y: () => fit().y, scale: () => fit().k, transformOrigin: "50% 0%", duration: 1, ease: "hb.cam" }, o(8.5));
+    tl.to(peopleBox, { y: () => fit().y, scale: () => fit().k, transformOrigin: "50% 0%", duration: 1, ease: "hb.cam" }, q(8.5));
   } else {
     // 데스크톱: 사람들이 줄어들며 마무리 버튼 바로 아래로 내려와 모인다 (세로형은 아래 띠에 그대로 남아 빈 곳을 채운다)
     const PEOPLE_K = 0.8;
@@ -638,9 +675,9 @@ export function buildStory(el: HTMLElement, opts: StoryOpts, scrollTo: (y: numbe
       const maxTop = vh(97) - pr.H * PEOPLE_K;
       return Math.min(want, maxTop) - top0;
     };
-    tl.to(peopleBox, { y: peopleY, scale: PEOPLE_K, duration: 1, ease: "hb.cam" }, o(8.5));
+    tl.to(peopleBox, { y: peopleY, scale: PEOPLE_K, duration: 1, ease: "hb.cam" }, q(8.5));
     const mid = (persons.length - 1) / 2;
-    persons.forEach((p, i) => tl.to(p, { x: () => (i - mid) * -vw(0.5), duration: 1, ease: "hb.cam" }, o(8.5)));
+    persons.forEach((p, i) => tl.to(p, { x: () => (i - mid) * -vw(0.5), duration: 1, ease: "hb.cam" }, q(8.5)));
   }
   tl.set(finalBox, { opacity: 1, pointerEvents: "auto" }, T.finalIn);
   tl.fromTo(all("[data-eb]", finalBox), { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.35, ease: "hb.reveal", stagger: 0.12 }, T.finalIn);
@@ -654,7 +691,7 @@ export function buildStory(el: HTMLElement, opts: StoryOpts, scrollTo: (y: numbe
   Object.entries(JUMPS).forEach(([k, v]) => tl.addLabel(`jump-${k}`, v));
 
   /* ── 초기값: 숫자는 SSR 에 최종값, 연출 중에는 0 부터 ── */
-  counters.forEach((c) => ((c.firstChild as Text).nodeValue = "0"));
+  paintCounters();
 
   /* ── 영상·헤더·레일 상태 동기화 (타임라인이 그릴 때마다) ── */
   const video = one("[data-video-el]") as HTMLVideoElement;
@@ -675,6 +712,7 @@ export function buildStory(el: HTMLElement, opts: StoryOpts, scrollTo: (y: numbe
   let st: ScrollTrigger | null = null;
   const sync = () => {
     const t = tl.time();
+    paintCounters();
     // 영상은 1장 후반에 메타데이터만, 1장 끝에서 나머지를 받는다 (포스터도 그때 붙인다)
     if (videoStage === 0 && t >= T.s4 && t <= PLAY_TO) {
       videoStage = 1;
@@ -700,7 +738,7 @@ export function buildStory(el: HTMLElement, opts: StoryOpts, scrollTo: (y: numbe
       } else video.pause();
     }
     if (st) setStory(st.isActive ? (t >= DARK_FROM && t < DARK_TO ? "dark" : "on") : "");
-    const a = t < T.handoff + 0.4 ? "ch1" : t < T.ch3 ? "ch2" : "ch3";
+    const a = t < T.s4 ? "ch1" : t < T.handoff + 0.4 ? "ch2" : t < T.ch3 ? "ch3" : "ch4";
     if (a !== active) {
       active = a;
       railItems.forEach((b) => {
@@ -752,6 +790,7 @@ export function buildStory(el: HTMLElement, opts: StoryOpts, scrollTo: (y: numbe
     invalidateOnRefresh: true,
     animation: tl,
     onToggle: () => sync(),
+    onRefresh: () => sync(),
   });
 
   if (process.env.NODE_ENV !== "production") (window as unknown as { __story?: unknown }).__story = { tl, st, T };

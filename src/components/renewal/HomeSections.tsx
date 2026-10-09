@@ -86,13 +86,26 @@ const NUMBERS = [
   { value: "13", label: "언론보도" },
 ];
 
+/* 함께봄의 세 가지 뜻 — 이야기(우리의 프로젝트) 바로 뒤에 놓인다 */
+const MEANINGS = [
+  { no: "01", title: "함께 보다", desc: "한 자리에 모여 같은 것을 바라봅니다." },
+  { no: "02", title: "함께 깨다", desc: "당연하던 상식을 함께 깨부숩니다." },
+  { no: "03", title: "함께 봄을 맞이하다", desc: "함께 배우고 자라 각자의 봄을 피워냅니다." },
+];
+
+const VISION_PILLARS = ["고민톡톡", "AI 드라마·영화", "AI 저작권 시대의 동반자"];
+
+/** 매칭설명회 일정 — 시간·장소는 신청 후 개별 안내 */
+const BRIEFING_DATES = ["10/23", "10/30", "11/6"];
+
 const JOIN = [
   {
     who: "AI 영상 크리에이터",
     title: "별님",
-    desc: "AI 영상 제작을 배우고, 함께봄의 프로젝트에 참여해 수익을 만듭니다.",
-    cta: "별님 지원하기",
+    desc: "취업은 어렵고 창업은 두려운 AI 영상 크리에이터에게, 안전한 일자리와 창업의 기회를 엽니다.",
+    cta: "매칭설명회 신청",
     type: "star",
+    href: "/join#apply",
   },
   {
     who: "함께 성장할 사람",
@@ -100,6 +113,7 @@ const JOIN = [
     desc: "함께봄에 참여하며 크리에이터, 창업가로 함께 자랍니다.",
     cta: "나투사 알아보기",
     type: "natusa",
+    href: "/join",
   },
   {
     who: "셀러 · 작가",
@@ -107,6 +121,7 @@ const JOIN = [
     desc: "서촌 한옥에서 판매하고, 전시하고, 첫 무대를 엽니다.",
     cta: "입점·전시 신청",
     type: "hanok",
+    href: "/contact?type=hanok",
   },
   {
     who: "동료 · 파트너",
@@ -114,6 +129,7 @@ const JOIN = [
     desc: "함께봄과 함께 일할 동료와 협력 기관을 기다립니다.",
     cta: "채용·제휴 문의",
     type: "partner",
+    href: "/contact?type=partner",
   },
 ];
 
@@ -122,12 +138,42 @@ export default function HomeSections() {
 
   return (
     <>
-      {/* 서비스 */}
+      {/* 비전: 함께봄의 세 가지 뜻 */}
       {/* tabIndex -1: 이야기의 「건너뛰기」가 포커스를 여기로 옮긴다 */}
-      <section id="services" className={`${styles.section} ${styles.sectionHandoff}`} tabIndex={-1}>
+      <section id="vision" className={`${styles.section} ${styles.sectionHandoff}`} tabIndex={-1} aria-labelledby="vision-title">
         <div className={styles.container}>
           <header className={styles.sectionHead}>
-            <p className={styles.eyebrow}>함께 깨다 · 서비스</p>
+            <p className={styles.eyebrow}>비전</p>
+            <h2 id="vision-title" className={styles.sectionTitle}>
+              함께봄의 세 가지 뜻
+            </h2>
+          </header>
+          <ol className={styles.meaningGrid}>
+            {MEANINGS.map((m) => (
+              <li key={m.no} className={styles.meaningCard}>
+                <span className={styles.meaningNo}>{m.no}</span>
+                <h3>{m.title}</h3>
+                <p>{m.desc}</p>
+              </li>
+            ))}
+          </ol>
+          <div className={styles.visionLine}>
+            <p className={styles.visionLabel}>함께봄의 비전</p>
+            <p className={styles.visionTitle}>AI 시대의 일자리를 지키는 콘텐츠 제국</p>
+            <ul className={styles.visionPillars}>
+              {VISION_PILLARS.map((v) => (
+                <li key={v}>{v}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* 서비스 */}
+      <section id="services" className={styles.section}>
+        <div className={styles.container}>
+          <header className={styles.sectionHead}>
+            <p className={styles.eyebrow}>서비스</p>
             <h2 className={styles.sectionTitle}>
               AI로 만들고,
               <br />
@@ -190,7 +236,7 @@ export default function HomeSections() {
       <section id="projects" className={styles.section}>
         <div className={styles.container}>
           <header className={styles.sectionHead}>
-            <p className={styles.eyebrow}>함께 보다 · 프로젝트</p>
+            <p className={styles.eyebrow}>프로젝트</p>
             <h2 className={styles.sectionTitle}>
               사람이 모여
               <br />
@@ -246,7 +292,7 @@ export default function HomeSections() {
       <section id="join" className={`${styles.section} ${styles.sectionSpring}`}>
         <div className={styles.container}>
           <header className={styles.sectionHead}>
-            <p className={styles.eyebrow}>함께 봄을 맞이하다 · 함께하기</p>
+            <p className={styles.eyebrow}>함께하기</p>
             <h2 className={styles.sectionTitle}>
               당신은
               <br />
@@ -256,7 +302,7 @@ export default function HomeSections() {
           </header>
           <div className={styles.joinGrid}>
             {JOIN.map((j) => (
-              <Link key={j.type} href={`/contact?type=${j.type}`} className={styles.joinCard}>
+              <Link key={j.type} href={j.href} className={styles.joinCard}>
                 <p className={styles.joinWho}>{j.who}</p>
                 <h3>{j.title}</h3>
                 <p>{j.desc}</p>
@@ -264,6 +310,16 @@ export default function HomeSections() {
               </Link>
             ))}
           </div>
+          <Link href="/join#apply" className={styles.briefingBand}>
+            <span className={styles.briefingLabel}>별님 매칭설명회</span>
+            <span className={styles.briefingDates}>
+              {BRIEFING_DATES.map((d) => (
+                <span key={d}>{d}</span>
+              ))}
+            </span>
+            <span className={styles.briefingNote}>시간·장소는 신청 후 개별 안내</span>
+            <span className={styles.briefingCta}>신청하기 →</span>
+          </Link>
         </div>
       </section>
 
@@ -297,15 +353,18 @@ export default function HomeSections() {
       <section className={styles.ctaBand}>
         <div className={styles.container}>
           <h2>무엇을 함께 만들어 볼까요?</h2>
-          <p>영상, 홈페이지, 마케팅. 상담은 무료입니다.</p>
+          <p>영상, 홈페이지, 마케팅 제작 상담은 무료입니다. AI 영상 크리에이터라면 매칭설명회에서 만나요.</p>
           <div className={styles.ctaRow}>
             <Link href="/contact" className={styles.ctaLight}>
               제작 문의하기
             </Link>
-            <a href="mailto:info@hamkkebom.com" className={styles.ctaOutline}>
-              info@hamkkebom.com
-            </a>
+            <Link href="/join#apply" className={styles.ctaOutline}>
+              매칭설명회 신청
+            </Link>
           </div>
+          <p className={styles.ctaMail}>
+            <a href="mailto:info@hamkkebom.com">info@hamkkebom.com</a>
+          </p>
         </div>
       </section>
     </>

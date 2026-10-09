@@ -60,6 +60,7 @@
   letter-spacing: -0.05em;
   color: var(--r-ink);
   text-decoration: none;
+  transition: color 0.25s ease;
 }
 
 .logo span,
@@ -79,6 +80,7 @@
   color: var(--r-ink);
   text-decoration: none;
   opacity: 0.82;
+  transition: color 0.25s ease;
 }
 
 .nav a:hover {
@@ -458,6 +460,156 @@
   color: rgba(255, 255, 255, 0.72);
 }
 
+/* ── 비전: 함께봄의 세 가지 뜻 ── */
+.meaningGrid {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.meaningCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 240px;
+  padding: 32px 28px 30px;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 0 0 1px var(--r-line);
+}
+
+.meaningNo {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: #a2600b;
+  font-variant-numeric: tabular-nums;
+}
+
+.meaningCard h3 {
+  margin: auto 0 12px;
+  padding-top: 40px;
+  font-size: clamp(26px, 2.4vw, 34px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.2;
+}
+
+.meaningCard p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--r-muted);
+}
+
+.visionLine {
+  margin-top: clamp(40px, 5vw, 64px);
+  padding: clamp(28px, 3.4vw, 44px) clamp(24px, 3.4vw, 48px);
+  border-radius: 20px;
+  background: var(--r-ink);
+  color: #fff;
+}
+
+.visionLabel {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--r-spring);
+}
+
+.visionTitle {
+  margin: 12px 0 0;
+  font-size: clamp(26px, 3.2vw, 44px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+.visionPillars {
+  margin: 22px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.visionPillars li {
+  padding: 8px 16px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  font-size: 15px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* ── 매칭설명회 일정 띠 ── */
+.briefingBand {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+  margin-top: 16px;
+  padding: 22px 28px;
+  border-radius: 20px;
+  background: var(--r-ink);
+  color: #fff;
+  text-decoration: none;
+  transition: transform 0.25s ease;
+}
+
+.briefingBand:hover {
+  transform: translateY(-2px);
+}
+
+.briefingLabel {
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.briefingDates {
+  display: flex;
+  gap: 8px;
+}
+
+.briefingDates span {
+  padding: 6px 14px 7px;
+  border-radius: 999px;
+  background: var(--r-spring);
+  color: var(--r-ink);
+  font-size: 15px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.briefingNote {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.briefingCta {
+  margin-left: auto;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--r-spring);
+}
+
+.ctaMail {
+  margin: 20px 0 0;
+  font-size: 15px;
+}
+
+.ctaMail a {
+  color: var(--r-ink);
+  font-weight: 600;
+}
+
 /* ── 함께하기 ── */
 .joinGrid {
   display: grid;
@@ -686,6 +838,28 @@
     grid-template-columns: 1fr;
   }
 
+  .meaningGrid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .meaningCard {
+    min-height: 0;
+    padding: 24px 22px;
+  }
+
+  .meaningCard h3 {
+    padding-top: 18px;
+  }
+
+  .briefingBand {
+    padding: 20px;
+  }
+
+  .briefingCta {
+    margin-left: 0;
+  }
+
   .projectCard {
     grid-template-columns: 1fr;
   }
@@ -725,7 +899,8 @@
 
 :global(html[data-story="dark"]) .header,
 :global(html[data-story="dark"]) .headerScrolled {
-  background: transparent;
+  /* 밝은 영상 타일이 흰 메뉴 뒤로 지나가도 읽히도록 위에서 아래로 옅어지는 어두운 막 */
+  background: linear-gradient(180deg, rgba(10, 9, 7, 0.62), rgba(10, 9, 7, 0.28) 70%, rgba(10, 9, 7, 0));
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
   box-shadow: none;

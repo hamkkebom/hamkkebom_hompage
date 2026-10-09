@@ -11,18 +11,23 @@ import { buildStory, type StoryApi } from "./storyTimeline";
 import StoryStatic from "./StoryStatic";
 import {
   BLANK_GIF,
+  BRIEFING_DATES,
   CRACKS,
   DESKTOP_ONLY_MEDIA,
   GATHER,
   HEROES,
   PEOPLE,
+  PEOPLE_NOTE,
   PETALS,
   SATELLITES,
   SHARDS,
   SLATES,
+  STAGE_HEADS,
+  WORK_STILLS,
   heroById,
   type Hero,
   type Satellite,
+  type Slate,
 } from "./storyData";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -37,7 +42,7 @@ const MOTION_OK = "(prefers-reduced-motion: no-preference)";
 const REDUCED = "(prefers-reduced-motion: reduce)";
 const HERO_SIZES = "(max-width: 767px) 92vw, (max-aspect-ratio: 4/5) 92vw, 50vw";
 const SAT_SIZES = "(max-width: 767px) 46vw, (max-aspect-ratio: 4/5) 46vw, 22vw";
-/* 3장 사람들 띠: 데스크톱 min(1040px, 74vw) 를 3칸으로 (사이 16px 둘), 세로형은 두 칸(2+1) */
+/* 04 사람들 띠: 데스크톱 min(1040px, 74vw) 를 3칸으로 (사이 16px 둘), 세로형은 두 칸(2+1) */
 const PEOPLE_SIZES =
   "(max-width: 767px) calc((min(100vw, 592px) - 40px) / 2), (max-aspect-ratio: 4/5) calc((min(100vw, 592px) - 40px) / 2), min(336px, calc((74vw - 32px) / 3))";
 const srcSetOf = (h: { src: string; src800?: string; w800?: number; w: number }) =>
@@ -154,7 +159,7 @@ function SatShot({ s, index }: { s: Satellite; index: number }) {
   const img = (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      {...deferred(s.src, s.src600 ? `${s.src600} 600w, ${s.src} ${s.w}w` : undefined, heroIndex * 10 + 1 + index)}
+      {...deferred(s.src, s.src600 ? `${s.src600} ${s.w600 ?? 600}w, ${s.src} ${s.w}w` : undefined, heroIndex * 10 + 1 + index)}
       sizes={s.src600 ? SAT_SIZES : undefined}
       alt={s.alt}
       width={s.w}
@@ -234,11 +239,11 @@ function Count({ value, width }: { value: number; width: string }) {
   );
 }
 
-function SlateBody({ id, body, bodyM }: { id: string; body: string; bodyM?: string }) {
-  if (id === "4") {
+function SlateBody({ s: { counters, body, bodyM } }: { s: Slate }) {
+  if (counters) {
     return (
       <>
-        꿈꾸는 아리랑 AI 영상 공모전 · 출품 <Count value={462} width="2.9ch" />편 · AI꿈 참여자 <Count value={2384} width="4.4ch" />명
+        꿈꾸는 아리랑 AI 영상 공모전 · 출품 <Count value={462} width="2.9ch" />편 · AI꿈 플랫폼 참여자 <Count value={2384} width="4.4ch" />명
       </>
     );
   }
@@ -252,13 +257,15 @@ function SlateBody({ id, body, bodyM }: { id: string; body: string; bodyM?: stri
 }
 
 const RAIL = [
-  { id: "ch1", n: "01", label: "보다" },
-  { id: "ch2", n: "02", label: "깨다" },
-  { id: "ch3", n: "03", label: "봄" },
+  { id: "ch1", n: "01", label: "헐버트" },
+  { id: "ch2", n: "02", label: "아리랑" },
+  { id: "ch3", n: "03", label: "AI 영상" },
+  { id: "ch4", n: "04", label: "별님" },
 ];
 
-/** 대기열 순서: 장면 사진(10·20…)과 위성 → 모여드는 인화(100+) → 3장 사람들(200+) */
+/** 대기열 순서: 장면 사진(10·20…)과 위성 → 모여드는 인화(100+) → 03 고객 영상 장면(150+) → 04 사람들(200+) */
 const GATHER_ORDER = 100;
+const WORKS_ORDER = 150;
 const PEOPLE_ORDER = 200;
 
 export default function ScrollStory() {
@@ -345,7 +352,7 @@ export default function ScrollStory() {
 
   /** 건너뛰기: 이야기 전체를 훑으며 지나가지 않고 바로 다음 구역으로, 포커스도 함께 옮긴다 */
   const skipStory = (e: MouseEvent<HTMLAnchorElement>) => {
-    const target = document.getElementById("services");
+    const target = document.getElementById("vision");
     if (!target) return;
     e.preventDefault();
     const lenis = getLenis();
@@ -357,7 +364,7 @@ export default function ScrollStory() {
   const noscriptCss = `.${styles.stage}{display:none!important}.${styles.static}{display:block!important}.${styles.story}{height:auto!important;overflow:visible!important}`;
 
   return (
-    <section ref={root} className={cx(styles.story, serifKr.variable)} aria-label="함께봄의 세 가지 뜻">
+    <section ref={root} className={cx(styles.story, serifKr.variable)} aria-label="우리의 프로젝트">
       {/* 홈의 제목 — 움직임·정적 문서·스크립트 없음 어느 경우에도 하나만 있다 */}
       <h1 className={styles.srOnly}>함께봄 — 사람이 모이면, 봄이 됩니다</h1>
       <noscript dangerouslySetInnerHTML={{ __html: `<style>${noscriptCss}</style>` }} />
@@ -369,7 +376,7 @@ export default function ScrollStory() {
           <div className={styles.dawn} data-dawn />
         </div>
 
-        {/* 2장 배경: AI로 만든 작업 장면 모자이크(실제 인물 아님) — 1장 후반에 받고, 벽이 깨질 때만 재생한다 */}
+        {/* 03 배경: AI 영상 크리에이터 작업 장면(AI로 만든 영상, 실제 인물 아님) — 무대 후반에 받고, 벽이 깨질 때만 재생한다 */}
         <div className={styles.videoLayer} data-video aria-hidden="true">
           <video className={styles.video} muted loop playsInline preload="none" data-video-el>
             <source src="/videos/ch2-creators-720.mp4" type="video/mp4" media={STACKED_MEDIA} />
@@ -378,7 +385,7 @@ export default function ScrollStory() {
           <div className={styles.videoShade} />
         </div>
 
-        {/* ── 2장 「함께 깨다」: 벽과 파편 ── */}
+        {/* ── 03 AI 영상 제작: 벽과 파편 ── */}
         <div className={styles.wall} aria-hidden="true">
           {SHARDS.map((s) => (
             <div
@@ -405,7 +412,7 @@ export default function ScrollStory() {
         </div>
         <p className={styles.srOnly}>비싸고, 느리고, 어려운 늘 하던 방식을 깨뜨립니다.</p>
 
-        {/* ── 3장: 꽃잎 ── */}
+        {/* ── 04 별님: 꽃잎 ── */}
         {PETALS.map((p) => (
           <span
             key={p.i}
@@ -421,7 +428,7 @@ export default function ScrollStory() {
         {/* 글·사진 층(100svh): 휴대폰 주소창이 접혀도 글은 늘 보이는 영역 안에 있다 */}
         <div className={styles.safe} data-safe>
           {/* 건너뛰기 → 진행 표시 순서로 맨 앞에 둔다 — 키보드는 마무리 버튼보다 먼저 여기에 닿는다 (보이는 자리는 CSS z-index) */}
-          <a href="#services" className={styles.skip} data-skip onClick={skipStory}>
+          <a href="#vision" className={styles.skip} data-skip onClick={skipStory}>
             건너뛰기 <span aria-hidden="true">↓</span>
           </a>
           <nav className={styles.rail} data-rail aria-label="이야기 진행">
@@ -442,7 +449,7 @@ export default function ScrollStory() {
             <span data-railbar-fill />
           </span>
 
-          {/* ── 1장 「함께 보다」: 하나의 뷰파인더가 사람들을 차례로 담는다 ── */}
+          {/* ── 01 헐버트 프로젝트 · 02 꿈꾸는 아리랑: 하나의 뷰파인더가 사람들을 차례로 담는다 ── */}
           <div className={styles.ch1} data-ch1>
             <div className={cx(styles.layer, styles.layerHero)} data-px="hero">
               <div className={styles.gather} data-gather aria-hidden="true">
@@ -513,18 +520,23 @@ export default function ScrollStory() {
 
             <div className={cx(styles.layer, styles.layerText)} data-px="text">
               <div className={styles.col}>
-                <div className={styles.colHead} data-col-head>
-                  <ChapterHead num="01" title="함께 보다" />
+                {/* 프로젝트 제목: 01 → 02 가 같은 자리에서 바뀐다 */}
+                <div className={styles.colHeads}>
+                  {STAGE_HEADS.map((h) => (
+                    <div key={h.id} className={styles.colHead} data-col-head={h.id}>
+                      <ChapterHead num={h.num} title={h.title} />
+                    </div>
+                  ))}
                 </div>
 
                 {/* 안내 문장 · 슬레이트 · 맺음말은 제목 바로 아래 같은 자리에 차례로 놓인다 (한 번에 하나만) */}
                 <div className={styles.colStack}>
                   <p className={styles.lead} data-lead>
-                    <Line>같은 장면 앞에 사람이 모입니다.</Line>
-                    <Line>오래된 사진 한 장부터 오늘의 영상까지, 함께봄은 사람을 봅니다.</Line>
+                    <Line>한글을 사랑한 미국인, 헐버트.</Line>
+                    <Line>그가 남긴 기록 앞에 다시 사람이 모입니다.</Line>
                   </p>
 
-                  <ol className={styles.slates} aria-label="함께 본 장면들">
+                  <ol className={styles.slates} aria-label="프로젝트 장면들">
                     {SLATES.map((s) => (
                       <li key={s.id} className={styles.slate} data-slate={s.id}>
                         {s.odometer && (
@@ -538,15 +550,15 @@ export default function ScrollStory() {
                           <Line>{s.title}</Line>
                         </h3>
                         <Line className={styles.slateBody}>
-                          <SlateBody id={s.id} body={s.body} bodyM={s.bodyM} />
+                          <SlateBody s={s} />
                         </Line>
                       </li>
                     ))}
                   </ol>
                   <div className={cx(styles.slate, styles.statement)} data-slate="stmt">
-                    <Line className={styles.slateKicker}>함께 보다</Line>
+                    <Line className={styles.slateKicker}>우리의 프로젝트</Line>
                     <p className={styles.statementTitle}>
-                      <Line>함께 보는 순간,</Line>
+                      <Line>한 장면 앞에,</Line>
                       <Line>사람이 모입니다.</Line>
                     </p>
                   </div>
@@ -568,7 +580,7 @@ export default function ScrollStory() {
           {/* 바깥 p 는 스크롤(GSAP), 안쪽 span 은 첫 페인트 페이드(CSS) — 같은 노드를 두 곳에서 움직이지 않는다 */}
           <p className={styles.intro} data-intro>
             <span className={styles.introInner}>
-              함께봄에는 세 가지 뜻이 있습니다
+              함께봄이 만들어 온 프로젝트
               <span className={styles.scrollHint} aria-hidden="true">
                 <span className={styles.hintLine} />
                 스크롤
@@ -576,7 +588,7 @@ export default function ScrollStory() {
             </span>
           </p>
 
-          {/* ── 3장~마무리: 함께하는 사람들 ── */}
+          {/* ── 04~마무리: AI 영상 크리에이터 (AI로 만든 이미지 — 사람마다 이름·팀을 달지 않는다) ── */}
           <div className={styles.people} style={{ "--n": PEOPLE.length } as Vars} data-people>
             {PEOPLE.map((p, i) => (
               <figure key={p.src} className={styles.person} data-person>
@@ -594,37 +606,64 @@ export default function ScrollStory() {
                     data-img
                   />
                 </div>
-                <figcaption>
-                  <Line>{p.label}</Line>
-                </figcaption>
               </figure>
             ))}
+            <p className={styles.peopleNote} data-people-note>
+              <Line>{PEOPLE_NOTE}</Line>
+            </p>
           </div>
 
-          {/* 장 제목 */}
+          {/* 03 · 04 제목 */}
           <div className={styles.chapters}>
             <div className={cx(styles.chapter, styles.onDark)} data-chapter="1">
-              <ChapterHead num="02" title="함께 깨다" />
+              <ChapterHead num="03" title="AI 영상 제작" />
               <p className={styles.chDesc} data-desc>
-                당연하던 상식을 함께 깨부숩니다.
-                <br />
-                AI로 더 빠르고, 더 가볍게 만듭니다.
+                노래광고영상부터 기업 홍보 영상까지, AI로 더 빠르고 가볍게 만듭니다.
+                <span className={styles.chFact}>누적 제작 영상 400편 이상</span>
               </p>
             </div>
             <div className={styles.chapter} data-chapter="2">
-              <ChapterHead num="03" title="함께 봄을 맞이하다" />
+              <ChapterHead num="04" title="별님 · 매칭설명회" />
               <p className={styles.chDesc} data-desc>
-                함께 배우고 자라
-                <br />
-                각자의 봄을 피워냅니다.
+                취업은 어렵고 창업은 두려운 AI 영상 크리에이터에게, 안전한 일자리와 창업의 기회를 엽니다.
+              </p>
+              <p className={styles.chDates} data-dates>
+                <span className={styles.chDatesLabel}>매칭설명회</span>
+                {BRIEFING_DATES.map((d) => (
+                  <span key={d} className={styles.chDate}>
+                    {d}
+                  </span>
+                ))}
               </p>
             </div>
           </div>
+
+          {/* 03: 함께 만든 고객 영상의 장면 — 벽이 깨진 영상 위에 */}
+          <ul className={styles.works} data-works aria-label="함께 만든 영상">
+            {WORK_STILLS.map((w, i) => (
+              <li key={w.src} className={styles.work} data-work>
+                <span className={styles.workMask} data-mask>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    {...deferred(w.src, undefined, WORKS_ORDER + i)}
+                    alt={w.alt}
+                    width={600}
+                    height={338}
+                    fetchPriority="low"
+                    decoding="async"
+                    data-img
+                  />
+                </span>
+                <span className={styles.workLabel}>{w.label}</span>
+              </li>
+            ))}
+          </ul>
 
           {/* 마무리 */}
           <div className={styles.final} data-final>
             <p className={styles.finalEyebrow}>
-              <span data-eb>함께 보고,</span> <span data-eb>함께 깨고,</span> <span data-eb>함께 봄을 맞이하는 곳</span>
+              <span data-eb>헐버트 프로젝트 ·</span> <span data-eb>꿈꾸는 아리랑 ·</span> <span data-eb>AI 영상 제작 ·</span>{" "}
+              <span data-eb>별님</span>
             </p>
             <p className={styles.finalTitle} data-final-title>
               <Line>사람이 모이면,</Line>
